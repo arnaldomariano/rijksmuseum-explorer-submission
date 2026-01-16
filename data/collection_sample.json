@@ -1,0 +1,3380 @@
+{
+  "SK-A-1849": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-1849",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-1849"
+    },
+    "id": "en-SK-A-1849",
+    "objectNumber": "SK-A-1849",
+    "title": "The Frederiksplein, Amsterdam, during the Entry of Queen Wilhelmina, 5 September 1898",
+    "hasImage": true,
+    "principalOrFirstMaker": "Otto Eerelman",
+    "longTitle": "The Frederiksplein, Amsterdam, during the Entry of Queen Wilhelmina, 5 September 1898, Otto Eerelman, 1898 - 1900",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "374d577f-e62f-47a5-919f-ac2022fa254d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6046,
+      "height": 4684,
+      "url": "https://lh3.googleusercontent.com/uJHYFhBk5BVZuTtj0OWv0W7h6d_XimXQSIblGlvRXbuSjVj1Rpx5ylgt4ddoG1nXX1QY32_R6eX9r8IdiAfntLBzrd8=s0"
+    },
+    "headerImage": {
+      "guid": "67a93fc3-6b7d-41ca-8290-1f6239dce307",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/fwmOYaQV21Jv3TK7A0TOrLfQUjHR90HNGAmHMdPg5UK7ZNp3INrMR7_s1Rw_DQS27J65wiGw5OZyzfR4Ilk_Mzh6YK4D=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-3308": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-3308",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-3308"
+    },
+    "id": "en-SK-A-3308",
+    "objectNumber": "SK-A-3308",
+    "title": "River View with Sentry Post",
+    "hasImage": true,
+    "principalOrFirstMaker": "Jan van Goyen",
+    "longTitle": "River View with Sentry Post, Jan van Goyen, 1644",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "5bf5bacf-b6e3-4d6d-9afc-bc7c0e8c2fd3",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5176,
+      "height": 3568,
+      "url": "https://lh3.googleusercontent.com/5ORQk9AqZw16hN7loZzGQMgRTgo5YEAbJ6khTvOijwkHbrwJqwRobb0YYaOYfoF3wF0HdP47RAbZ2ftv-vsZLa34OjWiK0XSZVauUE8=s0"
+    },
+    "headerImage": {
+      "guid": "7a3ede0a-eeae-49aa-96c9-d42dbd13c03d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/hsuhtTtf_L4ClT7AaWkV_ykZtH3tkLyJWQOwIS3hHc84gClWJLvnv2kc5ml099xeDswo5J2xgF38zyBrdIMiGBHlZZaLqTPhk4IH7w_KLg=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-C-1460": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-C-1460",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-C-1460"
+    },
+    "id": "en-SK-C-1460",
+    "objectNumber": "SK-C-1460",
+    "title": "Portrait of William I, King of the Netherlands",
+    "hasImage": true,
+    "principalOrFirstMaker": "Joseph Paelinck",
+    "longTitle": "Portrait of William I, King of the Netherlands, Joseph Paelinck, 1819",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "9ce5122c-8a06-4e33-a870-71a181148398",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5414,
+      "height": 7916,
+      "url": "https://lh3.googleusercontent.com/FlbSEwfZrm1vwfdm0vbo6p5lBiF7wSIC0x9ZcyomJfiUyAaspCMLNoH6a5kvivVUi1FhETTsgJ5PYGR5cqrV6ek9fA=s0"
+    },
+    "headerImage": {
+      "guid": "5d6eaab1-d132-450a-b91c-750c23034b54",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1700,
+      "height": 408,
+      "url": "https://lh3.googleusercontent.com/o5qFb9W560egAfz7JnzEGjf9ich6dkkZQNcYpPanLR0w3P2ygHeFtOb0EWUlZVt40k-H96nm2eZ0aa-nNlSJtl1yXbmj=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-3452": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-3452",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-3452"
+    },
+    "id": "en-SK-A-3452",
+    "objectNumber": "SK-A-3452",
+    "title": "View of the house of the resident, Mr. J. Ph. van Zuylen van Nyevelt, in Banyuwangi (East Java)",
+    "hasImage": true,
+    "principalOrFirstMaker": "Antoine Auguste Joseph Payen",
+    "longTitle": "View of the house of the resident, Mr. J. Ph. van Zuylen van Nyevelt, in Banyuwangi (East Java), Antoine Auguste Joseph Payen, 1828",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "71a80655-2dcc-45de-a97b-b8284233298d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6504,
+      "height": 5318,
+      "url": "https://lh3.googleusercontent.com/fiKbNvPQuThQ01gy4oVYgF15YnDXLnuoqwNBPIutGPAv930TFh7WwJYyCjcHDE8N6t1RQPeX7ivSWT2Z1tT6a-bBrw=s0"
+    },
+    "headerImage": {
+      "guid": "73894cec-b7f4-4ac5-8278-3c4300cb0cf8",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/cHOeILKydDbkM2sfbjCozjx4HMrl2tX1ADew1axrztn6IhkRGpCMJelOWykYEQYe6FzPTViNgS_927m0emdd3t74Kfo=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-2238": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-2238",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-2238"
+    },
+    "id": "en-SK-A-2238",
+    "objectNumber": "SK-A-2238",
+    "title": "The Arrest of Diponegoro by Lieutenant General De Kock",
+    "hasImage": true,
+    "principalOrFirstMaker": "Nicolaas Pieneman",
+    "longTitle": "The Arrest of Diponegoro by Lieutenant General De Kock, Nicolaas Pieneman, c. 1830 - c. 1835",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "057c3681-52a8-434c-8da0-cfc58d33b775",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6231,
+      "height": 4755,
+      "url": "https://lh3.googleusercontent.com/07-bxv_gy2aFE33G09cHK2PEroWE67FT99RQPx3VDsjxSxdubsiEcORAIIYCGRlMkuRNYis0t2xfEMCx1m029AtMXlty1E0M0m1mjjE46w=s0"
+    },
+    "headerImage": {
+      "guid": "0db4c08d-279c-40a9-880b-01fdc7382318",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/J15LRJaTxwpqkiTntE885PpKtt1yc5GmxNFyQrBxiznuBdP-kcEh9BPyr_uosT55f_BC0GlvvxvcQxWBo6T6pIrWcUgi90f3X-cPpTQ6=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-2333": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-2333",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-2333"
+    },
+    "id": "en-SK-A-2333",
+    "objectNumber": "SK-A-2333",
+    "title": "Brazilian Landscape",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frans Jansz Post",
+    "longTitle": "Brazilian Landscape, Frans Jansz Post, 1670 - 1680",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "15f4d799-7aa0-4c57-bba0-6c0b134f14bb",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5652,
+      "height": 4543,
+      "url": "https://lh3.googleusercontent.com/DIjje-e_R3f5evhPsDPY-EBwIvbw1HN6uJYYyuYRfTJJjU2NbaaeBKjuso5w0foJQ7k-PJZ6tWIovj4ZDyHz85U0kLs=s0"
+    },
+    "headerImage": {
+      "guid": "1c5af041-ef38-4a0b-8a25-45b8656b8571",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/j0JyrlSivamEoY9qfLDx5VSGu-jLc-r31RG_vOJR2dMFQrG-F1C-AiQLDzX4nAkaBDwRuUsRI5fGXA6DlzpjvdUmRABC=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-2334": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-2334",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-2334"
+    },
+    "id": "en-SK-A-2334",
+    "objectNumber": "SK-A-2334",
+    "title": "Sugar Factory with Tower House",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frans Jansz Post",
+    "longTitle": "Sugar Factory with Tower House, Frans Jansz Post, 1670 - 1680",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "f2fb39ae-8650-47f3-817b-b730d175e6d5",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6218,
+      "height": 4816,
+      "url": "https://lh3.googleusercontent.com/SW73ki2SWPfZAUyoKxp_3kFrQcs54nt9TNlvC__ogLO0ByDFi-_nmGIHtIprR7t3b4I0QOnUTYO0HIYFi8ek09BeXCs=s0"
+    },
+    "headerImage": {
+      "guid": "20153abe-5ece-434d-a297-9b778ffc84ad",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/kOlu6kNdgomIDLx0Bz0MjtOgkpJ1j3IukESH-Y8claiEHepUjLG_VjqcIBrzVNXVm1oyS9Cy17Evm4FuTgPjJ4ooo4s=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-1585": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-1585",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-1585"
+    },
+    "id": "en-SK-A-1585",
+    "objectNumber": "SK-A-1585",
+    "title": "Landscape in Brazil",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frans Jansz Post",
+    "longTitle": "Landscape in Brazil, Frans Jansz Post, c. 1665 - c. 1669",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "d8fa906d-cd76-4ff9-bef6-e9547e19c687",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6641,
+      "height": 4876,
+      "url": "https://lh3.googleusercontent.com/iiA74BhHPqZ-xTx53Bt2k5CVztdjCuo2P3qFwarGAUXrJEEF-ePKb_joCH_Cc9iM0VnO1DP19EAv-XH_k9oZR9CwjP7B=s0"
+    },
+    "headerImage": {
+      "guid": "4f7fb69a-48e1-4ae1-8422-2bbfa8c9cfb0",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/72BBooyj9vZRhSM-lnpDCKlKHc-KRZn53AXLhzv74ZdSdmTNZj5EmwYkEMsOs9umD7k61jEQe7WK7ZDTlvUzpq9h=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-4272": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4272",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4272"
+    },
+    "id": "en-SK-A-4272",
+    "objectNumber": "SK-A-4272",
+    "title": "Brazilian Village",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frans Jansz Post",
+    "longTitle": "Brazilian Village, Frans Jansz Post, 1675 - 1680",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "cd765f2a-fc57-4f07-bfed-24d8124f3bb9",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6779,
+      "height": 5127,
+      "url": "https://lh3.googleusercontent.com/PrBMmqKDFEDxqH0WOE-AXM_NLA0RE8lp2ZpSsbwuX28I7YC5ajiwnQ4Lusja09R0hm0q5C6aidEXWSKxhVsbF2-3_-Q=s0"
+    },
+    "headerImage": {
+      "guid": "ba4db616-a991-4dfa-bdfe-97cfe89158c5",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/V1Nf4Tfsjo7m6EV-4vycu0Eg_JrPE8tTH4YU1SfitsY3e6z4Pkx-Beu7RQA7gy_Rb9ObXSLgYT7Hw68yyexFIn_iRhrM=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-4271": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4271",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4271"
+    },
+    "id": "en-SK-A-4271",
+    "objectNumber": "SK-A-4271",
+    "title": "View of the Island of Itamaracá, Brazil",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frans Jansz Post",
+    "longTitle": "View of the Island of Itamaracá, Brazil, Frans Jansz Post, 1637",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "64280b37-3dd5-4a6e-8c00-3a5b0392349c",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6029,
+      "height": 4200,
+      "url": "https://lh3.googleusercontent.com/zc0-NoHruYCzfdfOoYRb-AHUlBjUPpl6ZBi7hMjdKiPAjnOk6uOqB9o2rnjVfhQiV7RK_4G28pQvDtFN41Uviu6cQww=s0"
+    },
+    "headerImage": {
+      "guid": "973626d8-6ede-4c7e-9678-31eaa957f995",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/DRHtufhFltFyjyzsilVSeeee-fsTyMwESmagBMzb2yepmy13BhycZ5UzkEFPc9p6-M5aAkPdBWdUx3aGOUkV2SJw2g=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-4273": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4273",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4273"
+    },
+    "id": "en-SK-A-4273",
+    "objectNumber": "SK-A-4273",
+    "title": "Church Building in Brazil",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frans Jansz Post",
+    "longTitle": "Church Building in Brazil, Frans Jansz Post, 1675 - 1680",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "eac36ce3-0869-458c-81b0-57dbad45dcd6",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7128,
+      "height": 4660,
+      "url": "https://lh3.googleusercontent.com/5HccR4uorvHqkAL3Zc91-FPpQZaIUYr-0FhQOLphflFpB-EhPEETHPLqHGs5pqqz8RnBB1whOUIUdqSDPdWfaSzgGnY=s0"
+    },
+    "headerImage": {
+      "guid": "bf6b1ebd-047e-4852-8693-1faf34eb47ed",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/aTRHhk3O5d7HR1JbuDX-3FGeDZCNYt7RkHNUtOE0zQwmB-Cti1BLhRzOEH9PIY30iTXUdTqgm4fpfUr5y_26QEMjBx4=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-1486": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-1486",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-1486"
+    },
+    "id": "en-SK-A-1486",
+    "objectNumber": "SK-A-1486",
+    "title": "Brazilian landscape with the village of Igaraçú. To the left the church of Sts Cosmas and Damian",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frans Jansz Post",
+    "longTitle": "Brazilian landscape with the village of Igaraçú. To the left the church of Sts Cosmas and Damian, Frans Jansz Post, 1659",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "e3ebd958-5828-4c7e-a0cb-6ea5068dba5e",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6140,
+      "height": 3996,
+      "url": "https://lh3.googleusercontent.com/qsTh0k8uL5963Zx6k1aiwYWne5jJ5tBsVXly8w7SxPVZ6GyOt1wMrQfNnHxdR0UkeBpQYMhT-O_ieMl-EJEYzNDgoWU=s0"
+    },
+    "headerImage": {
+      "guid": "a307728d-8469-48f2-a0e7-f4464866ce79",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/g8fuctBqZWUzc_pRnzz-8JwI_kakUcMdI77X5whV1TZh7RwzQcpooIlLK5y4dIqosCBy2oRNF_QXcs8hqUJprg7lJrI=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-3224": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-3224",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-3224"
+    },
+    "id": "en-SK-A-3224",
+    "objectNumber": "SK-A-3224",
+    "title": "Landscape in Brazil",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frans Jansz Post",
+    "longTitle": "Landscape in Brazil, Frans Jansz Post, 1652",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "4f944ed3-aaeb-41b5-bb7e-5431fcfe7e59",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 1,
+      "width": 7022,
+      "height": 9739,
+      "url": "https://lh4.ggpht.com/N-6Phi5mTiDa_w1wWl5zi8AyB8rH3TNO2IbcWhUFVnupB0cl4sazkCj1FvtaM_Cio9J4z0iVsZxSDQH1FOWMidl9g6Q=s0"
+    },
+    "headerImage": {
+      "guid": "8364727e-d223-4e6a-a8aa-da786923b63d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1878,
+      "height": 450,
+      "url": "https://lh5.ggpht.com/UgTWCoMDe1sZ7mP7Kj091u8SS-15RH6vkG54otqxOKPTKHzgg9Ezq8QpHRT02UsIyX1T3bQwKHkFWP-SjuB7EhQmQvqq=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-4472": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4472",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4472"
+    },
+    "id": "en-SK-A-4472",
+    "objectNumber": "SK-A-4472",
+    "title": "Trading posts of the Dutch East India Company (VOC)",
+    "hasImage": true,
+    "principalOrFirstMaker": "Johannes Vinckboons",
+    "longTitle": "Trading posts of the Dutch East India Company (VOC), Johannes Vinckboons (attributed to), c. 1662 - c. 1663",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "dbac805e-9215-499f-8c23-66d18da781c9",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7602,
+      "height": 5230,
+      "url": "https://lh6.ggpht.com/n3oAYGvL75x2i5xeYONxvr9xx2K9VZhcY2w4RvM5JiEHK9JgXdlVwQNdZsbxSHN6w9Vp6ux64mKs8yNBRtzL2FgEtQ=s0"
+    },
+    "headerImage": {
+      "guid": "d5a173aa-0892-4628-8981-66c7ab543d1e",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/WN8gDke_JCumUUefjUY-B1uAAmgFot5m7y9oecGASB8KuNvPP_q3MurZF_JPLXcXIhdGfenzXkz1gmu8iHwD2b6SMq8=s0"
+    },
+    "productionPlaces": [
+      "Northern Netherlands"
+    ]
+  },
+  "SK-A-4477": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4477",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4477"
+    },
+    "id": "en-SK-A-4477",
+    "objectNumber": "SK-A-4477",
+    "title": "Trading posts of the Dutch East India Company (VOC)",
+    "hasImage": true,
+    "principalOrFirstMaker": "Johannes Vinckboons",
+    "longTitle": "Trading posts of the Dutch East India Company (VOC), Johannes Vinckboons (attributed to), c. 1662 - c. 1663",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "3b00ceae-fc63-4288-af81-722f8d28a769",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7308,
+      "height": 5057,
+      "url": "https://lh3.googleusercontent.com/bRwa83TjOVla46pcYxZBcSkEHkHWVrQsE-XgN1MFZ5YukRDtB97kkt7pe8cg6J5fmiXSD4aaEkdzfXZe5hkiF341SkU=s0"
+    },
+    "headerImage": {
+      "guid": "5fab5cba-acc0-4534-a554-699d096e90ac",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/om8cGXLsLwXLQ5wnK3xbZ0NMVHfdGszTFgRy0Vgb2HQC1RMMtlcWjFkn0T2exTUY0Fkk0MVReXm_-df3rI-G30MOCyzl=s0"
+    },
+    "productionPlaces": [
+      "Northern Netherlands"
+    ]
+  },
+  "SK-A-4474": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4474",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4474"
+    },
+    "id": "en-SK-A-4474",
+    "objectNumber": "SK-A-4474",
+    "title": "Trading posts of the Dutch East India Company (VOC)",
+    "hasImage": true,
+    "principalOrFirstMaker": "Johannes Vinckboons",
+    "longTitle": "Trading posts of the Dutch East India Company (VOC), Johannes Vinckboons (attributed to), c. 1662 - c. 1663",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "ab4a0aa4-fb94-4629-b538-8925aa3e9181",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5450,
+      "height": 3800,
+      "url": "https://lh3.googleusercontent.com/0vsc4-366gD_BKnVuaRWGggQD_a67Xi1x7OZ_i5BTey2dNPVFxJinapwgO2ZxHsCR5STNKDtB_P-vvg-51_nQqWOetxn=s0"
+    },
+    "headerImage": {
+      "guid": "64b7b49f-a640-455f-8dca-4b99ff2f5c6d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/qO0EvIn0P-MORI4WeMrMwRYePMFiDfhS59J8HoeGzDV9DqAsoJOUIsCkxTqqPGnX-NXcloAid6dnIgOjHpbK0meORPdm=s0"
+    },
+    "productionPlaces": [
+      "Northern Netherlands"
+    ]
+  },
+  "SK-A-4475": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4475",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4475"
+    },
+    "id": "en-SK-A-4475",
+    "objectNumber": "SK-A-4475",
+    "title": "Two Views of Dutch East India Company Trading Posts: Lawec in Cambodia and Banda in the Southern Moluccas",
+    "hasImage": true,
+    "principalOrFirstMaker": "Johannes Vinckboons",
+    "longTitle": "Two Views of Dutch East India Company Trading Posts: Lawec in Cambodia and Banda in the Southern Moluccas, Johannes Vinckboons (attributed to), c. 1662 - c. 1663",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "ded9875b-7cbd-475a-ba57-91e3bcb216e1",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7673,
+      "height": 5298,
+      "url": "https://lh6.ggpht.com/4Nx3drUaXFxaaU1ygodwMTmMh-kU7yfGiZ6PVwIYMgicoq2nHfIUPY92HLyt-J6jQB0WwSrBfW_6IT_xwCzVmiUQyWQ=s0"
+    },
+    "headerImage": {
+      "guid": "33e62467-0e2c-4f69-9ce3-661938a2bbfd",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh5.ggpht.com/9n1QTWoXzXR9IKeFAlhlC7ClS1oT47csqIkhFvnHQkrhOTv4-gLrXvXIF-AX-fNzDM6qo1PDcCarXW9wdi_E0xjaH3hG=s0"
+    },
+    "productionPlaces": [
+      "Northern Netherlands"
+    ]
+  },
+  "SK-A-4476": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4476",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4476"
+    },
+    "id": "en-SK-A-4476",
+    "objectNumber": "SK-A-4476",
+    "title": "Two Views of Dutch East India Company Trading Posts: Lawec in Cambodia and Banda in the Southern Moluccas",
+    "hasImage": true,
+    "principalOrFirstMaker": "Johannes Vinckboons",
+    "longTitle": "Two Views of Dutch East India Company Trading Posts: Lawec in Cambodia and Banda in the Southern Moluccas, Johannes Vinckboons (attributed to), c. 1662 - c. 1663",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "1a014aa0-42fe-442d-94a8-cc82e7a9856d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7019,
+      "height": 4792,
+      "url": "https://lh3.googleusercontent.com/ldQ-PNN0myFccfAH62kE1yDsFGcmNDCcMX5vAWvvKSKAFDxz4VIdzk4v5DrOBTgTV7T9I0FoXca3pxiRo-bU8pg79RqQ=s0"
+    },
+    "headerImage": {
+      "guid": "45264b69-c427-4489-a820-517fc098191e",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/aT1iv6zxEo-fPdFtRqsIUAfjDfZOJWMCpgqS1ixfC9jQD_qo0UDOlBbuoe4LGg_Oi1pXU4L6PTgCX7rB1_LDSMCDctY=s0"
+    },
+    "productionPlaces": [
+      "Northern Netherlands"
+    ]
+  },
+  "SK-A-2008": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-2008",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-2008"
+    },
+    "id": "en-SK-A-2008",
+    "objectNumber": "SK-A-2008",
+    "title": "The Water Reservoirs, the so-called Bends, in Belgrade Forest",
+    "hasImage": true,
+    "principalOrFirstMaker": "Johann Christian Vollerdt",
+    "longTitle": "The Water Reservoirs, the so-called Bends, in Belgrade Forest, Johann Christian Vollerdt, 1744 - 1763",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "34eb8ab3-e2c2-471c-8d3a-81484c6fc48c",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6799,
+      "height": 5492,
+      "url": "https://lh3.googleusercontent.com/RIpmv_8bK8hph5sB_meXARd5B8dxVgbmR2yhp4gFP9o9d1vQDxX6tFAWoq0Jdp33O13oPwtsSbUvVw90S-vUdpek4lk=s0"
+    },
+    "headerImage": {
+      "guid": "3b5356a0-df37-4098-9143-cce70cb29cb8",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2500,
+      "height": 599,
+      "url": "https://lh3.googleusercontent.com/Ayly6heSORiwC8a2AWq15fdgZEzr52QAqcFZXVEsoWnkewQTbXvMgF-4QhbWCh9cANfFILLXjV6DFSajITBsun3U6HGB=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-479": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-479",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-479"
+    },
+    "id": "en-SK-A-479",
+    "objectNumber": "SK-A-479",
+    "title": "Dune Landscape with a Signal Post",
+    "hasImage": true,
+    "principalOrFirstMaker": "Philips Wouwerman",
+    "longTitle": "Dune Landscape with a Signal Post, Philips Wouwerman, c. 1651 - c. 1653",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "eecc2de9-c0b2-4588-add3-d769b46c65fe",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5332,
+      "height": 4242,
+      "url": "https://lh3.googleusercontent.com/JTDbEEmCGFeVVo_PL__tTb5_IC70cSriysJ6ISE5qt5S0gd7X3Q4czjx3aQGX8etHyysnGTg_ooxlyx7CAUT2cKVE4E3RmfZg_9mXnV4=s0"
+    },
+    "headerImage": {
+      "guid": "c16ef68a-0cde-491a-a83c-dbbb1a9a7499",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/Oa9ZDxK4IJdWW_hCJIXJtp7YQ7bgCXN7-aQjLpDkTohfFst_y9Pvv-go_MzPl0dUWycZ5hQcXMmL9uRYkQt-ZuS2vrs4160ZxaKDqVYw1g=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-485": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-485",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-485"
+    },
+    "id": "en-SK-A-485",
+    "objectNumber": "SK-A-485",
+    "title": "Horsepond near a Boundary Stone",
+    "hasImage": true,
+    "principalOrFirstMaker": "Philips Wouwerman",
+    "longTitle": "Horsepond near a Boundary Stone, Philips Wouwerman, c. 1651 - c. 1654",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "08fda183-e2f1-48d2-96e0-4fe0fd1b22fc",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3678,
+      "height": 3042,
+      "url": "https://lh3.googleusercontent.com/fU9AYOp_oiRmB9wYraQkTXo0CRkjCjLv8R1Z1VXcn6uV_BFfvKKNUontpKdv837mSeLwn5woDitxedwei7KOm0YFiKl7CWg1z44hSEEYhA=s0"
+    },
+    "headerImage": {
+      "guid": "f93c4691-e713-4e40-a866-b248e8ff9189",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/0ZUxbhdzJKlGNalYEwAtV2zxlxe1jnYbeB_t7OnzeMRuLfDTO7SVo6TZOyiDD7lpzVESEKy9NNL2GzXbw8_Zxdl8nIkbNQORBsPLenlI=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-766": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-766",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-766"
+    },
+    "id": "en-RP-P-OB-766",
+    "objectNumber": "RP-P-OB-766",
+    "title": "Sheet of studies: head of the artist",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Sheet of studies: head of the artist, Rembrandt van Rijn, 1632",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "91e2eb57-0aeb-40bc-b409-ecd12da163d9",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4146,
+      "height": 3792,
+      "url": "https://lh4.ggpht.com/Ab3gdqJHM-hJZb67TGyaE7tB6O3B9CNYmUkHWVRgBg_G_h0-VWK2yrv9exUZwCQGX-QG6DtZpRtk7sPbxPwyE3BUoQo=s0"
+    },
+    "headerImage": {
+      "guid": "9f2d9c8c-12c4-4aed-b4b1-7ddd97964140",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh5.ggpht.com/MNuoq7Zg2hMjfZ-tS1i6hEseDM5uB5NP1WiS0jaANsU_JFUFpQE3XYhvZe0uCd2JIHIy0Do7LAJATM-G7pt2X79JzA=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-721": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-721",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-721"
+    },
+    "id": "en-RP-P-OB-721",
+    "objectNumber": "RP-P-OB-721",
+    "title": "Self-portrait scowling",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait scowling, Rembrandt van Rijn, c. 1631",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "9a7a3bf7-137e-4339-8b6f-4b5c30aa2fb8",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4008,
+      "height": 4582,
+      "url": "https://lh5.ggpht.com/3lznGSS5y8ams5KAZc74LjZKGVyjCv9XIgrw5VuScEqN4_NU-c39cgkQQ3fZMxaBVYQfCcZiXu15b-DzVI1fD2gwujW7=s0"
+    },
+    "headerImage": {
+      "guid": "4bf09dcf-fadb-42a0-8f0e-94b35033a13c",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh5.ggpht.com/vmFfpylVRz93jC-wmIO77ymQ4J7bnjx4X2i4TtYvQMb3hEKWe_DHxdWGLu27yAzbbxPxNWzynE2q1lJ0YJEWCUfFDN0=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1961-1188": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1961-1188",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1961-1188"
+    },
+    "id": "en-RP-P-1961-1188",
+    "objectNumber": "RP-P-1961-1188",
+    "title": "Self-portrait scowling",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait scowling, Rembrandt van Rijn, c. 1631",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "142a5f87-0c65-4823-ac0b-0b57e17af93d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3808,
+      "height": 4174,
+      "url": "https://lh5.ggpht.com/q2dmku3oyIo6QMlcxOeCFNFGXhtTopOJsaMgDSEmhd5X6rkSRQBxjB6lUvUKmKBAHWWt23YFyK3fpj-smRIai6rbTKAX=s0"
+    },
+    "headerImage": {
+      "guid": "998f28d8-0a8c-4960-b453-cd95f7cbffd7",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh6.ggpht.com/tpUxO3VTRHtamaoQA0Ad-KsD2LyVDEdxKK0mBSaOFlZmYBlQlChBOiAdmbChN3zV6aAKLhiKaxFTiMC5K9bmryu4Rhzc=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-696": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-696",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-696"
+    },
+    "id": "en-RP-P-OB-696",
+    "objectNumber": "RP-P-OB-696",
+    "title": "Self-portrait with cap pulled forward",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait with cap pulled forward, Rembrandt van Rijn, c. 1630",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "6e38fc20-39ae-48a1-b6a7-3fdd14782c09",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3664,
+      "height": 4358,
+      "url": "https://lh5.ggpht.com/NGkNTvLuIOBFyHD5-m3i7dDOJWPptw5pAH0wBEtngWKKXvcMEPrUwgQ7bo4cBIgKfKaxLjtSVmzpv45-bPK8mJrYUw=s0"
+    },
+    "headerImage": {
+      "guid": "32157a6f-379e-4b92-9701-1c90427799fc",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.ggpht.com/tij0PvpnMtODRMDLZQweqFASuHMdiqhrjrI7WpAEWgQDJhD47MzqhPa8e1eKPRz7QVlMKz0drXsW2CrajQeujMB6MA=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1962-6": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1962-6",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1962-6"
+    },
+    "id": "en-RP-P-1962-6",
+    "objectNumber": "RP-P-1962-6",
+    "title": "Self-portrait in a soft hat and a patterned cloak",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a soft hat and a patterned cloak, Rembrandt van Rijn, 1631",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "b88da9b4-a7c3-4c0f-b9a6-ebaf8b8d8d34",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3744,
+      "height": 4266,
+      "url": "https://lh6.ggpht.com/SYsH3hPT-7fhWXwYLr7WcmchpFmcRQ2A6NHRtLlaNIoKCrV1cCKWAMC-wppA3F3YL86J0br9-O9fVTxwIql-pOCwwW4=s0"
+    },
+    "headerImage": {
+      "guid": "71dd3dc4-704c-42d2-9bb0-f5af3be71282",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/_U7UHlFdt3hzp5RAj4qnPpuYKzKvhl2H23MRSyq5XlT30vS7D8jRSH29q8LMKbzUOPiPbfVlmp9Ly4ORofqB5Ujey0A=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-36": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-36",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-36"
+    },
+    "id": "en-RP-P-OB-36",
+    "objectNumber": "RP-P-OB-36",
+    "title": "Self-portrait in a velvet cap with plume",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a velvet cap with plume, Rembrandt van Rijn, 1638",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "2dd98f0a-2375-4e37-8282-3fd85e46ff31",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3974,
+      "height": 5044,
+      "url": "https://lh5.ggpht.com/XIKaQBmYBjh6hnLa6DwGOBkCKQqhjekhUl_0MReuzbcwLgSlUcbE5h_9tfNX3Eljdji7vJzLTa4laKClH0g-ZSDPb_xO=s0"
+    },
+    "headerImage": {
+      "guid": "0ad8a796-10e1-421c-8028-0e0165e4f88d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/v39AEWjV23bl-ooHOL8NwykYjFLZ6jDXWi_X6we5KIxc_ilhJotyDJ5teNJxnX_iqwCnSKP0DpPqPHtG96geAJjcYg=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1961-990": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1961-990",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1961-990"
+    },
+    "id": "en-RP-P-1961-990",
+    "objectNumber": "RP-P-1961-990",
+    "title": "Self-portrait in a fur cap: bust",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a fur cap: bust, Rembrandt van Rijn, 1630",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "f07581d6-3a61-4680-99c6-4b64e3b59cf9",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3870,
+      "height": 4542,
+      "url": "https://lh5.ggpht.com/3dNhINz-6CuRTvKLd4v-BuOEPF_2aIeGumav-QIL9QNykpCLxYg1jPK7Wb7wX3l0LDc6WYknevL8vjGQ7Hg-H0h1Kw=s0"
+    },
+    "headerImage": {
+      "guid": "ec0608b4-bda7-4492-a1c5-0475c74105c2",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh6.ggpht.com/7oLfeC_dBHUAyjPZEm39nbx0q23BgHsMLRUaHxrbg0eeO76kAsO6kgtD3gAeJk0P9Fh1BhirMgwFdy74viEphJL3fA=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1962-9": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1962-9",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1962-9"
+    },
+    "id": "en-RP-P-1962-9",
+    "objectNumber": "RP-P-1962-9",
+    "title": "Self-portrait, Etching at a Window",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait, Etching at a Window, Rembrandt van Rijn, 1648",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "f9d836bf-08ad-40a0-acac-7650af1909a2",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4300,
+      "height": 5128,
+      "url": "https://lh6.ggpht.com/KAAcuqS2dD591eqdwEht4kApU5_y6ZIt_FbGdn1-L4j8trxYV3g4OmyThYXKtg1qlv4moTu2EFq5tuQp34dsnAkWWjfc=s0"
+    },
+    "headerImage": {
+      "guid": "f8f5825c-5773-4c66-b0be-a9dd786d726f",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2096,
+      "height": 456,
+      "url": "https://lh5.ggpht.com/qXWCAYfgMvHvKBgdcuXkEajW9jz7NDA0UY2-m5TZpGaz67g0HDAbHm2bFY4luFKykf0_OMamoatN0_KsyPpzHWHkvJ-d=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-279": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-279",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-279"
+    },
+    "id": "en-RP-P-OB-279",
+    "objectNumber": "RP-P-OB-279",
+    "title": "Self-portrait wearing a soft cap: full face, head only",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait wearing a soft cap: full face, head only, Rembrandt van Rijn, c. 1634",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "0fcf4cec-db1c-45fa-8bfa-d71b9fc3ce28",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3534,
+      "height": 3741,
+      "url": "https://lh3.googleusercontent.com/7QH8FX0CiUIntSv274H1kwzBezlp4qFN0fu0C0ONspTTBMnjRPjdqn2O9Yj4UiQfOadXPJFt3usW1S0O4lD09moajR9CuUFqNrzITTM=s0"
+    },
+    "headerImage": {
+      "guid": "6d06db83-abf0-4036-93aa-326a485a1649",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1528,
+      "height": 367,
+      "url": "https://lh3.googleusercontent.com/B_94SNPKuolodTdsUd5F5f8GbPzazA6AUMGp_ifqpNDfFMq7Z_9DqNkOg5wj09NxkALimKxIeeaB-ME0KqjodGP0gtLj7M3Yw8R8DEKD=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-286": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-286",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-286"
+    },
+    "id": "en-RP-P-OB-286",
+    "objectNumber": "RP-P-OB-286",
+    "title": "Self-portrait in a velvet cap with plume",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a velvet cap with plume, Rembrandt van Rijn, 1850 - 1906",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "795265f9-a766-4c8b-bf26-d9d7bb4750a2",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4492,
+      "height": 5484,
+      "url": "https://lh6.ggpht.com/dAJWImZ7YpoVhqx1d_r-2UWo4OCjejHStM9KkapTWDvpFkwXmj7BWExeA5hllyDwmosJ_1OUlAokJiM459esEd8CtGU=s0"
+    },
+    "headerImage": {
+      "guid": "235a4a56-b824-4009-91cc-bb5cedb933e1",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.ggpht.com/iuaxKwWQkHrRZWO4Yra01J3CLYUVCJ3-iiVjC6cymT7P9k8T_FQWSEP2LTuPa5Xb_ooKjqeR25XbeKkYWisMi1s4zqs=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-46": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-46",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-46"
+    },
+    "id": "en-RP-P-OB-46",
+    "objectNumber": "RP-P-OB-46",
+    "title": "Self-portrait in a fur cap: bust",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a fur cap: bust, Rembrandt van Rijn, 1630",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "ac5d1b99-73c0-482b-9b8d-25c79d318f62",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3904,
+      "height": 4708,
+      "url": "https://lh3.ggpht.com/LXDcuYlu0BePS_4g9oi6yEBN6eU1cjJEinqbFZFwjfebafy9_HQtO6S52fqI98L5pvbCTzd07gD_MRMer7rPRQcyZUo=s0"
+    },
+    "headerImage": {
+      "guid": "bef3d985-38a3-4155-9a5f-7e2da62c9abe",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh5.ggpht.com/55LFsSdV1_wAEpjrO-a-keWFn42YMkHuA0NtImNDzl6BjqY7fadNwcKCsUNKjoAz93j1jj1IEr1JJUsJaj-CSin3Zg=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-280": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-280",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-280"
+    },
+    "id": "en-RP-P-OB-280",
+    "objectNumber": "RP-P-OB-280",
+    "title": "Self-portrait open mouthed, as if shouting: bust",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait open mouthed, as if shouting: bust, Rembrandt van Rijn, 1630",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "28d43060-be91-41b2-a553-268dde75f5c3",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3958,
+      "height": 4624,
+      "url": "https://lh6.ggpht.com/Qkd1JdmUUMODggvPtsZO-p1aRnODoPvUJjhlPf3uhUoE5fHpIIF349iKzZQYOo6x47fL6K0tuvqeQXDAoVS33rCknA=s0"
+    },
+    "headerImage": {
+      "guid": "3dccd851-393c-46c3-9873-5ef930bb3554",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh6.ggpht.com/VyE98jLeehPE4v2YlvfyLT_NFxP26GZL3tbe5CFnQQ5XuLM059xxUPvjbZDXStsI6fIo60iiLr61j_K6z9vbB9hz2aqn=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1961-975": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1961-975",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1961-975"
+    },
+    "id": "en-RP-P-1961-975",
+    "objectNumber": "RP-P-1961-975",
+    "title": "Self-portrait in a soft hat and a patterned cloak",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a soft hat and a patterned cloak, Rembrandt van Rijn, 1631",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "5bd5710e-98b3-406a-9a04-15265d9b9e0e",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3792,
+      "height": 4320,
+      "url": "https://lh6.ggpht.com/DQ3azgxIFKaHFWBeSIJBJdI-Ia7mnderFu7gzwGSlyaN9W5VGTwqRI7TaCC5sHIx3UpYasI9XMLQ8y6OMnr9tYRrew=s0"
+    },
+    "headerImage": {
+      "guid": "8bb55cf4-d335-4e84-87f5-fdb78f32c9d1",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/Tn92gyk2noTYdgpIBkTiyyfWq_Zg-YHv_zqTQwtrl9iNuP0NQWFL1Hepxv0q7JhjYj-58lLL3Rp1LKy23oIlLAWKaWI=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-18": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-18",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-18"
+    },
+    "id": "en-RP-P-OB-18",
+    "objectNumber": "RP-P-OB-18",
+    "title": "Self-portrait with long bushy hair: head only",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait with long bushy hair: head only, Rembrandt van Rijn, c. 1631",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "e546edf7-b608-4319-870e-b727aa5c1c37",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3600,
+      "height": 4008,
+      "url": "https://lh3.ggpht.com/XE9I6byKcP_pZiSQ-aAHWcA9ZqlXPfbGkXNeUWOmvb3KCa0PfuKTFmfjq5sOa6L9fvQynXJD0vuCIasr18cKc68-0fol=s0"
+    },
+    "headerImage": {
+      "guid": "29edbeb4-2b12-4277-84ac-c0486802c8b5",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh6.ggpht.com/lhxu8A7lU4arkX11S9EwphLcTMs4pmIgOFHkRhdIFFQv2Iz_FjEI_lY-UYDbbL1-IfJ6RBQ5P-6uvtF98enYRCFNLA=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1962-7": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1962-7",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1962-7"
+    },
+    "id": "en-RP-P-1962-7",
+    "objectNumber": "RP-P-1962-7",
+    "title": "Self-portrait in a soft hat and a patterned cloak",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a soft hat and a patterned cloak, Rembrandt van Rijn, 1631",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "18b87024-58d4-4360-9ff6-b7f0bebac8bd",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3868,
+      "height": 4270,
+      "url": "https://lh6.ggpht.com/rDRVO0M-SkmWgWnrT73MFuwdhkG0OFqhTRhsYjLCTMXvMTxmFEuke-kns0tv0VRwdteasDcdztrPSq1zj8c3qtYqnmg=s0"
+    },
+    "headerImage": {
+      "guid": "1569be69-595f-4d0c-9606-9ea365867814",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/Pei-W5L-4EbFxVGtN9FqqZSS2LqreHemHCKBO7ccR-iXC2jWvWk_wCOeHWJwwOdRr60HR9k38DUDO5Y-ZNz-Ak3sRBw=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-289": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-289",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-289"
+    },
+    "id": "en-RP-P-OB-289",
+    "objectNumber": "RP-P-OB-289",
+    "title": "Self-portrait in a flat cap and embroidered dress",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a flat cap and embroidered dress, Rembrandt van Rijn, 1850 - 1906",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "16afb7de-09d7-4695-9fc9-baf22d3cb56d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3716,
+      "height": 5086,
+      "url": "https://lh6.ggpht.com/xAuXQrJ1OaTIWvQH1PrQw2lNIDwHnwhkdX0e76PsTr94naXewXZOvpm5JCuwHlLSRGE2MoF98_iD2mpSihm2fvQ37Q=s0"
+    },
+    "headerImage": {
+      "guid": "1064fbb8-0b8d-4434-ae5a-b28cc4f0c404",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1919,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/3_GQWc7TAreEOo0Is9jZ_pFovhCMSHxBavT_uyJ-CFpSy9b059_xKtXQLSuTbV984hQstLWnwBSH1fxOZnx1EOJDUJk=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-33": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-33",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-33"
+    },
+    "id": "en-RP-P-OB-33",
+    "objectNumber": "RP-P-OB-33",
+    "title": "Self-portrait with raised sabre",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait with raised sabre, Rembrandt van Rijn, 1634",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "56c7c677-a26d-4177-94b9-218d96695231",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3556,
+      "height": 4436,
+      "url": "https://lh5.ggpht.com/PjX9vlRRf7lmBHsPA25ZGUPEyaoKYKxcGM3nLo6TT43jhhHdcQN8oe-W0KrBJjg0dOeLpe6EdAXdK_uWm52KLiJpRg=s0"
+    },
+    "headerImage": {
+      "guid": "f8590360-9ed0-477a-bc3b-1e2d49d7a41f",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/Hi09KVlO6c598LS6zlaSNiqewAanJkVIbYe6ILaUXdLPyyt6ckGqSNOUl8H1JjgfO3cQJyttWhbTa4wziF_L4HhTF5rx=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-32": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-32",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-32"
+    },
+    "id": "en-RP-P-OB-32",
+    "objectNumber": "RP-P-OB-32",
+    "title": "Self-portrait in a Cap and Scarf",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a Cap and Scarf, Rembrandt van Rijn, 1633",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "10781d2e-049b-4abe-b2a2-1f665aa71b09",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3894,
+      "height": 4816,
+      "url": "https://lh6.ggpht.com/t2UOzukK4MUPSVMdcRvw_0W8_bAY6hg2rfQ8KSextBEA1l-A1M2L7ESOyx35HqHiPBUYT1NjFD-qGX0Cmla5fdO1jg=s0"
+    },
+    "headerImage": {
+      "guid": "1c721597-f862-4c3d-a2dc-80468e2715ff",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/GJO8s19n86C8ig3DSFGMXG06oUNheeF_r_-56pH_k9lIFNrdXeBS_7KCyRA8AR_-HDguTixqCaY3ejOri7Mzwx0_wZOf=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-43": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-43",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-43"
+    },
+    "id": "en-RP-P-OB-43",
+    "objectNumber": "RP-P-OB-43",
+    "title": "Self-portrait (?) with plumed cap",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait (?) with plumed cap, Rembrandt van Rijn, 1634",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "4dbab08e-4383-4884-9161-58a1669883b1",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3832,
+      "height": 4646,
+      "url": "https://lh5.ggpht.com/4Jry2j3_-xcS2fq9zG1cflIRTScuCvrB8Niu2sXEcyFMf9Hiihfc0M-Q7Y9hJGMswCTtqChkxj4a-GIgFQW_RMLL7vM=s0"
+    },
+    "headerImage": {
+      "guid": "832bd213-4f74-428e-a9dd-c5f26c5788f2",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/kYcW0YKKrB8gjzqVAcVLOdyOWvHOIYBCrt9zY7Ok2VX-MQMuF1_xtxIEC7q_VeZ17A9oAnJKbwVH5gap9QXL6wJB3A=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-15": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-15",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-15"
+    },
+    "id": "en-RP-P-OB-15",
+    "objectNumber": "RP-P-OB-15",
+    "title": "Self-portrait with Long, Bushy Hair",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait with Long, Bushy Hair, Rembrandt van Rijn, c. 1631",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "eda23669-628d-4b7f-b9c2-b766b55180a9",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3880,
+      "height": 4424,
+      "url": "https://lh3.ggpht.com/mn2FZOgpXq56n1RZ_UY-yI_u_LQLu9fCtGXwwtBqd_EVKex1ejH_mKs88bKNZcG9QAYQ3hjqVrPFbURbDa7CAOifRQ=s0"
+    },
+    "headerImage": {
+      "guid": "8e6757f3-626f-450b-9489-d270427cd4a9",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/Ask11sgJhriie_RjrbpoigQDdHpCQXmnVct_iR8jpE3YEXN5MUTnVPyb-YqOU5r-xBmFbPiE6uEzoHsmkSPoJHrOFWDq=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-12": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-12",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-12"
+    },
+    "id": "en-RP-P-OB-12",
+    "objectNumber": "RP-P-OB-12",
+    "title": "Self-portrait in a Soft Hat and Patterned Cloak",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a Soft Hat and Patterned Cloak, Rembrandt van Rijn, 1631",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "08d2f092-6308-42d8-927a-eb87c6a30d51",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2892,
+      "height": 3214,
+      "url": "https://lh4.ggpht.com/bzumMmjgasBRHSHMYXB19tvXoUQKcq1QjE8YIOVk7ltLlXQ3adfyEEdxtfR9SiQk6U5sZCDH_CgpZLJwsKY0ixQupp8=s0"
+    },
+    "headerImage": {
+      "guid": "cd896ad3-20b4-4813-9beb-a7f9835fe306",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/esvGV7VDR84183bMDxWO1uV2qjswXogNA2mpdMZhY_LVgHfN9LYIjN61Dw75bWLfOaMaMJs8tK_BcWhvaZVU3HHLi3Co=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1962-8": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1962-8",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1962-8"
+    },
+    "id": "en-RP-P-1962-8",
+    "objectNumber": "RP-P-1962-8",
+    "title": "Self-portrait open mouthed, as if shouting: bust",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait open mouthed, as if shouting: bust, Rembrandt van Rijn, 1630",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "20dd3bc7-63dc-4fbf-8f34-e4d687c2667f",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3756,
+      "height": 4254,
+      "url": "https://lh3.ggpht.com/1RfyWMKzdMEgvziOIzUyQ3shc_51-6VsXkJNj4Bfqb1igCjX7TNWESYS14UOmsQzwqO9f9rIDmUu3jXKp8i4vivb0jgA=s0"
+    },
+    "headerImage": {
+      "guid": "e0b430c5-0642-4d70-997a-35e4a072698b",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh5.ggpht.com/pk5xBB_JcEUGrOWlGg9j74DaaZ1F5zzJqLtuaAJXduoc1g6FOmJ-4j1OOf5vooXQyKv6Gn592dcGrbF6OfXk4r7F2W66=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-3": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-3",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-3"
+    },
+    "id": "en-RP-P-OB-3",
+    "objectNumber": "RP-P-OB-3",
+    "title": "Self-portrait wearing a soft cap: full face, head only",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait wearing a soft cap: full face, head only, Rembrandt van Rijn, c. 1634",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "9e1621a2-0d92-453b-aa83-bb409c2c0d1a",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 9132,
+      "height": 9749,
+      "url": "https://lh3.googleusercontent.com/OXYSEF5HXpyh9lb_lLRvNc__A0tzbnxPbHwP6iCJuOPIe9dp99n94Z2kW7YlNf8zq63baZQ_6AVNRaU-1VOpYUVbqzvPFBICzU3rXOSe=s0"
+    },
+    "headerImage": {
+      "guid": "d902eba3-2f4c-411e-8ec5-7693f9638fe4",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/JXNg8Pq8vUqi36VHI4XN5uKJM7UaR8JSaXTAGrYCUiuN1WTWZhtdMdxNvukOIBtNrIxUorf5pg8yHECZnKwBCfhlAITNO7bF3rGLzMAo=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-45": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-45",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-45"
+    },
+    "id": "en-RP-P-OB-45",
+    "objectNumber": "RP-P-OB-45",
+    "title": "Self-portrait in a Fur Cap",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a Fur Cap, Rembrandt van Rijn, 1630",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "ed75c8e7-2510-4007-84ae-b6bda8589b76",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3114,
+      "height": 3804,
+      "url": "https://lh4.ggpht.com/42wCYwY5wNE3mWbdnpYt5fvTuOj8wgRxIsIAhGdxPAbQG0bwPm0AidtqTCTm8BMQFiplx8FvmWiXy3jwIIFSbgUfUFQ=s0"
+    },
+    "headerImage": {
+      "guid": "77250c6c-288d-46c8-80b2-f1d0a9696630",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh6.ggpht.com/RMj11VyZQcZ4JU_pHyz9SZHyF2ZNem3yCh3qjZZchkKV3I6dVGqBKyID3HHdN6UMsa4P-jA6FMwjSFjmyGtnTD_GavQ=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-693": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-693",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-693"
+    },
+    "id": "en-RP-P-OB-693",
+    "objectNumber": "RP-P-OB-693",
+    "title": "Self-portrait with Cap Pulled Forward",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait with Cap Pulled Forward, Rembrandt van Rijn, c. 1630",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "d82d8bbf-cfb0-4acc-87dd-a9b7ec062fdc",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3872,
+      "height": 4470,
+      "url": "https://lh5.ggpht.com/QaGYsap4ANS5sy24ShdDXJb7syBZRlN23yeQhW21I2YzmWkiQEFAcobw1u-JYWpv8Q4tWwQG71ykjzmyJ0tbJAGfKA=s0"
+    },
+    "headerImage": {
+      "guid": "6d6e24ae-3812-446e-a450-5d32267d51d9",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/sLE266wh4E51pHrRdjlE4D1JPetNc-HjT4PG-QN-Exxoj80QJk2LilyRqHVVP1hdDI73Wr_zWSda9irP3VBLQLmHIsM=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-689": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-689",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-689"
+    },
+    "id": "en-RP-P-OB-689",
+    "objectNumber": "RP-P-OB-689",
+    "title": "Self-portrait in a cap: laughing",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait in a cap: laughing, Rembrandt van Rijn, 1630",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "a83538b4-c5bd-46b0-ba8c-60d3d4c1e4a0",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3760,
+      "height": 4326,
+      "url": "https://lh3.googleusercontent.com/lWNhdHLkoHpdR101uUD-Do-hJaEG6EPT5qHgg4fVE1w4iS11SGsdrvXlwgAlEK9tiLBT4ZVXPpg9hd-f3rPkcBMXCl0X=s0"
+    },
+    "headerImage": {
+      "guid": "083ad2d7-c335-4c66-8c71-7f7b6944a17f",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/C1C9xrIeH1hlHnadsxmNJ95OlcF3wIUIYYukY-z8vsm0KA2tj7cK-hUMxiy3-MXRAaSoi10dUjSpTz8wgIlVFO3H-WE_=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-747": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-747",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-747"
+    },
+    "id": "en-RP-P-OB-747",
+    "objectNumber": "RP-P-OB-747",
+    "title": "Rembrandt’s Mother",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Rembrandt’s Mother, Rembrandt van Rijn, 1628",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "c3523ebc-9628-4696-ba93-063038b427ae",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4846,
+      "height": 5448,
+      "url": "https://lh5.ggpht.com/6VcCBKiMxQ-TokNP2jtJ-6obqarNrVshOKdi471w7rCvBGLul3_ShVBukVMyGRKZT5QO8296h4iuAip63TF9OCThWg=s0"
+    },
+    "headerImage": {
+      "guid": "1c45dcae-03e9-46f8-8a4c-ab618a272f29",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/2l8b4LS_f35P9j9xOOr3TxoB-jiHXQXx1ppZXc3VoQhSLL9vruDytDHEQIVsLgM-gT4JjyB4Q62M2sSLGCM0tO52JwlG=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-4100": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4100",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4100"
+    },
+    "id": "en-SK-A-4100",
+    "objectNumber": "SK-A-4100",
+    "title": "The Art Gallery of Jan Gildemeester Jansz",
+    "hasImage": true,
+    "principalOrFirstMaker": "Adriaan de Lelie",
+    "longTitle": "The Art Gallery of Jan Gildemeester Jansz, Adriaan de Lelie, 1794 - 1795",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "c3a05f6b-4b71-4cfd-ab8d-3c7d79e08ea1",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 1,
+      "width": 7162,
+      "height": 5341,
+      "url": "https://lh3.googleusercontent.com/vkoS9jmZLZWuWH1LNIG3eJUVI6W7XqOUKmFf_lcuB4m1nJydWPXZGggi3XGwmirNj1wLdiO7sH6x5fJ60XJnH2expg=s0"
+    },
+    "headerImage": {
+      "guid": "36b54f3a-46a6-4c24-b804-ce2b5b86f45a",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/YjKvOkkf3epcceNunYHLeCrDFYNfADyeWnx_TkKyF1tzWPhotNzQaLztgeyfujmhgLG1LSBUv_oOtGL0bTWmgYxBEw=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-4981": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4981",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4981"
+    },
+    "id": "en-SK-A-4981",
+    "objectNumber": "SK-A-4981",
+    "title": "Adolf and Catharina Croeser, Known as ‘The Burgomaster of Delft and his Daughter’",
+    "hasImage": true,
+    "principalOrFirstMaker": "Jan Havicksz. Steen",
+    "longTitle": "Adolf and Catharina Croeser, Known as ‘The Burgomaster of Delft and his Daughter’, Jan Havicksz. Steen, 1655",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "1164387c-cbe0-4951-a18a-9bab917e4d6d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4732,
+      "height": 5639,
+      "url": "https://lh3.googleusercontent.com/fLsffYqD3Ex7F8C3l3C2mvQYQZJg7F9tYWn2XSwnDtvx0UMd3SDX_nN-Z--vdsMmg4p8NEwXiONStvmOV5ggcnagc3UM=s0"
+    },
+    "headerImage": {
+      "guid": "7acf8ede-54a6-49af-9d28-651d804da698",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/oO97P-hSmq8r2rOeGsjL1SToH4NVupjL065jWDVDz_cCs_pVJSDQZq2VsxpCjzGsqIArhivfF2sEA9BYQCwtco1LNQ=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-1718": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-1718",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-1718"
+    },
+    "id": "en-SK-A-1718",
+    "objectNumber": "SK-A-1718",
+    "title": "Winter Landscape with Ice Skaters",
+    "hasImage": true,
+    "principalOrFirstMaker": "Hendrick Avercamp",
+    "longTitle": "Winter Landscape with Ice Skaters, Hendrick Avercamp, c. 1608",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "4f834f63-3aeb-48a2-8a22-bcac12ffc3b9",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6337,
+      "height": 3674,
+      "url": "https://lh3.googleusercontent.com/1pTfYJlLwVTifKj4PlsWPyAg4PcIVBAiVvB8sameSnmm7HRd056abNUIRq33rgry7u9t-ju-eHOnbfqQpK4q_8IwzIXZ4WgrqZW9l7U=s0"
+    },
+    "headerImage": {
+      "guid": "c3d4cbca-a7c2-4341-812d-78773acdcb6f",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/3R_8eX8o6uJNcIgqdMqCqJH8fPufvWZTopDEGKQgfVexy4pBCKr8C3sW3QH-KWgiuarBQxjRyuF8Xi4B4APUiv8q23v1Lk2xQA8pIg2U=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-3064": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-3064",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-3064"
+    },
+    "id": "en-SK-A-3064",
+    "objectNumber": "SK-A-3064",
+    "title": "Portrait of a Girl Dressed in Blue",
+    "hasImage": true,
+    "principalOrFirstMaker": "Johannes Verspronck",
+    "longTitle": "Portrait of a Girl Dressed in Blue, Johannes Verspronck, 1641",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "93b43a4a-dadc-4cd9-b368-c0a579e06eff",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 11264,
+      "height": 13467,
+      "url": "https://lh3.googleusercontent.com/XOEEpiJxvnbvetJvG7wbpPL9trO3nAAJuPztTOFxS2jtpHgqIkRGFfFJgkkS00bLCs6Ezkg0qRMOMZUMnBP3mbmQ-rJh_gFiffSIhyWX=s0"
+    },
+    "headerImage": {
+      "guid": "732fc21c-7ac1-44eb-9acf-c7f8d1e023bb",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/mJKLRLCsvwG4xnPeWYPOy0HdM0Y2zZK7Hcr3uOtqJo9H4nfBdKk7BM9vhT8MRK4L1zxN3GHCLiKbk0lcrz_JRpn16JF5eDXU_ur94GHA=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-3011": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-3011",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-3011"
+    },
+    "id": "en-SK-A-3011",
+    "objectNumber": "SK-A-3011",
+    "title": "Madonna of Humility",
+    "hasImage": true,
+    "principalOrFirstMaker": "Fra Angelico",
+    "longTitle": "Madonna of Humility, Fra Angelico, c. 1440",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "d5b7623e-0feb-4074-8a16-260a1ef79c7f",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5136,
+      "height": 7437,
+      "url": "https://lh3.googleusercontent.com/nBs6tVR7xKfYtEUzBZ6q6ToQQscGDHRiZT2vw7-6RVVqpFrlb6aUebKiEgRwwtktSm3Fm0rePhMWb9I7wJj3ChJnwHY=s0"
+    },
+    "headerImage": {
+      "guid": "3871e82a-19d6-4ef4-95f4-6547fbcb7333",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1768,
+      "height": 424,
+      "url": "https://lh3.googleusercontent.com/OyaYK9aPTscc16DeC5vD5qPRVu92o7REGGEgmnSXQ_PqacC0cvVw098DXXCw9g-sNInjJwFWon756JBqATXAIQcQVig=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-2963": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-2963",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-2963"
+    },
+    "id": "en-SK-A-2963",
+    "objectNumber": "SK-A-2963",
+    "title": "Portrait of Don Ramón Satué",
+    "hasImage": true,
+    "principalOrFirstMaker": "Francisco de Goya",
+    "longTitle": "Portrait of Don Ramón Satué, Francisco de Goya, 1823",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "b7e78388-9d9f-4d74-9090-e6529fa572c9",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4575,
+      "height": 5735,
+      "url": "https://lh3.googleusercontent.com/SwwiVAxnwFE_s-k7-bPOZ6jnGfcuVDJoZ-ofLb0Zispb-mJdsfasrE1nTPRcGDPwyEqY0txKpjPcAWaIIltYvvPtDA8=s0"
+    },
+    "headerImage": {
+      "guid": "ddb422b2-6ff0-48dc-92b1-107eccd444cb",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/og1iXSLmAw1SrhMtE_EHWLB46KA5nZWOeTXF_JFltq5tYO7fce59M0tB3kyLDtYez6UX5_Vy2XFdk4vBuD0BKeKnAI0=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-2344": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-2344",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-2344"
+    },
+    "id": "en-SK-A-2344",
+    "objectNumber": "SK-A-2344",
+    "title": "The Milkmaid",
+    "hasImage": true,
+    "principalOrFirstMaker": "Johannes Vermeer",
+    "longTitle": "The Milkmaid, Johannes Vermeer, c. 1660",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "e4e3005c-dd9e-4db6-b466-50b17a9a52cd",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4649,
+      "height": 5177,
+      "url": "https://lh3.googleusercontent.com/cRtF3WdYfRQEraAcQz8dWDJOq3XsRX-h244rOw6zwkHtxy7NHjJOany7u4I2EG_uMAfNwBLHkFyLMENzpmfBTSYXIH_F=s0"
+    },
+    "headerImage": {
+      "guid": "bef0795c-923a-463f-aab8-6a9cb24da44b",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/00OIrTLK6NA8Z7t276hDnKHTsdk3FCTTAy1-XTmnDbDm4gL1mSB1BerazQHyXxnRSWUso9I4YF4aiXluCqaV3Yus3g=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-3059": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-3059",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-3059"
+    },
+    "id": "en-SK-A-3059",
+    "objectNumber": "SK-A-3059",
+    "title": "The Sick Child",
+    "hasImage": true,
+    "principalOrFirstMaker": "Gabriël Metsu",
+    "longTitle": "The Sick Child, Gabriël Metsu, c. 1664 - c. 1666",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "2dd9705f-bdf0-4304-a8f7-02589edf81d6",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4443,
+      "height": 5479,
+      "url": "https://lh3.googleusercontent.com/SCp0xV3Rwxh3ipnuSnbEQR_uGrHlsvHXlLD-5kVSjAE7WPWiribDB77_LcJETu4EydCC_jMuhsgjz4maHzY_t-xeiw=s0"
+    },
+    "headerImage": {
+      "guid": "fca95581-cccc-4adf-9104-ad16f2908329",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/DPf2gg2g_QYo5j3G2fAXzCC_li5wvQ50VPlciWc6-9VbVmYiQdLL1klUg98u0Pnxbpc3eQIbR1L7t5Dw7bLY7nKtRNQ=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-4821": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4821",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4821"
+    },
+    "id": "en-SK-A-4821",
+    "objectNumber": "SK-A-4821",
+    "title": "Still Life with Cheese",
+    "hasImage": true,
+    "principalOrFirstMaker": "Floris Claesz van Dijck",
+    "longTitle": "Still Life with Cheese, Floris Claesz van Dijck, c. 1615",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "8b800a76-4ea3-46cb-bcaa-a3ed2635e966",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7508,
+      "height": 5558,
+      "url": "https://lh3.googleusercontent.com/O6IfrxhVOGXdcw9-nOkenQqx3svNJtgJFjF_tON1HG_ASu1Uy6IAwOzH7MIOJ3jVBnAZhqyTlw0N1CIILKjtuv0aLLGwvZH3XbSD9pk4=s0"
+    },
+    "headerImage": {
+      "guid": "64e00997-cab1-403f-82f2-6f2e517b192c",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/8nCa20h43IRM0CFH1l9-VOo3SsYlLoEXO-TjDNfFZrCL27Q1NqVggZVucCcgRorinrFw2QUkRAYQ0Dz2pAmsjQkCCZ4LVh6TdRJAOpyEhg=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-4830": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4830",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4830"
+    },
+    "id": "en-SK-A-4830",
+    "objectNumber": "SK-A-4830",
+    "title": "Still Life with a Gilt Cup",
+    "hasImage": true,
+    "principalOrFirstMaker": "Willem Claesz Heda",
+    "longTitle": "Still Life with a Gilt Cup, Willem Claesz Heda, 1635",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "958cbf50-5232-4378-a410-7d9573dfb718",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5772,
+      "height": 4481,
+      "url": "https://lh3.googleusercontent.com/mZj-trnVh6jeUDsl1o0a3xNXPat_UOZtKecS4LaZdTLcNoIqtd_yf6beJKCUVzk3NT5SSFeQ-hOzJEOOSV9sg8dHE6VjFjUrGfxwe5Sg=s0"
+    },
+    "headerImage": {
+      "guid": "d5db3a03-3d6e-4700-a1cb-c737887a6923",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/oY8pcdQahKwdBj_TFoV1UPUFkjY-XQZ5LcPb7Y2Aqexsg5g8h0A6bSWC9qpl-HbS46mX_5C51Du7bRATwQVdMPW0SBE3aDQALUZhCA8=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-2815": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-2815",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-2815"
+    },
+    "id": "en-SK-A-2815",
+    "objectNumber": "SK-A-2815",
+    "title": "The Seven Works of Mercy",
+    "hasImage": true,
+    "principalOrFirstMaker": "Master of Alkmaar",
+    "longTitle": "The Seven Works of Mercy, Master of Alkmaar, 1504",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "dbb93884-cd17-4c10-a32e-2fb0aa9bdce5",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 8335,
+      "height": 2084,
+      "url": "https://lh3.googleusercontent.com/PKiHHjb5ov-6RQm4WjTmQL7gQsiqz-jTgy6aJoUfXFPB-FPJF2XMcgjdpf0rMfPtQoePma2oYkAiN83RDwlyU34phg=s0"
+    },
+    "headerImage": {
+      "guid": "8b08174c-b8f1-4a40-a8f8-20d98d426183",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/lEPMS16z9Y8aEsbUYI-zE-rTFqKa8AE63loPpzSkZWFFJ8RSxA7BKvgGsn3yOvC6udiX61dF4_smw3SG0-yfksfQ8YDs=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-742": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-742",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-742"
+    },
+    "id": "en-SK-A-742",
+    "objectNumber": "SK-A-742",
+    "title": "View of Olinda, Brazil",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frans Jansz Post",
+    "longTitle": "View of Olinda, Brazil, Frans Jansz Post, 1662",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "730d9e67-8e65-40c5-a0d3-9add87ce486d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6857,
+      "height": 4227,
+      "url": "https://lh3.ggpht.com/Yh48XePYndRUH9pBR-G986f-dKkg0IE9jFhJlt8y91fXB5X-d6IrRU-CW_Q7HLuHeeCRfYztK6LSqCFCjqeXniiVdUc=s0"
+    },
+    "headerImage": {
+      "guid": "15416fc9-2f9d-43b6-842c-7f15e3908029",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.ggpht.com/10Cr0I_dSXmXAV23I7HTko07G1vnZ-3jPKTln8QIgxBSqSuEp9dttOvrNGAZOrTquVif8w86JTxkbgJo7rRu0qoyH98S=s0"
+    },
+    "productionPlaces": []
+  },
+  "BK-1976-49": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/BK-1976-49",
+      "web": "http://www.rijksmuseum.nl/en/collection/BK-1976-49"
+    },
+    "id": "en-BK-1976-49",
+    "objectNumber": "BK-1976-49",
+    "title": "A Dutch Merchant, Possibly Andreas Everardus van Braam Houckgeest",
+    "hasImage": true,
+    "principalOrFirstMaker": "Chitqua",
+    "longTitle": "A Dutch Merchant, Possibly Andreas Everardus van Braam Houckgeest, Chitqua (attributed to), c. 1770",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "c182b26b-870f-4c3d-be01-4b7b68f0278d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5369,
+      "height": 5184,
+      "url": "https://lh5.ggpht.com/JwylZ_KWfi94m0rN3fiO_2CcLReW8JhnB65FyBtJN6yvxL6Pe6pXyfGUB2Pwj6l74XQ0Oi3gMWFhMGr7bv6W21vUjTc=s0"
+    },
+    "headerImage": {
+      "guid": "1194a5cf-25b3-4719-875d-2e104d356bee",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh5.ggpht.com/MZZe4FjZ1JjwCmJgzEFFBVHq7L-paR0BR9BWZdvcHeeU3hn6C99JyT7aPvPWbnRkiPc43SWyB2v2QKkw-T504MpyFN4=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1938-2073": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1938-2073",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1938-2073"
+    },
+    "id": "en-RP-P-1938-2073",
+    "objectNumber": "RP-P-1938-2073",
+    "title": "Tekstblad met vignet met het wapen van de familie Hasselaer",
+    "hasImage": true,
+    "principalOrFirstMaker": "Hendrik Post",
+    "longTitle": "Tekstblad met vignet met het wapen van de familie Hasselaer, Hendrik Post, 1739",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "98d9fec6-3969-441e-9fb0-ca482cf9c0d7",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7916,
+      "height": 4898,
+      "url": "https://lh6.ggpht.com/ISfHKs9GEq1DWW_NBn2pFQodCPh4bE2tKdFxzBigVZEe32smpyFvuC0UqNTllfq0cE5LzW6SuradHSIbIyWOFffAKPI=s0"
+    },
+    "headerImage": {
+      "guid": "913dd734-1edc-4011-bf01-f72ce5defe23",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh6.ggpht.com/OmiPB98R7YBXM4lBw-3Zv_0tynN9BY8yrpaEAR2vckA6GDeqnp0R26cDPjzmy734g5B9ClTLXrT0gMJbl5l6w6SJkBI=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam",
+      "Amsterdam",
+      "Amsterdam"
+    ]
+  },
+  "SK-A-5007": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-5007",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-5007"
+    },
+    "id": "en-SK-A-5007",
+    "objectNumber": "SK-A-5007",
+    "title": "Dish Relief",
+    "hasImage": true,
+    "principalOrFirstMaker": "Jan Schoonhoven",
+    "longTitle": "Dish Relief, Jan Schoonhoven, 1963",
+    "showImage": false,
+    "permitDownload": false,
+    "webImage": {
+      "guid": "1d321143-e5e8-4452-a0e9-fc13f6a4ae32",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1881,
+      "height": 2500,
+      "url": "https://lh3.googleusercontent.com/8Zuq2V0qH_gxlcJ9BDu6HOcRGqWn7kxZyfYbFVWU4mlEXYM8mnWD_rbBTi7la88ZPgJl4m74kWHIWgSFoLytlqbikmk=s0"
+    },
+    "headerImage": {
+      "guid": "295aaf5d-148a-4c8c-8d9c-bc97d04f4cb1",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1881,
+      "height": 451,
+      "url": "https://lh3.googleusercontent.com/atv6ncvtB2pso5tt73XoPCDNDzpkoemHBwKfl5o06EMefJpQpEnO5ivJyOc-LI5m6wxIDXuEPLOmNfoH9LPDmjwYhso=s0"
+    },
+    "productionPlaces": [
+      "Delft",
+      "Delft"
+    ]
+  },
+  "BK-AM-33": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/BK-AM-33",
+      "web": "http://www.rijksmuseum.nl/en/collection/BK-AM-33"
+    },
+    "id": "en-BK-AM-33",
+    "objectNumber": "BK-AM-33",
+    "title": "Weepers from the tomb of Isabella of Bourbon",
+    "hasImage": true,
+    "principalOrFirstMaker": "Borman workshop, Renier van Thienen (I)",
+    "longTitle": "Weepers from the tomb of Isabella of Bourbon, Borman workshop (attributed to), Renier van Thienen (I) (attributed to), c. 1475 - c. 1476",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "5b29ba1c-4c23-49c6-8bb6-2253ddbb560b",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6013,
+      "height": 3193,
+      "url": "https://lh5.ggpht.com/LE3ggDaLAIwTIOknJm06U2Y_qNffQ0133bWQxnWfDtzi12uWE85MYWtYwvo8eQZx1tc-U-vH_-2ZIoDGYUUrs8YklQ=s0"
+    },
+    "headerImage": {
+      "guid": "16a2d053-448a-435a-8148-a1e758438d5b",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2447,
+      "height": 586,
+      "url": "https://lh5.ggpht.com/VI07cMuwb81W4q4UkIMaQaPoV9vJnZDR105Ib4lbchJsKHon4pgdRZMqHuqY4k4Q2NyhnYyIQxZQrPab-VY7JbrgmqaF=s0"
+    },
+    "productionPlaces": [
+      "Brussels"
+    ]
+  },
+  "KOG-ZG-1-30A-45": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/KOG-ZG-1-30A-45",
+      "web": "http://www.rijksmuseum.nl/en/collection/KOG-ZG-1-30A-45"
+    },
+    "id": "en-KOG-ZG-1-30A-45",
+    "objectNumber": "KOG-ZG-1-30A-45",
+    "title": "Nieuwjaarswens door A. v.d. Post, 1787",
+    "hasImage": true,
+    "principalOrFirstMaker": "A. v.d. Post",
+    "longTitle": "Nieuwjaarswens door A. v.d. Post, 1787, A. v.d. Post, 1787",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5050,
+      "height": 7100,
+      "url": "/Static/Images/Responsive/1x1.png"
+    },
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": [
+      "Netherlands",
+      "Netherlands"
+    ]
+  },
+  "RP-P-1878-A-2313": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1878-A-2313",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1878-A-2313"
+    },
+    "id": "en-RP-P-1878-A-2313",
+    "objectNumber": "RP-P-1878-A-2313",
+    "title": "Allegorische voorstelling van Mercurius met personificaties van Afrika, Amerika, Azië en Europa",
+    "hasImage": true,
+    "principalOrFirstMaker": "Hendrik Post",
+    "longTitle": "Allegorische voorstelling van Mercurius met personificaties van Afrika, Amerika, Azië en Europa, Hendrik Post, 1739",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "a4949ccf-3166-40a0-af36-b8956986c019",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5196,
+      "height": 7064,
+      "url": "https://lh3.ggpht.com/wvTTw_WUUWGzeNWBViYMli2JROng3bDhc5XsDjmUn0c89vbIK_38q_fxZmLSu7-Q5-hdgR5KqDKAVPLA1kiFEZte_uc=s0"
+    },
+    "headerImage": {
+      "guid": "4d0729aa-0d2b-4af7-8719-6cd850501076",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1839,
+      "height": 441,
+      "url": "https://lh4.ggpht.com/DBefG_b5PILT9dOJUXjC_UtKXg85z4Bayp5zaPH1_wsHzW2K7wbHW1RP1fVu8k5CEg1pfd2OGgqmrWUlLEeBvK6xVtip=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam",
+      "Amsterdam"
+    ]
+  },
+  "RP-P-1882-A-6049": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1882-A-6049",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1882-A-6049"
+    },
+    "id": "en-RP-P-1882-A-6049",
+    "objectNumber": "RP-P-1882-A-6049",
+    "title": "Titelvignet van \"de kwakzalver\"",
+    "hasImage": true,
+    "principalOrFirstMaker": "Hendrik Post",
+    "longTitle": "Titelvignet van \"de kwakzalver\", Hendrik Post, 1718 - 1751",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "73a5dc71-3dde-4188-b9c9-5d995a7f5c11",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4254,
+      "height": 5402,
+      "url": "https://lh6.ggpht.com/zaDLD2OBUXngPmZbroZnw4fXaGlvDEQAXsGA7cbPNWq_xJrGQf-qm5Gp-1IV0fq68E6om1M1kpzU-k2k2M_nd2jseQ=s0"
+    },
+    "headerImage": {
+      "guid": "dd852c82-29da-40b7-a47e-b7760b671baf",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.ggpht.com/Lvi-vdRloLqz32WprEaeyAEvFzaTbbKLoZb4FEoUytpWL-Q8YrBwH91gRLZz7amZ9_sr6pM0oGhlOxWLI6ZxzCqvIMWT=s0"
+    },
+    "productionPlaces": []
+  },
+  "NG-793-42": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/NG-793-42",
+      "web": "http://www.rijksmuseum.nl/en/collection/NG-793-42"
+    },
+    "id": "en-NG-793-42",
+    "objectNumber": "NG-793-42",
+    "title": "De beschrijving van de begrafenis van Frederik Hendrik, p. 39",
+    "hasImage": true,
+    "principalOrFirstMaker": "Pieter Jansz. Post",
+    "longTitle": "De beschrijving van de begrafenis van Frederik Hendrik, p. 39, Pieter Jansz. Post, 1651",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "c022524e-4b74-419d-bd21-7eb83060b139",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3176,
+      "height": 4608,
+      "url": "https://lh3.googleusercontent.com/Qt0Uzs_I6TUHRwmYBR6IoUE0sIscV-Uzv6DlUBOppCSJFkd6iO9Tos7s9NWeg8Eri8N36KJLA-3Aku3pzDvdrqo8L4Y5=s0"
+    },
+    "headerImage": {
+      "guid": "30b6fd48-3f28-4dd5-bfb0-3f625251640e",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/sX-Zw0me6nIeUp2r7zniR2upXmjql_mFAcJX8d4RD2mCVoMg0NGYELuGACwukvxEAh6wY4oKiRLF_7h_jeE4hz5DcmdS=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "NG-793-19": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/NG-793-19",
+      "web": "http://www.rijksmuseum.nl/en/collection/NG-793-19"
+    },
+    "id": "en-NG-793-19",
+    "objectNumber": "NG-793-19",
+    "title": "De beschrijving van de begrafenis van Frederik Hendrik, p. 16",
+    "hasImage": true,
+    "principalOrFirstMaker": "Pieter Jansz. Post",
+    "longTitle": "De beschrijving van de begrafenis van Frederik Hendrik, p. 16, Pieter Jansz. Post, 1651",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "8315093f-7c12-4c3d-bb83-ea93b9e8be21",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3109,
+      "height": 4567,
+      "url": "https://lh3.googleusercontent.com/HIFkxT82GEmeP0hDspZ3WDsOLxfPlttmfnxtuI4MD5wVDTOZwQRwsjS2PmbzektzDdND5sc0tLOKAPm4db_CdNMLobQ=s0"
+    },
+    "headerImage": {
+      "guid": "1aa8a6f2-251c-4766-825a-4a982a22a478",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/StvVbBLe1_Pp5_Fbb2HSJo67ph-XR57xxAp-JBr4LOHm9sype8H4c3Z-b6ik8pp3-5DDrg1U2T0pcY-tBGohE3JVm-w=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "SK-A-4691": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4691",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4691"
+    },
+    "id": "en-SK-A-4691",
+    "objectNumber": "SK-A-4691",
+    "title": "Self-portrait",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait, Rembrandt van Rijn, c. 1628",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "89de22aa-e19f-4c83-87ff-26dd8f319c05",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4233,
+      "height": 5327,
+      "url": "https://lh3.googleusercontent.com/7qzT0pbclLB7y3fdS1GxzMnV7m3gD3gWnhlquhFaJSn6gNOvMmTUAX3wVlTzhMXIs8kM9IH8AsjHNVTs8em3XQI6uMY=s0"
+    },
+    "headerImage": {
+      "guid": "99061015-b788-42ed-a9d8-06db0bcf39e3",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/WKIxue0nAIOYj00nGVoO4DTP9rU2na0qat5eoIuQTf6Fbp4mHHm-wbCes1Oo6K_6IdMl6Z_OCjGW_juCCf_jvQqaKw=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-4050": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-4050",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-4050"
+    },
+    "id": "en-SK-A-4050",
+    "objectNumber": "SK-A-4050",
+    "title": "Self-portrait as the Apostle Paul",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Self-portrait as the Apostle Paul, Rembrandt van Rijn, 1661",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "58f00619-2e35-4d7d-a46d-0dcc6618f4ec",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 10201,
+      "height": 12064,
+      "url": "https://lh3.googleusercontent.com/NrCcfeY0r2F3M2hIQe5SLDRofR2tVzeOH18VjflOYGj88v4clb4v2H_VgCZR4nJhYsxxH9ATzfkL2tRqOWEK5-gPVEE=s0"
+    },
+    "headerImage": {
+      "guid": "aba7d9da-5d4b-4389-8347-c3de63c33d98",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2276,
+      "height": 544,
+      "url": "https://lh3.googleusercontent.com/koQbNAoqV857feer4wJRVF-lbFzyNdvSsjgnXTTF3P3Dmgm2s_7noCVyqsxr1466YiIccueR0DpaU9-wPchhM0bIiQ=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-C-5": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-C-5",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-C-5"
+    },
+    "id": "en-SK-C-5",
+    "objectNumber": "SK-C-5",
+    "title": "The Night Watch Militia Company of District II under the Command of Captain Frans Banninck Cocq",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "The Night Watch Militia Company of District II under the Command of Captain Frans Banninck Cocq, Rembrandt van Rijn, 1642",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "bbd1fae8-4023-4859-8ed1-d38616aec96c",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 1,
+      "width": 14645,
+      "height": 12158,
+      "url": "https://lh3.googleusercontent.com/SsEIJWka3_cYRXXSE8VD3XNOgtOxoZhqW1uB6UFj78eg8gq3G4jAqL4Z_5KwA12aD7Leqp27F653aBkYkRBkEQyeKxfaZPyDx0O8CzWg=s0"
+    },
+    "headerImage": {
+      "guid": "29a2a516-f1d2-4713-9cbd-7a4458026057",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/nAHNYM604vhPa1hbE_hBJw55JI01-ls0zCwHwvDEES38PpGyGHMgG_vaigVWSuK8GFkaxfn2Dmevw_Nmujn5dKW3jItgS6QaSI8VIsiH=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "SK-C-597": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-C-597",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-C-597"
+    },
+    "id": "en-SK-C-597",
+    "objectNumber": "SK-C-597",
+    "title": "Portrait of a Woman, Probably Maria Trip (1619-1683)",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Portrait of a Woman, Probably Maria Trip (1619-1683), Rembrandt van Rijn, 1639",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "165d03bb-95e8-4447-a911-865f1bd201d6",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7965,
+      "height": 10415,
+      "url": "https://lh3.googleusercontent.com/AyiKhdEWJ7XmtPXQbRg_kWqKn6mCV07bsuUB01hJHjVVP-ZQFmzjTWt7JIWiQFZbb9l5tKFhVOspmco4lMwqwWImfgg=s0"
+    },
+    "headerImage": {
+      "guid": "f0270e59-baca-4429-ba00-d6c37b9ad00f",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/MonorlaCKkTjeFrTBQyCb7kfmq8K--aWrThge7MsTItJxO_cw-8WbwgmTm0jTt-qfaFfnwa1qNEnsGYVHMPmCGmb0Pje=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-C-216": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-C-216",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-C-216"
+    },
+    "id": "en-SK-C-216",
+    "objectNumber": "SK-C-216",
+    "title": "Isaac and Rebecca, Known as ‘The Jewish Bride’",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Isaac and Rebecca, Known as ‘The Jewish Bride’, Rembrandt van Rijn, c. 1665 - c. 1669",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "2fe159d5-619a-46d3-b3d2-9412e6f6bdd8",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7620,
+      "height": 5542,
+      "url": "https://lh3.googleusercontent.com/mAyAjvYjIeAIlByhJx1Huctgeb58y7519XYP38oL1FXarhVlcXW7kxuwayOCFdnwtOp6B6F0HJmmws-Ceo5b_pNSSQs=s0"
+    },
+    "headerImage": {
+      "guid": "10911bfe-4e23-4c3a-95f7-515609f4d711",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1925,
+      "height": 461,
+      "url": "https://lh3.googleusercontent.com/0fTHP4xUsJZbQjzIHYtgHr1gRWBXjm9udaZT4ah35J_LyNzga-SyI0h61klse9sJqn53eUfuVIWZvP8IhW0jN4v91SM=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-C-6": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-C-6",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-C-6"
+    },
+    "id": "en-SK-C-6",
+    "objectNumber": "SK-C-6",
+    "title": "The Sampling Officials of the Amsterdam Drapers’ Guild, Known as ‘The Syndics’",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "The Sampling Officials of the Amsterdam Drapers’ Guild, Known as ‘The Syndics’, Rembrandt van Rijn, 1662",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "2c1ac367-9b11-4266-bb08-eea14ca0bb76",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 10880,
+      "height": 7372,
+      "url": "https://lh3.googleusercontent.com/gShVRyvLLbwVB8jeIPghCXgr96wxTHaM4zqfmxIWRsUpMhMn38PwuUU13o1mXQzLMt5HFqX761u8Tgo4L_JG1XLATvw=s0"
+    },
+    "headerImage": {
+      "guid": "5f71570b-21d2-4f00-9219-edb93137110c",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/8vtyRTsJdGXuZhnHl5wF6vBgDNInw3q56DFYYr0Rzm1JJYNRl2iSIC30d_erXkTe_Yv8uJq1ZL56zFrXUpTFJrBDcbE=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-A-5033": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-5033",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-5033"
+    },
+    "id": "en-SK-A-5033",
+    "objectNumber": "SK-A-5033",
+    "title": "Portrait of Marten Soolmans",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Portrait of Marten Soolmans, Rembrandt van Rijn, 1634",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "974d1c9c-befa-4e1a-9926-ebd7f89557b5",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 11287,
+      "height": 17668,
+      "url": "https://lh3.googleusercontent.com/hDN8_JS4BbbksBXkxIDUldJvooejHBfQjgD3b_Jr73HjVOAs8thpnvCJA3WUtQFxlbjx-QB1-IyqhgEiM4dFLFk1Sg=s0"
+    },
+    "headerImage": {
+      "guid": "e6a28349-49ae-4c69-a971-ad8836936a1d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/smzena2yZjz8hCuzMNaAYbvFXqqPN-vSvs-ryFKz2KsNAzVdXm4kfLbK9PrpwI2f9eCO44PNIbBYv18HaufxMsHYqg=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "SK-C-1768": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-C-1768",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-C-1768"
+    },
+    "id": "en-SK-C-1768",
+    "objectNumber": "SK-C-1768",
+    "title": "Portrait of Oopjen Coppit",
+    "hasImage": true,
+    "principalOrFirstMaker": "Rembrandt van Rijn",
+    "longTitle": "Portrait of Oopjen Coppit, Rembrandt van Rijn, 1634",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "6dd85188-6e00-45f5-a749-b0d6f7bf373b",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 11811,
+      "height": 18326,
+      "url": "https://lh3.googleusercontent.com/ib8SNTK2Qk-z64UYuu-_mI3FswMpYmmNU871wu5diDEPyjxmYJcNI4qRtqxlvKkVnrXTAxAFkuHX7DAN9ZwPFzS5fGE=s0"
+    },
+    "headerImage": {
+      "guid": "6ac7e269-da2e-4bf3-a870-809db805fe62",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4746,
+      "height": 1134,
+      "url": "https://lh3.googleusercontent.com/ydZiwQgiic6wYdPwjbx5s04tdOHwkOgbA_lvtMrQvjWMqz4rYJRrxCn0s3592MfHWN6K__QlR48S962J8c4mHEzYwwY=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "BK-1975-81": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/BK-1975-81",
+      "web": "http://www.rijksmuseum.nl/en/collection/BK-1975-81"
+    },
+    "id": "en-BK-1975-81",
+    "objectNumber": "BK-1975-81",
+    "title": "Cupboard",
+    "hasImage": true,
+    "principalOrFirstMaker": "Herman Doomer",
+    "longTitle": "Cupboard, Herman Doomer, c. 1635 - c. 1645",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "94d81c2d-603d-45ff-a40c-9d0d043ee64a",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5958,
+      "height": 6805,
+      "url": "https://lh3.googleusercontent.com/ZYQ7IcfJ45yQOPnmhzBkZK2mc2F_e7bUMDgKaY-miSl0f8y3o-Q--H3R81q-2q1cfqFqoDlDgyLDW3OHJqin_ugnB_KRIfZaV-9xX2Y=s0"
+    },
+    "headerImage": {
+      "guid": "fe1d23fe-b4e3-4b27-9c1d-ac40456e928e",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/mvlBhmGyd2EQdipaQBx_LvCtx4f9Szqu-OYk-CgqMdvS0yVOZTF8XsJ_Q8kXNaLgMXviZ5p13Rxi1gzWD_ILNa1AtZLZgh_7QP-CLSY=s0"
+    },
+    "productionPlaces": []
+  },
+  "SK-C-2": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-C-2",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-C-2"
+    },
+    "id": "en-SK-C-2",
+    "objectNumber": "SK-C-2",
+    "title": "Banquet at the Crossbowmen’s Guild in Celebration of the Treaty of Münster",
+    "hasImage": true,
+    "principalOrFirstMaker": "Bartholomeus van der Helst",
+    "longTitle": "Banquet at the Crossbowmen’s Guild in Celebration of the Treaty of Münster, Bartholomeus van der Helst, 1648",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "68df1929-68ba-4d9a-becc-e60289f7a7ef",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 9504,
+      "height": 4413,
+      "url": "https://lh3.googleusercontent.com/kmCDKP1kMN72zB-7CHBOBdCnyU3Z-NW7WIzuN_sIqm5n9xf6lG4oTtfcWsGW8qhbVYuwSDkYlhOglx7z4YaFL8UeFWU=s0"
+    },
+    "headerImage": {
+      "guid": "9dc69178-c089-420e-8181-6cd662c82a2c",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/3taYbbzj47-gP_5Kj8gVtgDN2MzPHyGFRY3cYfIY_HCLub8Y-NpLI1oqNK7h-8uS4sMJgK2eihEt5WK1Hy-izt9QiJ4=s0"
+    },
+    "productionPlaces": []
+  },
+  "BK-1995-3": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/BK-1995-3",
+      "web": "http://www.rijksmuseum.nl/en/collection/BK-1995-3"
+    },
+    "id": "en-BK-1995-3",
+    "objectNumber": "BK-1995-3",
+    "title": "Mantelpiece with relief of Paris and Oenone",
+    "hasImage": true,
+    "principalOrFirstMaker": "Jan Baptist Xavery",
+    "longTitle": "Mantelpiece with relief of Paris and Oenone, Jan Baptist Xavery, 1739",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "af4f9c17-f153-4be4-b94f-30d82208ff62",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2894,
+      "height": 3429,
+      "url": "https://lh4.ggpht.com/5JdE17_WKRlTQhwSnYvihCVYLsDq51l5IHqOJaUPXW7XEHhCh9GKczABuXvgNwNokBUSxKGkD4b3wUw_qjBukUoNCpc=s0"
+    },
+    "headerImage": {
+      "guid": "5f9a72c3-a9fc-4ce6-b801-64dd028a3a76",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/sMEuP2C16sK41RAHCfn-Fi2eT0tGUmWJaq9Fljnf6Z2s5usV0PAU6XM0ZlXfdU-0T-WPVL1CBWQxItS-10Zd59amvjtM=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-F-2001-7-780-4": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-F-2001-7-780-4",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-F-2001-7-780-4"
+    },
+    "id": "en-RP-F-2001-7-780-4",
+    "objectNumber": "RP-F-2001-7-780-4",
+    "title": "Fotoreproductie van een schilderij door Franz von Defregger, voorstellende een portret van een jonge vrouw bij een raam",
+    "hasImage": true,
+    "principalOrFirstMaker": "Franz Hanfstaengl",
+    "longTitle": "Fotoreproductie van een schilderij door Franz von Defregger, voorstellende een portret van een jonge vrouw bij een raam, Franz Hanfstaengl (possibly), c. 1879 - c. 1885",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "b19663fe-6466-49e1-808d-9837faeac0b6",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 10494,
+      "height": 6716,
+      "url": "https://lh3.googleusercontent.com/LpIXAnACOgGdbW_NNlhIa9JpfzPF8ObyiIHPtXbT7lPyN59r-F2Nu4kXfxeFNGQRSsl6F_dhtwwdMTA-1fI0WNF-1qXZfYoAJocoLk8=s0"
+    },
+    "headerImage": {
+      "guid": "d2d37d1f-b580-4b43-84d6-c9afe40cad8d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/Qa8emCkWfRLPcMs1a4lmbTRpyihNoxipNYmqOoBrvbmnKv6ojVPtRRNhnUhk2stqehs2IOTztuP42rpc9_w6zkcX6IoehfrjKnVT-U7wNw=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-F-F25560-U": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-F-F25560-U",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-F-F25560-U"
+    },
+    "id": "en-RP-F-F25560-U",
+    "objectNumber": "RP-F-F25560-U",
+    "title": "Fotoreproductie van een schilderij van jagers in een herberg door Franz von Defregger",
+    "hasImage": true,
+    "principalOrFirstMaker": "Franz Hanfstaengl",
+    "longTitle": "Fotoreproductie van een schilderij van jagers in een herberg door Franz von Defregger, Franz Hanfstaengl, c. 1877 - c. 1890",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2767,
+      "height": 3728,
+      "url": "/Static/Images/Responsive/1x1.png"
+    },
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1990-122": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1990-122",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1990-122"
+    },
+    "id": "en-RP-P-1990-122",
+    "objectNumber": "RP-P-1990-122",
+    "title": "Franz van Mieris erhaelt in seinen atelier einen besuch",
+    "hasImage": false,
+    "principalOrFirstMaker": "Franz Hanfstaengl",
+    "longTitle": "Franz van Mieris erhaelt in seinen atelier einen besuch, Franz Hanfstaengl, 1825 - 1850",
+    "showImage": false,
+    "permitDownload": false,
+    "webImage": null,
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": []
+  },
+  "RP-P-1990-107": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1990-107",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1990-107"
+    },
+    "id": "en-RP-P-1990-107",
+    "objectNumber": "RP-P-1990-107",
+    "title": "Frans van Mieris in zijn werkplaats",
+    "hasImage": true,
+    "principalOrFirstMaker": "Franz Hanfstaengl",
+    "longTitle": "Frans van Mieris in zijn werkplaats, Franz Hanfstaengl, 1830 - 1860",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "925f8f34-3795-4d2a-ab3c-60e87c636c75",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4820,
+      "height": 6642,
+      "url": "https://lh3.googleusercontent.com/DERIp96UfUExveQbsjIbbqqDXESg-kaZ307O2oo4qFmP-AhYcosIUFEAMsfvJlGcx2nyhYDar4mjWiRp4ruIlrO_aNdiKSWfOvJvVA=s0"
+    },
+    "headerImage": {
+      "guid": "4fe1a44b-78e6-40ba-a5a6-cd0752a336ac",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1814,
+      "height": 435,
+      "url": "https://lh3.googleusercontent.com/aZoShdp_ePoyvUW8Ebyd6iM0bkrxGILvdvPAUrXsuv9piH4oycUayPXpp1SAdCWnQKnRHDL0Vaa7bOydUKf9yl4q4KpxzLQ_CKozkkA=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-F-2001-7-616-1": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-F-2001-7-616-1",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-F-2001-7-616-1"
+    },
+    "id": "en-RP-F-2001-7-616-1",
+    "objectNumber": "RP-F-2001-7-616-1",
+    "title": "Portret van Franz von Defregger",
+    "hasImage": true,
+    "principalOrFirstMaker": "Franz Hanfstaengl",
+    "longTitle": "Portret van Franz von Defregger, Franz Hanfstaengl, c. 1875 - c. 1885",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "407ccb68-9d79-432d-82af-2ba9bcb42e1c",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 7830,
+      "height": 5446,
+      "url": "https://lh3.googleusercontent.com/uSM964hdu_DC1B8yfunDgD6dxK01hFoSEyBGH-4LtWaFv7Pvs-bc9yLlyiymHPO_88d-LGMr3CxxTWyVKVeyoJTNhniYf9u5L26Tdljj=s0"
+    },
+    "headerImage": {
+      "guid": "afd5ba6f-7335-4504-8a91-180e0efb2fe7",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/vfHai98Vja7WpK2yS-bQer8eKHikrG8yU4XlBuQt3oPxPGHsUiOVN4XgrWyQF45cUkDmk8xjXrdV-ILR2xFvyBpmTq383kKfevAJEILU=s0"
+    },
+    "productionPlaces": [
+      "Germany"
+    ]
+  },
+  "RP-F-F00982-14-1": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-F-F00982-14-1",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-F-F00982-14-1"
+    },
+    "id": "en-RP-F-F00982-14-1",
+    "objectNumber": "RP-F-F00982-14-1",
+    "title": "Portret van een man met snor, aangeduid als Henri Franzen",
+    "hasImage": true,
+    "principalOrFirstMaker": "Franz Eiffert",
+    "longTitle": "Portret van een man met snor, aangeduid als Henri Franzen, Franz Eiffert, 1892 - 1911",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "67033f3c-27fa-4c32-a34f-7b1f11258a38",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1676,
+      "height": 1576,
+      "url": "https://lh3.googleusercontent.com/TGokvHQ2IHmI8fjdvvm1ZWZ-OTA0dPnLogSOrSg8LMU6As6yTHZsLG88zz9tswMP97-mVvtRXRE7ihwNMJ759nc19CQXN1fvAz5t8RlgZQ=s0"
+    },
+    "headerImage": {
+      "guid": "d011b0a4-6ee8-4556-8ab5-a74c0ce6c73a",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1675,
+      "height": 402,
+      "url": "https://lh3.googleusercontent.com/RgQLR52dDcHYxI6qinuzYbp_1C0RdNemgYvpBcxENexzZ4GJzD3Ga8LnNRqV-jHHKwLZPcGD4Ge8BVQKO8pRYoKX0-1FIvoMwxHdcrcFag=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "RP-F-F01066": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-F-F01066",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-F-F01066"
+    },
+    "id": "en-RP-F-F01066",
+    "objectNumber": "RP-F-F01066",
+    "title": "Map met zeven reproducties van schilderijen van Franz von Defregger",
+    "hasImage": true,
+    "principalOrFirstMaker": "Franz Hanfstaengl",
+    "longTitle": "Map met zeven reproducties van schilderijen van Franz von Defregger, Franz Hanfstaengl, in or after 1886",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 8272,
+      "height": 5630,
+      "url": "/Static/Images/Responsive/1x1.png"
+    },
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": []
+  },
+  "NG-2011-1": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/NG-2011-1",
+      "web": "http://www.rijksmuseum.nl/en/collection/NG-2011-1"
+    },
+    "id": "en-NG-2011-1",
+    "objectNumber": "NG-2011-1",
+    "title": "FK 23 Bantam",
+    "hasImage": true,
+    "principalOrFirstMaker": "Frits Koolhoven",
+    "longTitle": "FK 23 Bantam, Frits Koolhoven, 1918",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "4807c6fc-3b76-4e3c-bb48-dd978a5111c5",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6666,
+      "height": 3392,
+      "url": "https://lh4.ggpht.com/4ean--jagKfPXAqp5OtP6x1rB_nd5213q3cmn_c50df1E14bLQJcIQ4sGMq13BMgMssjr4uf0BREug0hLq-hVeQoMA6N=s0"
+    },
+    "headerImage": {
+      "guid": "5d5781a8-385b-46a1-917d-31ee8e7d9a6f",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh6.ggpht.com/6DlGFvOB-6fjrs27pGpowKiWo8ehLnCu0FCHKVJBUY3Caabm5uoyQmIaYm5AwOvid4PyDAv0kDmHEz7_gvL-og99cIvZ=s0"
+    },
+    "productionPlaces": [
+      "London",
+      "London"
+    ]
+  },
+  "SK-A-5003": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/SK-A-5003",
+      "web": "http://www.rijksmuseum.nl/en/collection/SK-A-5003"
+    },
+    "id": "en-SK-A-5003",
+    "objectNumber": "SK-A-5003",
+    "title": "View of the Golden Bend in the Herengracht",
+    "hasImage": true,
+    "principalOrFirstMaker": "Gerrit Berckheyde",
+    "longTitle": "View of the Golden Bend in the Herengracht, Gerrit Berckheyde, 1671 - 1672",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "8930dd6f-b966-434e-a434-c66392fd78d0",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6323,
+      "height": 4613,
+      "url": "https://lh3.googleusercontent.com/Rvymv3LXhOcFOVnZpZSGoUJ8oMGjFyOmc-Ys43EMqe9QfpJYc4j5Mg9B8goHKH8gwJSKAhTDj2VeT2T3s8Sn1eu2QrY=s0"
+    },
+    "headerImage": {
+      "guid": "4787a4be-33ed-4a52-9bf3-75cb7886565d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/YGf8u3mAsP712K8qUMjLQMEprEl8Nt3Tv2UdKBZPLjYKyvixdpKNT8hXAcYi992E4RFA61tyTE9HsIxSBujgkHdwP00=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "RP-F-F01157": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-F-F01157",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-F-F01157"
+    },
+    "id": "en-RP-F-F01157",
+    "objectNumber": "RP-F-F01157",
+    "title": "Reisalbum Marks/Heil met 102 foto's",
+    "hasImage": true,
+    "principalOrFirstMaker": "Alex. J. Marks, diverse vervaardigers",
+    "longTitle": "Reisalbum Marks/Heil met 102 foto's, Alex. J. Marks (possibly), diverse vervaardigers, 1880 - 1892",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "40eae7cc-075f-41a0-945a-ab342f790ca3",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6864,
+      "height": 5588,
+      "url": "https://lh3.googleusercontent.com/ZKJ7tMNMgfJEaPdttc1kZTGdTZA_gYp95NQj89s-ZL3Vy8iPowv4841vwaw9lM__Kc-dTEf5fsQyigxjaIim8n515pV7PwBUkgf-uf_w=s0"
+    },
+    "headerImage": {
+      "guid": "39a76a8e-4ab3-42b4-844a-62c09f8dd320",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/cC0K7JNu43B517G_5VDsYdwPR907XdOIl9P1QzCV9sl0PGD7UMgF_VCXmADJWdVOwHJtv8IFzEeG3qsOfRtdi6klbz5-e5IozOgRuHmK=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-2019-2837": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-2019-2837",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-2019-2837"
+    },
+    "id": "en-RP-P-2019-2837",
+    "objectNumber": "RP-P-2019-2837",
+    "title": "Ex libris van Walter D. Marks",
+    "hasImage": true,
+    "principalOrFirstMaker": "Henry Stacy Marks",
+    "longTitle": "Ex libris van Walter D. Marks, Henry Stacy Marks, 1892",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2138,
+      "height": 1983,
+      "url": "/Static/Images/Responsive/1x1.png"
+    },
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": []
+  },
+  "RP-P-2017-4829": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-2017-4829",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-2017-4829"
+    },
+    "id": "en-RP-P-2017-4829",
+    "objectNumber": "RP-P-2017-4829",
+    "title": "Ex libris van Mark F.H. Severin",
+    "hasImage": false,
+    "principalOrFirstMaker": "Mark Fernand Severin",
+    "longTitle": "Ex libris van Mark F.H. Severin, Mark Fernand Severin, 1941",
+    "showImage": false,
+    "permitDownload": false,
+    "webImage": null,
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": [
+      "Belgium"
+    ]
+  },
+  "RP-P-2021-6520": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-2021-6520",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-2021-6520"
+    },
+    "id": "en-RP-P-2021-6520",
+    "objectNumber": "RP-P-2021-6520",
+    "title": "Uitnodiging voor een 'treffen van verschillende voor- en tegenstanders der abstracte kunst' ter gelegenheid van de opening van de tentoonstelling van Mark Kolthoff in het ICC Vondelpark",
+    "hasImage": false,
+    "principalOrFirstMaker": "Mark Kolthoff",
+    "longTitle": "Uitnodiging voor een 'treffen van verschillende voor- en tegenstanders der abstracte kunst' ter gelegenheid van de opening van de tentoonstelling van Mark Kolthoff in het ICC Vondelpark, Mark Kolthoff, 1945 - 1971",
+    "showImage": false,
+    "permitDownload": false,
+    "webImage": null,
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": []
+  },
+  "RP-F-F14463-A": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-F-F14463-A",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-F-F14463-A"
+    },
+    "id": "en-RP-F-F14463-A",
+    "objectNumber": "RP-F-F14463-A",
+    "title": "Portret van een onbekende jonge vrouw",
+    "hasImage": true,
+    "principalOrFirstMaker": "Barber & Marks",
+    "longTitle": "Portret van een onbekende jonge vrouw, Barber & Marks, 1840 - 1860",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "82267b16-5608-4924-bb1a-a81daf343b2d",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3624,
+      "height": 3944,
+      "url": "https://lh6.ggpht.com/d9U7nDmcmiD5EYBEyKuczLdiRNoPFEqP8Qq9XJ4xpV2vV58qhPUDkCvCDSfZmAbg-287S7R3fpwYi9Br8bSFvFGLcR8=s0"
+    },
+    "headerImage": {
+      "guid": "9b9957e0-e80b-4992-8e1a-349ab3828a9e",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.ggpht.com/PU38vl5HF9r8Jh9OUES1D2aZ-pZoPMGE8xLxBtg4tQmwNKK0WWblsrAkyjRbDDbOhtKAw_nwGygX4VOOKXiOP3pUqO-G=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-53.281": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-53.281",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-53.281"
+    },
+    "id": "en-RP-P-OB-53.281",
+    "objectNumber": "RP-P-OB-53.281",
+    "title": "Salome en Herodias ontvangen het hoofd van Johannes de Doper uit handen van de beul",
+    "hasImage": true,
+    "principalOrFirstMaker": "Quirin Mark",
+    "longTitle": "Salome en Herodias ontvangen het hoofd van Johannes de Doper uit handen van de beul, Quirin Mark, 1763 - 1811",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "9d323b91-940e-4c37-8a1c-2e0d49e1be03",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6614,
+      "height": 5780,
+      "url": "https://lh3.googleusercontent.com/Mgi67-mREVSBws8xijN1I5YTWDrvjoBNZoOL7bsTnwiCHpBMFkNqTv_EtX_a79DcWSnpiOYz6f5YrKO5VpzeFWVb_ssZvEo82qAq_3WKPA=s0"
+    },
+    "headerImage": {
+      "guid": "09f46cc9-8952-4773-8dee-d424aa6d270e",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/uzUXtLIRDHgIuErhN1dGQ2V6y7gK6WzO8DATMvKzt-T_1t-DJCFf1donSq5WB6rEYTV2XJjZODSXXEjJV_7gdjUCd3bfMhA-bpTWGZjt=s0"
+    },
+    "productionPlaces": [
+      "Vienna",
+      "Vienna"
+    ]
+  },
+  "RP-P-2017-5042": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-2017-5042",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-2017-5042"
+    },
+    "id": "en-RP-P-2017-5042",
+    "objectNumber": "RP-P-2017-5042",
+    "title": "Zelfportret met klomp",
+    "hasImage": false,
+    "principalOrFirstMaker": "Mark Brusse",
+    "longTitle": "Zelfportret met klomp, Mark Brusse, 1979",
+    "showImage": false,
+    "permitDownload": false,
+    "webImage": null,
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-51.084": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-51.084",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-51.084"
+    },
+    "id": "en-RP-P-OB-51.084",
+    "objectNumber": "RP-P-OB-51.084",
+    "title": "Portret van Bernard de Fontenelle, met personificaties van de zeven vrije kunsten",
+    "hasImage": true,
+    "principalOrFirstMaker": "Bernard Picart",
+    "longTitle": "Portret van Bernard de Fontenelle, met personificaties van de zeven vrije kunsten, Bernard Picart, 1727",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "6f4741be-a108-4504-98b0-67a310166757",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5192,
+      "height": 7782,
+      "url": "https://lh5.ggpht.com/0EISqk4H2DcEpjLLryERbl9tXKi0_-Cmcgab5yAp7LvUye0VhkCCw5alpe1Jz511A8mpVgJfdTkdSXmEhUH5TAsVlQ=s0"
+    },
+    "headerImage": {
+      "guid": "27e700f9-e34d-4e15-a781-9f1286161e92",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh5.ggpht.com/rkfGQmDJu7adsbVaiLQg9JIMCqCqkWP7Eu9TiOjpDolGYti6JfP_oGo9BqS-FyrrbGgO8b82BXw0wbMdKUkY-jlZLw=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "RP-P-OB-51.083": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-51.083",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-51.083"
+    },
+    "id": "en-RP-P-OB-51.083",
+    "objectNumber": "RP-P-OB-51.083",
+    "title": "Portret van Bernard de Fontenelle, met personificaties van de zeven vrije kunsten",
+    "hasImage": true,
+    "principalOrFirstMaker": "Bernard Picart",
+    "longTitle": "Portret van Bernard de Fontenelle, met personificaties van de zeven vrije kunsten, Bernard Picart, 1727",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "6932c1bb-5071-4aba-8505-3ca633c35cdf",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5098,
+      "height": 7492,
+      "url": "https://lh3.ggpht.com/yFmBpHJWlcn43Hc7SL8Z3-rmMVuptAdMzsBrv_WwXQNI8Q5xjtvTnxBjNIivaaE4NSOFkOHfSGq5rdAuXXMpy0k_IX0=s0"
+    },
+    "headerImage": {
+      "guid": "58236e42-522d-439a-a6a4-0c2d41f20f01",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh6.ggpht.com/8IB5Os4teUAHvxOJUsMqBaCjIOKylDRWs8UAgMcQWwLUZ8-9zK_997B0FiYyrWhZrLht6SrT3z9nDG91SWl7yJw8I50=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "RP-P-1944-1288": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1944-1288",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1944-1288"
+    },
+    "id": "en-RP-P-1944-1288",
+    "objectNumber": "RP-P-1944-1288",
+    "title": "Twee voorstellingen met een Romeins paard en twee postpaarden",
+    "hasImage": true,
+    "principalOrFirstMaker": "Victor Adam",
+    "longTitle": "Twee voorstellingen met een Romeins paard en twee postpaarden, Victor Adam, 1828 - 1887",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "3b5f0726-a427-43ed-95bd-5905ae54e0c3",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4148,
+      "height": 6194,
+      "url": "https://lh3.googleusercontent.com/MRlnAbHPtRzSz-G1dRFwJNfbhgouGsVxzvUpf5FfwkduVaUxCnORnioS1DW5fDuk2bes96gaNn6QiQcgHcqK-iuP3Nuz=s0"
+    },
+    "headerImage": {
+      "guid": "6cc9c863-2615-4d4b-a6cb-b6cf005d2f9c",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1674,
+      "height": 402,
+      "url": "https://lh3.googleusercontent.com/7bf_UtUFDe9n7szP3J8fFcd0jo-Ddcf1AvQFObvhPvba-0m4dxqqObNoxLu_4fwn4SopxTNc_oU55cvhDjYhdZX1Y7mX=s0"
+    },
+    "productionPlaces": [
+      "Paris",
+      "Paris",
+      "Paris"
+    ]
+  },
+  "RP-P-1905-3367": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-1905-3367",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-1905-3367"
+    },
+    "id": "en-RP-P-1905-3367",
+    "objectNumber": "RP-P-1905-3367",
+    "title": "Postkoets rijdt door een dorp",
+    "hasImage": true,
+    "principalOrFirstMaker": "Victor Adam",
+    "longTitle": "Postkoets rijdt door een dorp, Victor Adam, 1828",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "d8003bf2-d6a8-4d5f-baf3-e796d6b5d937",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 6494,
+      "height": 5341,
+      "url": "https://lh3.googleusercontent.com/S17zw_N6wLEjpEoFNZHk5UnOog5pI3m9k7Z4TLxwWirhvsX-AqRP1McPpSl1k02KvgCEKONw4jhTi9v-Hc-DniUnhfU=s0"
+    },
+    "headerImage": {
+      "guid": "02a22590-e941-41ec-81c3-fdc5c862ab2a",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/Xc-wg4LKxy3UVsA5gePNE6jMVIrh9Hwhhv5shUhNPVF7KRjsJKtXsU4Uovxvo_1gAEoXs4O6Ls58FBTaPRPUDxCkJAM=s0"
+    },
+    "productionPlaces": [
+      "Paris",
+      "Paris",
+      "Paris"
+    ]
+  },
+  "BI-H-3769-76": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/BI-H-3769-76",
+      "web": "http://www.rijksmuseum.nl/en/collection/BI-H-3769-76"
+    },
+    "id": "en-BI-H-3769-76",
+    "objectNumber": "BI-H-3769-76",
+    "title": "Bivakkerende soldaten bij een buitenpost",
+    "hasImage": false,
+    "principalOrFirstMaker": "Alexandre (fotograaf)",
+    "longTitle": "Bivakkerende soldaten bij een buitenpost, Alexandre (fotograaf), c. 1890 - in or before c. 1895",
+    "showImage": false,
+    "permitDownload": true,
+    "webImage": null,
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": []
+  },
+  "BI-H-3769-75": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/BI-H-3769-75",
+      "web": "http://www.rijksmuseum.nl/en/collection/BI-H-3769-75"
+    },
+    "id": "en-BI-H-3769-75",
+    "objectNumber": "BI-H-3769-75",
+    "title": "Bivakkerende soldaten bij een buitenpost",
+    "hasImage": false,
+    "principalOrFirstMaker": "Alexandre (fotograaf)",
+    "longTitle": "Bivakkerende soldaten bij een buitenpost, Alexandre (fotograaf), c. 1890 - in or before c. 1895",
+    "showImage": false,
+    "permitDownload": true,
+    "webImage": null,
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": []
+  },
+  "RP-P-OB-86.851": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-OB-86.851",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-OB-86.851"
+    },
+    "id": "en-RP-P-OB-86.851",
+    "objectNumber": "RP-P-OB-86.851",
+    "title": "Notificatie van de uitloting Gerechtshof van Utrecht op 7 augustus 1804",
+    "hasImage": true,
+    "principalOrFirstMaker": "Johannes Altheer",
+    "longTitle": "Notificatie van de uitloting Gerechtshof van Utrecht op 7 augustus 1804, Johannes Altheer, 1804",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "dc8a6981-4bff-447a-8b85-495c1d82da00",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 5678,
+      "height": 7637,
+      "url": "https://lh3.googleusercontent.com/t9EcGlAO0IUBOsYVDa-ZOEkGbuc7flDtUt9M_AbQaqPGY2ojC0kHmn18RVa1LJcpXyKbOaFJieKrW6ItfZwjGhRkFLI=s0"
+    },
+    "headerImage": {
+      "guid": "ad4ac2b8-6dfe-439e-84fb-b4442064ff91",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/PrOooks7iSIof6nVY0NC7bbdhcre7V1FfTHoSUrkJolrTtR2Fp6xHzuh4kg2pwpP16TEhUUkx5qzdN7YUy9FVw7zsQ=s0"
+    },
+    "productionPlaces": [
+      "Utrecht",
+      "Utrecht"
+    ]
+  },
+  "RP-F-F00974-4-1": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-F-F00974-4-1",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-F-F00974-4-1"
+    },
+    "id": "en-RP-F-F00974-4-1",
+    "objectNumber": "RP-F-F00974-4-1",
+    "title": "Post-mortemportret van een kind",
+    "hasImage": true,
+    "principalOrFirstMaker": "Amand",
+    "longTitle": "Post-mortemportret van een kind, Amand, 1878 - 1879",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "a2bfb071-3eee-4fde-8b56-589f8a2b4f12",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3417,
+      "height": 2128,
+      "url": "https://lh3.googleusercontent.com/jHNdGiKnQVd3lUOMQzdu4k94iT-trNRXU8QuAKhc2ImkuUkNvzWW7h81mTKTTym-1dgu9xInJRS6iyuxv8hSCrj3L1vmmuIL0N3ud_yoQQ=s0"
+    },
+    "headerImage": {
+      "guid": "c95c2f00-04cf-4561-a9d5-33e38b485662",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/iwqz2uzqFGeVmPo77hD5KFQ8p6_-GGDCNVw9n33YPwh-5XPMejiVBEddO2F68225buX2QDLRscCnk4gol7AbJRKbFvVgu6Quqxunkk92=s0"
+    },
+    "productionPlaces": [
+      "Amsterdam"
+    ]
+  },
+  "RP-P-2016-682": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-P-2016-682",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-P-2016-682"
+    },
+    "id": "en-RP-P-2016-682",
+    "objectNumber": "RP-P-2016-682",
+    "title": "Arabische vrouwen",
+    "hasImage": true,
+    "principalOrFirstMaker": "Best & Leloir Andrew",
+    "longTitle": "Arabische vrouwen, Best & Leloir Andrew, 1848",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "7d39121b-9c1e-43e1-af4a-b51f54c09ace",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2848,
+      "height": 4200,
+      "url": "https://lh3.googleusercontent.com/W4UwdCnqFUiX2budV9aLQiJLV6hvB0FjLfw6ocNsAsNQ3qDlv6KHIOmWuu1MIUcBrAw_9Y25Dm5jB10t_yNmgzUwDvLK=s0"
+    },
+    "headerImage": {
+      "guid": "d82b99b6-6532-467a-8705-a9f4f67558e0",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1695,
+      "height": 407,
+      "url": "https://lh3.googleusercontent.com/eK0pSinkNK0UXCowrcYLOlGOHCbO6eYYpwyhkLCMpkNe2Rqhornw96M2z9oQXNg6B0w6PHu5lDMP1X68kaNLs6dkcyH8=s0"
+    },
+    "productionPlaces": [
+      "Utrecht",
+      "Utrecht"
+    ]
+  },
+  "BI-H-1706-A": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/BI-H-1706-A",
+      "web": "http://www.rijksmuseum.nl/en/collection/BI-H-1706-A"
+    },
+    "id": "en-BI-H-1706-A",
+    "objectNumber": "BI-H-1706-A",
+    "title": "Utrechtsche studenten-almanak voor het jaar 1862",
+    "hasImage": true,
+    "principalOrFirstMaker": "J.G. Andriessen",
+    "longTitle": "Utrechtsche studenten-almanak voor het jaar 1862, J.G. Andriessen, 1861",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 3578,
+      "height": 2776,
+      "url": "/Static/Images/Responsive/1x1.png"
+    },
+    "headerImage": {
+      "guid": null,
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 0,
+      "height": 0,
+      "url": null
+    },
+    "productionPlaces": [
+      "Utrecht",
+      "Utrecht"
+    ]
+  },
+  "BK-NM-5498": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/BK-NM-5498",
+      "web": "http://www.rijksmuseum.nl/en/collection/BK-NM-5498"
+    },
+    "id": "en-BK-NM-5498",
+    "objectNumber": "BK-NM-5498",
+    "title": "Post horn",
+    "hasImage": true,
+    "principalOrFirstMaker": "anonymous",
+    "longTitle": "Post horn, anonymous, c. 1800 - c. 1850",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "7c7ddb78-73e2-4178-a2ab-4029250c0628",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 4558,
+      "height": 4558,
+      "url": "https://lh3.googleusercontent.com/WenQGHjrZJYoP01u1-lJRAMT8MSd2BKRxyJOxkpLlPL8LVqepVwprCOCboUWnK3_EnN09GoZAwtnlrGVl4eynEt5QVVLawL3K1F10BZIjg=s0"
+    },
+    "headerImage": {
+      "guid": "90cdc011-de6a-4814-9f7e-da4060643fba",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh3.googleusercontent.com/y0z3M5F7ppA7t3StGRyh4MR28_E9_PiLkI_qpDAtWHMXyaoXc9_gaai236DKieuvZeKtu7ZCcgrDvFU0KtGyuDQSIyWFU7i364JI-6vY=s0"
+    },
+    "productionPlaces": []
+  },
+  "RP-F-F14380-A": {
+    "links": {
+      "self": "http://www.rijksmuseum.nl/api/en/collection/RP-F-F14380-A",
+      "web": "http://www.rijksmuseum.nl/en/collection/RP-F-F14380-A"
+    },
+    "id": "en-RP-F-F14380-A",
+    "objectNumber": "RP-F-F14380-A",
+    "title": "Post-mortemportret",
+    "hasImage": true,
+    "principalOrFirstMaker": "anonymous",
+    "longTitle": "Post-mortemportret, anonymous, 1840 - 1860",
+    "showImage": true,
+    "permitDownload": true,
+    "webImage": {
+      "guid": "cdf7b06b-a016-4b4d-bb07-be718762168b",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 2800,
+      "height": 3104,
+      "url": "https://lh4.ggpht.com/dsc8Ioi3KIcSWNmvBXfpqUicYoPyWp91_h4CBFfikxT952TNqjhB-bnNAf0_n7QC2C1L25nGkk1QeYhC8uiHJNns8Q=s0"
+    },
+    "headerImage": {
+      "guid": "a415e663-6450-4bcb-8c1a-b260d14107ed",
+      "offsetPercentageX": 0,
+      "offsetPercentageY": 0,
+      "width": 1920,
+      "height": 460,
+      "url": "https://lh4.ggpht.com/qDkpuyEFBAQ7pHLBiFGDsjEm87b7oq99-x983hkEvFaocznK8NIYqc2DuTWGKldq8-E3r90Ma8Hpfc9oUaKf_UALs34=s0"
+    },
+    "productionPlaces": []
+  }
+}

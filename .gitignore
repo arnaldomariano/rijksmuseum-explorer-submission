@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# Data / local artifacts
+favorites.json
+notes.json
+analytics/
+*.log
+data/analytics/
+*.jsonl
+
+# Local / secrets
+.venv/
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
+data/favorites.json

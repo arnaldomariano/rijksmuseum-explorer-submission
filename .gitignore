@@ -1,32 +1,36 @@
+# ----------------------------
 # Python
+# ----------------------------
 __pycache__/
-*.pyc
-*.pyo
+*.py[cod]
 *.pyd
 .Python
+
+# Virtual environments
 .venv/
 venv/
 env/
 
-# Streamlit
-.streamlit/secrets.toml
-
+# ----------------------------
 # OS / IDE
+# ----------------------------
 .DS_Store
 .idea/
 .vscode/
 
-# Data / local artifacts
-favorites.json
-notes.json
-analytics/
-*.log
-data/analytics/
-*.jsonl
-
-# Local / secrets
-.venv/
-__pycache__/
-*.pyc
+# ----------------------------
+# Streamlit
+# ----------------------------
 .streamlit/secrets.toml
+
+# ----------------------------
+# Local data (app persistence)
+# ----------------------------
 data/favorites.json
+data/notes.json
+data/pdf_meta.json
+
+# Local analytics/logs
+data/analytics/
+*.log
+*.jason

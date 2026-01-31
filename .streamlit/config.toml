@@ -1,8 +1,15 @@
-cat > ~/.streamlit/config.toml <<'EOF'
 [theme]
-base="dark"
-primaryColor="#ff9900"
-backgroundColor="#111111"
-secondaryBackgroundColor="#181818"
-textColor="#ffffff"
-EOF
+base = "dark"
+primaryColor = "#ff9900"
+backgroundColor = "#111111"
+secondaryBackgroundColor = "#181818"
+textColor = "#f5f5f5"
+font = "sans serif"
+
+[server]
+headless = true
+enableCORS = false
+enableXsrfProtection = true
+
+[browser]
+gatherUsageStats = false

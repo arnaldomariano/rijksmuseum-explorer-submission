@@ -190,17 +190,30 @@ def save_favorites() -> None:
 # Filtering helpers
 # ============================================================
 def passes_authorship_scope(art: Dict[str, Any], auth_scope: str) -> bool:
-    """Filter based on the `_attribution` tag produced by rijks_api.py."""
+    """
+    Filter artworks by authorship scope.
+
+    IMPORTANT:
+    - For now, many objects still come with `_attribution="unknown"`.
+    - To avoid hiding everything, "Direct only" will include "unknown" too.
+    """
     tag = (art.get("_attribution") or "unknown").lower()
 
-    if auth_scope.startswith("Direct + Attributed"):
-        return tag in ("direct", "attributed")
     if auth_scope.startswith("Direct only"):
-        return tag == "direct"
-    if auth_scope.startswith("Include workshop"):
-        return tag in ("direct", "attributed", "workshop", "circle", "after")
-    return True  # show all
+        # While the attribution mapping is still evolving,
+        # treat "unknown" as direct to avoid empty result sets.
+        return tag in ("direct", "unknown")
 
+    if auth_scope.startswith("Direct + Attributed"):
+        # Direct + attributed + unknown (safe default for most cases).
+        return tag in ("direct", "attributed", "unknown")
+
+    if auth_scope.startswith("Include workshop"):
+        # Broader scope for research: include workshop / circle / after / unknown.
+        return tag in ("direct", "attributed", "workshop", "circle", "after", "unknown")
+
+    # "Show all (including unknown)" or any other fallback
+    return True
 
 def passes_metadata_filters(
     art: Dict[str, Any],
@@ -317,11 +330,13 @@ auth_scope = sidebar.selectbox(
         "Include workshop/circle/after",
         "Show all (including unknown)",
     ],
-    index=0,
+    index=1,  # default = "Direct only"
 )
 if auth_scope.startswith("Direct only"):
-    sidebar.info("Showing only works with direct authorship. Attributed works are hidden.")
-
+    sidebar.info(
+        "Showing works with direct or unknown authorship. "
+        "Attributed works are hidden."
+    )
 # --- Advanced filters (year range) ---
 sidebar.subheader("Advanced filters")
 year_min, year_max = sidebar.slider("Year range (approx.)", 1500, 2025, (1600, 1900), step=10)
@@ -623,14 +638,17 @@ if page_items:
                 elif year:
                     st.text(f"Year: {year}")
 
-                if object_number:
-                    st.text(f"Object ID: {object_number}")
+                object_number = art.get("objectNumber")
+                title = art.get("title", "Untitled")
+                maker = art.get("principalOrFirstMaker", "Unknown artist")
+
+                # Try to get a web link from the data…
+                # Link público
+                links = art.get("links") or {}
+                web_link = links.get("web") if isinstance(links, dict) else None
 
                 if web_link:
                     st.markdown(f"[View on Rijksmuseum website]({web_link})")
-
-                st.markdown("</div>", unsafe_allow_html=True)
-
 
 # ============================================================
 # Footer

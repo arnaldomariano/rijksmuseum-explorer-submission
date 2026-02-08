@@ -1,7 +1,7 @@
 """
 rijks_api.py — Rijksmuseum Data Services adapter (Linked Art)
 
-This module provides a stable "legacy-like" interface for the Streamlit UI:
+Provides a stable "legacy-like" interface for the Streamlit UI:
 
 - search_artworks(query, object_type, sort, page_size, page) -> (items, total)
 - extract_year(dating_dict) -> int | None
@@ -20,12 +20,13 @@ Notes:
 
 from __future__ import annotations
 
-import json
 import re
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
+import streamlit as st
 
 
 # ============================================================
@@ -39,6 +40,9 @@ DETAIL_TIMEOUT = 20
 
 # Upper bound safety (each PID requires a resolver request)
 MAX_RESULTS_PER_SEARCH = 120
+
+# Common Rijksmuseum inventory prefixes
+CANONICAL_PREFIXES = ("SK-", "RP-", "BK-", "NG-", "AK-", "NM-")
 
 
 # ============================================================
@@ -61,40 +65,6 @@ class SearchParams:
     page_size: int
     page: int
 
-# ============================================================
-# EXTRACT IMAGE
-# ============================================================
-def _extract_image_url_from_linked_art(raw: Dict[str, Any]) -> Optional[str]:
-    """
-    High-level image URL extractor for Linked Art JSON.
-
-    Strategy:
-    1) Look for any IIIF-like URL inside the JSON (via `_deep_find_iiif_image_url`).
-    2) If not found, look for `access_point` → fetch the HTML and extract IIIF.
-    3) Normalize everything to a standard IIIF JPEG URL that Streamlit can display.
-    """
-    # 1) Try to find an IIIF URL directly in the JSON
-    iiif = _deep_find_iiif_image_url(raw)
-    if iiif:
-        return _normalize_iiif_image_url(iiif, width=600)
-
-    # 2) If no direct IIIF URL, fall back to access_point + HTML scraping
-    access_url = _extract_access_point_url(raw)
-    if not access_url:
-        return None
-
-    try:
-        resp = requests.get(access_url, timeout=12, headers={"User-Agent": "Mozilla/5.0"})
-        if not resp.ok or not isinstance(resp.text, str):
-            return None
-
-        iiif_html = _extract_iiif_from_html(resp.text)
-        if not iiif_html:
-            return None
-
-        return _normalize_iiif_image_url(iiif_html, width=900)
-    except Exception:
-        return None
 
 # ============================================================
 # HTTP session
@@ -108,6 +78,87 @@ def _get_session() -> requests.Session:
 
 
 # ============================================================
+# Network probe (used by UI)
+# ============================================================
+
+@st.cache_data(show_spinner=False, ttl=24 * 3600)
+def probe_image_url(url: str) -> Dict[str, Any]:
+    """
+    Lightweight validation to distinguish:
+      - ok
+      - copyright (403/451)
+      - broken (404/5xx/not-image/etc.)
+    Cached for 24h to avoid repeated network calls.
+
+    Returns a dict shaped for the UI:
+      - ok: bool
+      - status: "ok" | "copyright" | "broken"
+      - http_status: int
+      - content_type: str
+      - reason: str
+    """
+    if not isinstance(url, str) or not url.strip():
+        return {"ok": False, "status": "broken", "http_status": 0, "content_type": "", "reason": "no_url"}
+
+    u = url.strip()
+    headers = {"User-Agent": "Mozilla/5.0"}
+
+    try:
+        # Try HEAD first (cheap)
+        r = requests.head(u, timeout=8, allow_redirects=True, headers=headers)
+        http_status = int(r.status_code)
+        ctype = (r.headers.get("Content-Type") or "").lower().strip()
+
+        # Fallback to GET when HEAD is blocked or missing headers
+        if http_status in (405,) or not ctype:
+            r = requests.get(u, timeout=10, stream=True, allow_redirects=True, headers=headers)
+            http_status = int(r.status_code)
+            ctype = (r.headers.get("Content-Type") or "").lower().strip()
+
+        if http_status == 200 and ctype.startswith("image/"):
+            return {"ok": True, "status": "ok", "http_status": http_status, "content_type": ctype, "reason": "ok"}
+
+        if http_status in (403, 451):
+            return {
+                "ok": False,
+                "status": "copyright",
+                "http_status": http_status,
+                "content_type": ctype,
+                "reason": "copyright_or_forbidden",
+            }
+
+        return {
+            "ok": False,
+            "status": "broken",
+            "http_status": http_status,
+            "content_type": ctype,
+            "reason": "not_image_or_unavailable",
+        }
+
+    except Exception:
+        return {"ok": False, "status": "broken", "http_status": 0, "content_type": "", "reason": "request_failed"}
+
+
+# ============================================================
+# classify_work_kind
+# ============================================================
+def _classify_work_kind(role: Optional[str], object_type_hint: Optional[str] = None) -> str:
+    r = (role or "").lower()
+
+    if "photograph" in r or (object_type_hint == "photo"):
+        return "photograph"
+
+    # “reproduction” aqui é heurística: gravura/print etc
+    if any(k in r for k in ["engraver", "etcher", "printmaker", "lithographer"]):
+        return "reproduction"
+
+    if r:
+        return "original"
+
+    return "unknown"
+
+
+# ============================================================
 # Search helpers
 # ============================================================
 
@@ -115,7 +166,7 @@ def _search_ids(session: requests.Session, query: str, limit: int) -> List[str]:
     """
     Merge results from multiple query fields and dedupe by PID.
 
-    This is intentionally conservative and predictable for a demo:
+    Conservative and predictable:
     - We do not implement remote paging (pageToken) yet.
     - We fetch up to `limit` PIDs, then resolve them.
     """
@@ -158,15 +209,26 @@ def _fetch_linked_art_json(session: requests.Session, pid_url: str) -> Dict[str,
         raise RijksAPIError(f"Resolver returned non-JSON for {url}: {resp.text[:200]}") from exc
 
 
+@st.cache_data(show_spinner=False, ttl=7 * 24 * 3600)
+def _fetch_linked_art_json_cached(pid_url: str) -> Dict[str, Any]:
+    session = _get_session()
+    url = f"{pid_url.split('?')[0]}?_profile=la&_mediatype=application/ld+json"
+    resp = session.get(url, timeout=DETAIL_TIMEOUT)
+    if not resp.ok:
+        raise RijksAPIError(
+            f"Resolver error for {url} ({resp.status_code}): {resp.text[:200]}"
+        )
+    obj = resp.json()
+    return obj if isinstance(obj, dict) else {}
+
+
 # ============================================================
-# Linked Art utilities (web link, IIIF)
+# Linked Art utilities (web link, IIIF, HTML)
 # ============================================================
 
 def _extract_access_point_url(raw: Dict[str, Any]) -> Optional[str]:
-    """
-    Find the first access_point.id anywhere in the Linked Art JSON (recursive).
-    Usually points to the public Rijksmuseum object page.
-    """
+    """Find the first access_point.id anywhere in the Linked Art JSON (recursive)."""
+
     def walk(obj: Any) -> Optional[str]:
         if isinstance(obj, dict):
             ap = obj.get("access_point")
@@ -199,7 +261,7 @@ def _clean_object_page_url(url: str) -> str:
 
 
 def _extract_object_number_from_access_point(url: str) -> Optional[str]:
-    """Extract SK-... from the object page URL."""
+    """Extract SK-... from an /object/ URL if present."""
     m = re.search(r"/object/(SK-[A-Z0-9-]+?)(?:--|/|$)", url)
     return m.group(1) if m else None
 
@@ -218,6 +280,8 @@ def _normalize_iiif_image_url(url: str, width: int = 900) -> str:
 
 def _extract_iiif_from_html(html: str) -> Optional[str]:
     """Extract an IIIF URL from object HTML (info.json preferred)."""
+    if not isinstance(html, str) or not html:
+        return None
     m = re.search(r'https?://[^"\']*iiif[^"\']*/info\.json', html, flags=re.I)
     if m:
         return m.group(0)
@@ -227,55 +291,102 @@ def _extract_iiif_from_html(html: str) -> Optional[str]:
     return None
 
 
-def _linked_art_image_url(raw: Dict[str, Any]) -> Optional[str]:
+def _deep_find_iiif_image_url(raw: Dict[str, Any]) -> Optional[str]:
     """
-    Best-effort image extraction without API key.
+    Find a likely IIIF endpoint URL inside the Linked Art JSON.
 
-    1) Try embedded IIIF info.json anywhere in raw JSON
-    2) Fallback: fetch access_point HTML and extract IIIF URL
+    Strategy:
+    - Walk whole JSON
+    - Collect string URLs
+    - Prefer:
+        1) .../info.json
+        2) anything containing "iiif" (Rijksmuseum endpoints)
     """
-    raw_text = json.dumps(raw, ensure_ascii=False)
-    m = re.search(r'https?://[^"\']*iiif[^"\']*/info\.json', raw_text, flags=re.I)
-    if m:
-        return _normalize_iiif_image_url(m.group(0), width=900)
+    candidates: List[str] = []
 
-    access_url = _extract_access_point_url(raw)
-    if not access_url:
+    def walk(node: Any) -> None:
+        if isinstance(node, dict):
+            for v in node.values():
+                walk(v)
+        elif isinstance(node, list):
+            for v in node:
+                walk(v)
+        elif isinstance(node, str) and node.startswith("http"):
+            candidates.append(node)
+
+    walk(raw)
+
+    for url in candidates:
+        if url.lower().endswith("/info.json"):
+            return url
+
+    for url in candidates:
+        if "iiif" in url.lower():
+            return url
+
+    return None
+
+
+def _fetch_public_object_html(url: str, timeout: int = 12) -> Optional[str]:
+    """Fetch Rijksmuseum public object page HTML (best effort)."""
+    if not isinstance(url, str) or not url.strip():
         return None
-
     try:
-        resp = requests.get(access_url, timeout=12, headers={"User-Agent": "Mozilla/5.0"})
-        if not resp.ok or not isinstance(resp.text, str):
-            return None
-
-        iiif = _extract_iiif_from_html(resp.text)
-        if not iiif:
-            return None
-
-        return _normalize_iiif_image_url(iiif, width=900)
+        resp = requests.get(url, timeout=timeout, headers={"User-Agent": "Mozilla/5.0"})
+        if resp.ok and isinstance(resp.text, str) and resp.text.strip():
+            return resp.text
     except Exception:
         return None
+    return None
+
+
+def _detect_image_status_from_object_html(html: str) -> str:
+    """
+    Decide why the image is not available on the public Rijksmuseum page.
+
+    Returns:
+        - "copyright"
+        - "page_missing"
+        - "no_public_image" (default if unsure)
+    """
+    if not isinstance(html, str) or not html.strip():
+        return "no_public_image"
+
+    h = html.lower()
+
+    # Page missing / not found
+    if "oeps" in h and ("deze pagina bestaat niet" in h or "pagina bestaat niet" in h):
+        return "page_missing"
+    if "this page does not exist" in h or "page does not exist" in h:
+        return "page_missing"
+    if "404" in h and "not found" in h:
+        return "page_missing"
+
+    # Copyright
+    if "not available because of copyright" in h:
+        return "copyright"
+    if "not available due to copyright" in h:
+        return "copyright"
+    if "auteursrecht" in h and ("niet beschikbaar" in h or "niet beschikbaar vanwege" in h):
+        return "copyright"
+    if "copyright" in h and ("not available" in h or "not available because" in h):
+        return "copyright"
+
+    return "no_public_image"
+
 
 def _extract_artist_from_object_html(html: str) -> Optional[str]:
     """
-    Extract the maker/artist name from Rijksmuseum public object HTML.
+    Extract maker/artist name from Rijksmuseum public object HTML.
 
-    The Rijksmuseum "Creation" block can use many role labels, e.g.:
-      - painter (artist): Claude Monet
-      - draftsman (artist): Jan Jansz. Post
-      - engraver (artist): ...
-      - maker: ...
-      - artist: ...
-
-    We try, in order:
-      1) Role-based lines: "<role> (artist): <Name>"
-      2) Generic role lines: "<role>: <Name>" (painter:, artist:, maker:, etc.)
-      3) Header line just under the title: "<Name>, 1860 - 1912"
+    Tries:
+      1) "<role> (artist): <Name>"
+      2) "<role>: <Name>" for common roles
+      3) "<Name>, 1860 - 1912" near header
     """
     if not isinstance(html, str) or not html:
         return None
 
-    # 1) Most reliable: "role (artist): Name" (covers draftsman (artist), painter (artist), etc.)
     m = re.search(
         r"\b([a-z][a-z\s-]{2,})\s*\(artist\)\s*:\s*([^<\n\r]+)",
         html,
@@ -283,27 +394,95 @@ def _extract_artist_from_object_html(html: str) -> Optional[str]:
     )
     if m:
         name = m.group(2).strip()
-        if name:
-            return name
+        return name or None
 
-    # 2) Generic "role: Name" (painter:, artist:, maker:, engraver:, etc.)
-    m = re.search(r"\b(painter|artist|maker|draftsman|engraver|designer)\s*:\s*([^<\n\r]+)", html, flags=re.IGNORECASE)
+    m = re.search(
+        r"\b(painter|artist|maker|draftsman|engraver|designer)\s*:\s*([^<\n\r]+)",
+        html,
+        flags=re.IGNORECASE,
+    )
     if m:
         name = m.group(2).strip()
-        if name:
-            return name
+        return name or None
 
-    # 3) Fallback: "<Name>, 1860 - 1912" near the header
     m = re.search(
         r"(^|\n)\s*([A-Z][^\n,]{2,}(?:\s+[A-Z][^\n,]{2,})+)\s*,\s*\d{3,4}\s*[-–]\s*\d{3,4}",
         html,
     )
     if m:
         name = m.group(2).strip()
-        if name:
-            return name
+        return name or None
 
     return None
+
+def _extract_creator_and_role_from_object_html(html: str) -> Tuple[Optional[str], Optional[str]]:
+    """
+    Returns (name, role) from Rijksmuseum public page, if found.
+
+    Examples:
+      - "painter (artist): Claude Monet" -> ("Claude Monet", "painter")
+      - "engraver: ... " -> ("...", "engraver")
+      - "photographer: ..." -> ("...", "photographer")
+    """
+    if not isinstance(html, str) or not html:
+        return None, None
+
+    # 1) role (artist): Name
+    m = re.search(
+        r"\b([a-z][a-z\s-]{2,})\s*\(artist\)\s*:\s*([^<\n\r]+)",
+        html,
+        flags=re.IGNORECASE,
+    )
+    if m:
+        role = m.group(1).strip().lower()
+        name = m.group(2).strip()
+        return (name or None), (role or None)
+
+    # 2) role: Name  (generic)
+    m = re.search(
+        r"\b(painter|artist|maker|draftsman|engraver|designer|photographer)\s*:\s*([^<\n\r]+)",
+        html,
+        flags=re.IGNORECASE,
+    )
+    if m:
+        role = m.group(1).strip().lower()
+        name = m.group(2).strip()
+        return (name or None), (role or None)
+
+    return None, None
+
+# ============================================================
+# Image URL extraction (Linked Art -> IIIF)
+# ============================================================
+
+def _extract_image_url_from_linked_art(raw: Dict[str, Any]) -> Optional[str]:
+    """
+    High-level image URL extractor for Linked Art JSON.
+
+    Strategy:
+      1) Look for IIIF URL inside JSON
+      2) Fallback: access_point HTML -> extract IIIF
+      3) Normalize to IIIF JPG
+    """
+    # 1) Tenta achar um endpoint IIIF diretamente no JSON Linked Art
+    iiif = _deep_find_iiif_image_url(raw)
+    if iiif:
+        return _normalize_iiif_image_url(iiif, width=900)
+
+    # 2) Fallback: usar o access_point da obra e tentar achar IIIF no HTML público
+    access_url = _extract_access_point_url(raw)
+    if not access_url:
+        return None
+
+    html = _fetch_public_object_html(access_url, timeout=12)
+    if not html:
+        return None
+
+    iiif_html = _extract_iiif_from_html(html)
+    if not iiif_html:
+        return None
+
+    return _normalize_iiif_image_url(iiif_html, width=900)
 
 # ============================================================
 # Authorship classification (research tag)
@@ -364,132 +543,17 @@ def _classify_attribution(raw: Dict[str, Any], artist_name: str) -> str:
     return "attributed"
 
 
-def _find_image_url_in_linked_art(data: Any) -> Optional[str]:
-    """
-    Try to find a usable image URL inside a Linked Art JSON object.
-
-    New heuristic (more permissive):
-    - Collect ANY http/https URL.
-    - Prefer URLs from Rijksmuseum domains.
-    - Skip obvious 1x1 tracking / placeholder images.
-    """
-
-    candidates: List[str] = []
-
-    def _walk(node: Any) -> None:
-        if isinstance(node, dict):
-            for value in node.values():
-                _walk(value)
-        elif isinstance(node, list):
-            for item in node:
-                _walk(item)
-        elif isinstance(node, str):
-            v = node.strip()
-            if not v:
-                return
-
-            # Only look at something that looks like a URL
-            if not ("http://" in v or "https://" in v or v.startswith("//")):
-                return
-
-            lower = v.lower()
-
-            # Skip known placeholder / tracking images
-            if "1x1" in lower and "static/images" in lower:
-                return
-
-            candidates.append(v)
-
-    _walk(data)
-
-    if not candidates:
-        return None
-
-    # Normalize protocol-relative URLs (//...)
-    norm_candidates: List[str] = []
-    for url in candidates:
-        u = url.strip()
-        if u.startswith("//"):
-            u = "https:" + u
-        norm_candidates.append(u)
-
-    # Prefer Rijksmuseum domains and anything with 'image' or 'iiif'
-    def _score(u: str) -> tuple:
-        lu = u.lower()
-        return (
-            "rijksmuseum" not in lu,           # prefer Rijksmuseum
-            "images." not in lu and "image" not in lu and "iiif" not in lu,
-            not lu.endswith((".jpg", ".jpeg", ".png", ".tif", ".tiff", ".webp")),
-            len(u),                            # shorter URLs first
-        )
-
-    norm_candidates.sort(key=_score)
-    return norm_candidates[0] if norm_candidates else None
-
-def _deep_find_iiif_image_url(raw: Dict[str, Any]) -> Optional[str]:
-    """
-    Try to find an image URL inside the Linked Art JSON.
-
-    Strategy:
-    - Walk the whole JSON (dicts + lists).
-    - Collect every string that starts with "http".
-    - Prefer URLs that:
-        * look like real images (.jpg, .jpeg, .png, .webp, .tif, .tiff), or
-        * contain "iiif" and "rijksmuseum" (typical IIIF endpoints).
-
-    This version also prints the first few candidate URLs to the terminal
-    so we can inspect what the Data Services is actually returning.
-    """
-    candidates: List[str] = []
-
-    def walk(node: Any) -> None:
-        if isinstance(node, dict):
-            for v in node.values():
-                walk(v)
-        elif isinstance(node, list):
-            for v in node:
-                walk(v)
-        elif isinstance(node, str):
-            if node.startswith("http"):
-                candidates.append(node)
-
-    # Walk the full JSON tree
-    walk(raw)
-
-    # --- DEBUG: print candidates once per object ---
-    # (Isso vai aparecer no terminal onde você rodou o Streamlit)
-    if candidates:
-        print("[rijks_api] Candidate URLs for image (first 10):")
-        for url in candidates[:10]:
-            print("   ", url)
-    else:
-        print("[rijks_api] No http-like URLs found in this object JSON")
-
-    # 1) Prefer obvious image URLs by extension
-    for url in candidates:
-        lower = url.lower()
-        if any(lower.endswith(ext) for ext in (".jpg", ".jpeg", ".png", ".webp", ".tif", ".tiff")):
-            return url
-
-    # 2) Fallback: any IIIF-ish URL from Rijksmuseum
-    for url in candidates:
-        lower = url.lower()
-        if "iiif" in lower and "rijksmuseum" in lower:
-            return url
-
-    # 3) Nothing suitable found
-    return None
+# ============================================================
+# Artist extraction (Linked Art)
+# ============================================================
 
 def _extract_principal_maker(raw: Dict[str, Any]) -> str:
     """
     Try to extract the main artist name from Linked Art JSON.
 
-    Strategy:
-    1) Look into produced_by.carried_out_by[*] agents.
-       - Use identified_by[*].content
-       - Or _label / label / name
-    2) Accept both dict and list for produced_by / carried_out_by.
-    3) Ignore clearly "unknown" labels (Unknown, Onbekend, etc.).
+    Looks at produced_by.carried_out_by[*] agents:
+      - identified_by[*].content
+      - _label / label / name
 
     Returns a non-empty string or "Unknown artist".
     """
@@ -511,7 +575,6 @@ def _extract_principal_maker(raw: Dict[str, Any]) -> str:
         if not isinstance(agent, dict):
             return
 
-        # 1) identified_by list → content
         ids = agent.get("identified_by") or []
         if isinstance(ids, list):
             for ident in ids:
@@ -521,7 +584,6 @@ def _extract_principal_maker(raw: Dict[str, Any]) -> str:
                 if isinstance(content, str):
                     add_candidate(content)
 
-        # 2) Fallback: _label / label / name
         for key in ("_label", "label", "name"):
             val = agent.get(key)
             if isinstance(val, str):
@@ -535,7 +597,6 @@ def _extract_principal_maker(raw: Dict[str, Any]) -> str:
             for ag in carried:
                 scan_agent(ag)
 
-            # Sometimes there are nested parts with their own carried_out_by
             parts = prod.get("part") or []
             if isinstance(parts, list):
                 for p in parts:
@@ -545,77 +606,95 @@ def _extract_principal_maker(raw: Dict[str, Any]) -> str:
             for p in prod:
                 scan_produced(p)
 
-    produced = raw.get("produced_by")
-    scan_produced(produced)
+    scan_produced(raw.get("produced_by"))
 
     if candidates:
         return candidates[0]
 
     return "Unknown artist"
 
-def _fallback_creator_name(raw: Dict[str, Any]) -> Optional[str]:
+def _normalize_maker_name(name: Any) -> str:
     """
-    Try to recover a creator/artist name from anywhere in the Linked Art JSON.
+    Normalize principal maker labels into a stable UI-friendly value.
 
-    Strategy:
-    1) Walk the JSON recursively.
-    2) Look for dicts that have an `identified_by` list with Name objects.
-    3) Return the first non-empty `content` that looks like a personal name.
-
-    This is a best-effort fallback when `produced_by.carried_out_by` is missing
-    or does not expose the artist in the expected place.
+    Rules:
+      - Keep "anonymous" as "anonymous" (your preference).
+      - Convert empty/unknown-ish labels to "Unknown artist".
     """
-    best: Optional[str] = None
+    s = (name or "")
+    if not isinstance(s, str):
+        return "Unknown artist"
 
-    def walk(node: Any) -> None:
-        nonlocal best
-        if best is not None:
-            # We already found a candidate, no need to keep walking
-            return
+    s = s.strip()
+    if not s:
+        return "Unknown artist"
 
-        if isinstance(node, dict):
-            ids = node.get("identified_by") or []
-            if isinstance(ids, list):
-                for ident in ids:
-                    if not isinstance(ident, dict):
-                        continue
-                    content = ident.get("content")
-                    if isinstance(content, str):
-                        name = content.strip()
-                        # Very light heuristic: avoid 1-word nonsense like "12"
-                        if len(name) >= 3 and " " in name:
-                            best = name
-                            return
+    low = s.lower()
 
-            for v in node.values():
-                walk(v)
+    unknown_tokens = {
+        "unknown", "unknown artist",
+        "onbekend", "onbekende kunstenaar",
+        "n/a", "not specified", "niet vermeld"
+    }
+    if low in unknown_tokens:
+        return "Unknown artist"
 
-        elif isinstance(node, list):
-            for item in node:
-                walk(item)
+    anonymous_tokens = {"anonymous", "anoniem"}
+    if low in anonymous_tokens:
+        return "anonymous"
 
-    walk(raw)
-    return best
+    return s
+
+
+# ============================================================
+# Mapper (Linked Art -> legacy-like dict)
+# ============================================================
+
+def _normalize_maker_label(name: Any) -> str:
+    """
+    Normalize maker/artist labels coming from Linked Art or HTML.
+
+    Goals:
+    - Keep "anonymous" (when source says Anonymous/Anoniem)
+    - Use "Unknown artist" for truly unknown/empty placeholders
+    - Otherwise return cleaned name
+    """
+    if not isinstance(name, str):
+        return "Unknown artist"
+
+    n = name.strip()
+    if not n:
+        return "Unknown artist"
+
+    ln = n.lower()
+
+    unknown_values = {
+        "unknown",
+        "unknown artist",
+        "onbekend",
+        "onbekende kunstenaar",
+        "n/a",
+        "na",
+        "niet vermeld",
+        "not mentioned",
+        "not specified",
+        "unspecified",
+    }
+    if ln in unknown_values:
+        return "Unknown artist"
+
+    anonymous_values = {"anonymous", "anoniem"}
+    if ln in anonymous_values:
+        return "anonymous"
+
+    return n
 
 def _map_linked_art_to_legacy_dict(raw: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Map Linked Art JSON-LD (Rijksmuseum Data Services) into the legacy-like dict
-    used by the Streamlit UI.
-
-    Output fields:
-      - objectNumber
-      - title
-      - principalOrFirstMaker
-      - dating {year, presentingDate}
-      - materials, techniques, productionPlaces (best-effort / optional)
-      - links {web}
-      - webImage {url}
-      - _attribution (research label)
+    Map Linked Art JSON-LD into the legacy-like dict used by the Streamlit UI.
     """
 
-    # ------------------------------------------------------
-    # 1) Persistent identifier (PID URL)
-    # ------------------------------------------------------
+    # 1) PID URL
     pid_url: Optional[str] = None
     for key in ("@id", "id"):
         val = raw.get(key)
@@ -623,9 +702,7 @@ def _map_linked_art_to_legacy_dict(raw: Dict[str, Any]) -> Dict[str, Any]:
             pid_url = val.strip()
             break
 
-    # ------------------------------------------------------
-    # 2) Title (best effort)
-    # ------------------------------------------------------
+    # 2) Title
     title = "Untitled"
     identified_by = raw.get("identified_by") or []
     if isinstance(identified_by, list):
@@ -637,93 +714,67 @@ def _map_linked_art_to_legacy_dict(raw: Dict[str, Any]) -> Dict[str, Any]:
                 title = content.strip()
                 break
 
-    # ------------------------------------------------------
-    # 3) produced_by (used later for dating + attribution)
-    # ------------------------------------------------------
+    # 3) produced_by (for dating + attribution)
     produced_by = raw.get("produced_by")
 
-    # ------------------------------------------------------
-    # 4) Public page URL (access_point) + objectNumber
-    #
-    # Goal:
-    # - Derive a stable public URL whenever possible.
-    # - Derive a human-readable objectNumber (SK- / RP- / BK- / etc.).
-    # ------------------------------------------------------
+    # 4) public url + object number
     access_url = _extract_access_point_url(raw)
     public_url: Optional[str] = _clean_object_page_url(access_url) if access_url else None
 
-    # Start with PID as a fallback ID
     object_number: str = (pid_url or "unknown-id").strip()
 
-    # Common Rijksmuseum inventory prefixes
-    canonical_prefixes = ("SK-", "RP-", "BK-", "NG-", "AK-", "NM-")
-
-    # 4a) If the access_point URL contains a canonical object number, prefer it
     if public_url:
         obj_from_url = _extract_object_number_from_access_point(public_url)
         if isinstance(obj_from_url, str) and obj_from_url.strip():
             object_number = obj_from_url.strip()
 
-    # 4b) If still not a canonical inventory number, try to recover from identified_by
-    if not any(object_number.startswith(p) for p in canonical_prefixes) and isinstance(identified_by, list):
+    if not any(object_number.startswith(p) for p in CANONICAL_PREFIXES) and isinstance(identified_by, list):
         for ident in identified_by:
             if not isinstance(ident, dict):
                 continue
             content = ident.get("content")
-            if not isinstance(content, str):
-                continue
-            candidate = content.strip()
-            if candidate.startswith(canonical_prefixes):
-                object_number = candidate
-                break
+            if isinstance(content, str):
+                candidate = content.strip()
+                if candidate.startswith(CANONICAL_PREFIXES):
+                    object_number = candidate
+                    break
 
-    # 4c) Compute a stable web URL:
-    # - If we have a canonical inventory number -> use the stable /en/collection/<objectNumber>
-    # - Else fall back to the cleaned access_point URL
-    # - Else last fallback: PID URL
-    stable_web_url: Optional[str] = None
-    if any(object_number.startswith(p) for p in canonical_prefixes):
+    if any(object_number.startswith(p) for p in CANONICAL_PREFIXES):
         stable_web_url = f"https://www.rijksmuseum.nl/en/collection/{object_number}"
     elif public_url:
         stable_web_url = public_url
     elif pid_url:
         stable_web_url = pid_url
+    else:
+        stable_web_url = None
 
-    # ------------------------------------------------------
-    # 5) Main artist name (JSON first)
-    # ------------------------------------------------------
-    principal_or_first_maker = _extract_principal_maker(raw)
+    # 5) principal maker (JSON first, fallback to public HTML only if unknown)
+    principal_or_first_maker = _normalize_maker_label(_extract_principal_maker(raw))
+    creator_role: Optional[str] = None
+    author_note: Optional[str] = None
 
-    # Optional fallback via public HTML page (only if still unknown)
-    # IMPORTANT: use a stable public URL if we have an object number
-    web_url: Optional[str] = None
-    if isinstance(object_number, str) and object_number.startswith(canonical_prefixes):
-        web_url = f"https://www.rijksmuseum.nl/en/collection/{object_number}"
-    elif public_url:
-        web_url = public_url
-    elif pid_url:
-        web_url = pid_url
-
-    if principal_or_first_maker == "Unknown artist" and stable_web_url:
+    if _normalize_maker_name(principal_or_first_maker) == "Unknown artist" and stable_web_url:
         try:
             resp = requests.get(stable_web_url, timeout=DETAIL_TIMEOUT, headers={"User-Agent": "Mozilla/5.0"})
             if resp.ok and isinstance(resp.text, str):
                 html_artist = _extract_artist_from_object_html(resp.text)
                 if html_artist:
-                    principal_or_first_maker = html_artist
+                    principal_or_first_maker = _normalize_maker_label(html_artist)
         except Exception:
             pass
-    # ------------------------------------------------------
-    # 6) Dating / year (best effort)
-    # ------------------------------------------------------
+
+    # Se mesmo após tudo continua Unknown, garanta a nota
+    if principal_or_first_maker == "Unknown artist" and not author_note:
+        author_note = "Author not specified in museum metadata"
+
+    work_kind = _classify_work_kind(creator_role)
+
+    # 6) dating
     dating: Dict[str, Any] = {"year": None}
     year: Optional[int] = None
     presenting_date: Optional[str] = None
 
-    timespan = None
-    if isinstance(produced_by, dict):
-        timespan = produced_by.get("timespan")
-
+    timespan = produced_by.get("timespan") if isinstance(produced_by, dict) else None
     if isinstance(timespan, dict):
         bob = timespan.get("begin_of_the_begin")
         eoe = timespan.get("end_of_the_end")
@@ -737,36 +788,36 @@ def _map_linked_art_to_legacy_dict(raw: Dict[str, Any]) -> Dict[str, Any]:
     if presenting_date:
         dating["presentingDate"] = presenting_date
 
-    # ------------------------------------------------------
-    # 7) Materials / techniques / production places (optional for now)
-    # ------------------------------------------------------
+    # 7) materials / techniques / places (still optional)
     materials: List[str] = []
     techniques: List[str] = []
     production_places: List[str] = []
 
-    # ------------------------------------------------------
-    # 8) Links (stable public URL)
-    #
-    # We prefer the stable Rijksmuseum collection URL when we have a canonical
-    # inventory number (SK-/RP-/BK-/...). Otherwise we fall back to the best
-    # public URL we could detect (access_point or PID).
-    # ------------------------------------------------------
+    # 8) links
     links: Dict[str, Any] = {}
-
     if stable_web_url:
         links["web"] = stable_web_url
 
-    # ------------------------------------------------------
-    # 9) Image URL (best effort)
-    # ------------------------------------------------------
+    # 9) image url + image status (versão leve, sem probe extra)
     web_image: Dict[str, Any] = {}
     img_url = _extract_image_url_from_linked_art(raw)
-    if img_url:
-        web_image["url"] = img_url
 
-    # ------------------------------------------------------
-    # 10) Authorship label (research tag)
-    # ------------------------------------------------------
+    if img_url:
+        # Temos uma URL de imagem (via JSON ou fallback HTML)
+        web_image["url"] = img_url
+        image_status = "ok"
+    else:
+        # Não conseguimos mapear imagem pública via Linked Art + fallback
+        # Tenta identificar o motivo olhando a página pública (copyright / page missing)
+        image_status = "no_public_image"
+        if stable_web_url and "rijksmuseum.nl" in stable_web_url:
+            html = _fetch_public_object_html(stable_web_url, timeout=DETAIL_TIMEOUT)
+            if html:
+                detected = _detect_image_status_from_object_html(html)
+                if detected in ("copyright", "page_missing"):
+                    image_status = detected
+
+    # 10) attribution tag
     attribution_tag = _classify_attribution(raw, principal_or_first_maker)
 
     return {
@@ -780,7 +831,13 @@ def _map_linked_art_to_legacy_dict(raw: Dict[str, Any]) -> Dict[str, Any]:
         "links": links,
         "webImage": web_image,
         "_attribution": attribution_tag,
+        "_image_status": image_status,
+        "_author_note": author_note,
+        "_creator_role": creator_role,
+        "_work_kind": work_kind,
     }
+
+
 # ============================================================
 # Public API used by the Streamlit UI
 # ============================================================
@@ -808,10 +865,7 @@ def resolve_objectnumber_to_pid(session: requests.Session, object_number: str) -
 
 
 def fetch_metadata_by_objectnumber(object_number: str) -> Dict[str, Any]:
-    """
-    Fetch raw Linked Art JSON for a given objectNumber (SK-...).
-    Useful for DEV tools (hidden unless DEV_MODE=true).
-    """
+    """Fetch raw Linked Art JSON for a given objectNumber (SK-...)."""
     session = _get_session()
     pid = resolve_objectnumber_to_pid(session, object_number)
     return _fetch_linked_art_json(session, pid)
@@ -834,24 +888,12 @@ def extract_year(dating: Dict[str, Any]) -> Optional[int]:
 
 
 def get_best_image_url(art: Dict[str, Any]) -> Optional[str]:
-    """
-    Return the best image URL available for this artwork.
-
-    For now we look at:
-    - art["webImage"]["url"] if present
-    - any fallback field "_image_url" if we ever add it in the future
-    """
+    """Return best image URL available for this artwork."""
     web_image = art.get("webImage") or {}
     if isinstance(web_image, dict):
         url = web_image.get("url")
         if isinstance(url, str) and url.strip():
             return url.strip()
-
-    # Optional future fallback
-    url = art.get("_image_url")
-    if isinstance(url, str) and url.strip():
-        return url.strip()
-
     return None
 
 
@@ -864,10 +906,10 @@ def search_artworks(
 ) -> Tuple[List[Dict[str, Any]], int]:
     """
     High-level search:
-    1) Search -> PIDs
-    2) Resolve -> Linked Art JSON
-    3) Map -> UI dict
-    4) Local sort + local pagination
+      1) Search -> PIDs
+      2) Resolve -> Linked Art JSON
+      3) Map -> UI dict
+      4) Local sort + local pagination
     """
     session = _get_session()
 
@@ -887,11 +929,15 @@ def search_artworks(
         return [], 0
 
     raw_objects: List[Dict[str, Any]] = []
-    for pid in pids:
-        try:
-            raw_objects.append(_fetch_linked_art_json(session, pid))
-        except RijksAPIError as exc:
-            print(f"[rijks_api] Warning: failed to fetch {pid}: {exc}")
+
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        futures = {ex.submit(_fetch_linked_art_json_cached, pid): pid for pid in pids}
+        for fut in as_completed(futures):
+            pid = futures[fut]
+            try:
+                raw_objects.append(fut.result())
+            except RijksAPIError as exc:
+                print(f"[rijks_api] Warning: failed to fetch {pid}: {exc}")
 
     mapped: List[Dict[str, Any]] = []
     for raw in raw_objects:

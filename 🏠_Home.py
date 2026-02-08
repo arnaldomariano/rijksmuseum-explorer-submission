@@ -16,13 +16,13 @@ from __future__ import annotations
 
 import json
 from math import ceil
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 import streamlit as st
 
 from app_paths import FAV_FILE, NOTES_FILE, HERO_IMAGE_PATH
 from analytics import track_event, track_event_once
-from rijks_api import search_artworks, extract_year, get_best_image_url
+from rijks_api import search_artworks, extract_year, get_best_image_url, probe_image_url
 
 
 # ============================================================
@@ -193,26 +193,27 @@ def passes_authorship_scope(art: Dict[str, Any], auth_scope: str) -> bool:
     """
     Filter artworks by authorship scope.
 
-    IMPORTANT:
-    - For now, many objects still come with `_attribution="unknown"`.
-    - To avoid hiding everything, "Direct only" will include "unknown" too.
+    Note:
+    - Many objects still come with `_attribution="unknown"`.
+    - To avoid hiding everything, most scopes keep "unknown".
     """
     tag = (art.get("_attribution") or "unknown").lower()
 
     if auth_scope.startswith("Direct only"):
-        # While the attribution mapping is still evolving,
-        # treat "unknown" as direct to avoid empty result sets.
         return tag in ("direct", "unknown")
 
+    if auth_scope.startswith("Direct + Attributed + Circle"):
+        return tag in ("direct", "attributed", "circle", "unknown")
+
     if auth_scope.startswith("Direct + Attributed"):
-        # Direct + attributed + unknown (safe default for most cases).
         return tag in ("direct", "attributed", "unknown")
 
     if auth_scope.startswith("Include workshop"):
-        # Broader scope for research: include workshop / circle / after / unknown.
         return tag in ("direct", "attributed", "workshop", "circle", "after", "unknown")
 
-    # "Show all (including unknown)" or any other fallback
+    if auth_scope.startswith("Show all"):
+        return True
+
     return True
 
 def passes_metadata_filters(
@@ -257,6 +258,80 @@ def attribution_badge_html(art: Dict[str, Any]) -> str:
     return f'<span class="rijks-badge">{label}</span>'
 
 
+def render_image_message(img_status: str) -> None:
+    """Show the correct message box for missing/unavailable images."""
+
+    if img_status == "copyright":
+        st.markdown(
+            """
+            <div class="rijks-no-image-msg">
+            This image cannot be displayed here due to copyright restrictions.<br>
+            You can try opening it on the Rijksmuseum website, but it may also be unavailable there.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        return
+
+    if img_status == "page_missing":
+        st.markdown(
+            """
+            <div class="rijks-no-image-msg">
+            The public Rijksmuseum page for this object appears to be unavailable (page not found).<br>
+            The object may have moved or the link may be outdated.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        return
+
+    if img_status == "broken":
+        st.markdown(
+            """
+            <div class="rijks-no-image-msg">
+            The image for this artwork could not be loaded at this moment.<br>
+            You can still open it on the Rijksmuseum website using the link below.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        return
+
+    # default
+    st.markdown(
+        """
+        <div class="rijks-no-image-msg">
+        No public image is available for this artwork via the current mapping.<br>
+        You can still open it on the Rijksmuseum website using the link below.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def image_status_badge_html(img_status: str) -> str:
+    img_status = (img_status or "").lower()
+    if img_status == "copyright":
+        return '<span class="rijks-badge rijks-badge-secondary">🔒 Copyright</span>'
+    if img_status == "page_missing":
+        return '<span class="rijks-badge rijks-badge-secondary">⚠️ Page missing</span>'
+    if img_status == "broken":
+        return '<span class="rijks-badge rijks-badge-secondary">⚠️ Image unavailable</span>'
+    if img_status == "no_public_image":
+        return '<span class="rijks-badge rijks-badge-secondary">🚫 No public image</span>'
+    return ""
+
+def work_kind_badge_html(kind: str) -> str:
+    k = (kind or "").lower()
+    if k == "original":
+        return '<span class="rijks-badge rijks-badge-secondary">🖼️ Original work</span>'
+    if k == "reproduction":
+        return '<span class="rijks-badge rijks-badge-secondary">🎞️ Reproduction</span>'
+    if k == "photograph":
+        return '<span class="rijks-badge rijks-badge-secondary">📷 Photograph</span>'
+    return ""
+
+
 # ============================================================
 # Session init
 # ============================================================
@@ -266,9 +341,9 @@ favorites: Dict[str, Any] = st.session_state.setdefault("favorites", {})
 load_notes()
 notes: Dict[str, str] = st.session_state.setdefault("notes", {})
 
-st.session_state.setdefault("results_full", [])     # full fetched results (after search)
-st.session_state.setdefault("results_filtered", []) # filtered results (authorship + year/material/place)
-st.session_state.setdefault("search_meta", {})       # meta about last run
+st.session_state.setdefault("results_full", [])
+st.session_state.setdefault("results_filtered", [])
+st.session_state.setdefault("search_meta", {})
 
 track_event_once(
     event="page_view",
@@ -284,11 +359,9 @@ track_event_once(
 sidebar = st.sidebar
 sidebar.header("🧭 Explore & Filter")
 
-# --- Search term ---
 sidebar.subheader("Search")
 search_term = sidebar.text_input("Search term", value="Rembrandt", help="Artist, title keyword, theme, etc.")
 
-# --- Basic filters ---
 sidebar.subheader("Basic filters")
 object_type = sidebar.selectbox(
     "Object type",
@@ -309,40 +382,35 @@ sort_map = {
 }
 sort_by = sort_map[sort_label]
 
-# --- Fetch limit (how many items we retrieve from Data Services) ---
 sidebar.subheader("Fetch limit")
 fetch_limit = sidebar.slider(
     "Fetch up to",
     min_value=30,
     max_value=120,
-    value=90,
+    value=30,
     step=10,
     help="How many items to fetch from Data Services before local pagination.",
 )
 
-# --- Research scope (authorship) ---
 sidebar.subheader("Research scope")
 auth_scope = sidebar.selectbox(
     "Authorship scope",
     options=[
         "Direct + Attributed (recommended)",
+        "Direct + Attributed + Circle (A+C)",
         "Direct only",
         "Include workshop/circle/after",
         "Show all (including unknown)",
     ],
-    index=1,  # default = "Direct only"
+    index=2,  # se quiser manter "Direct only" como default, ajuste o index
 )
-if auth_scope.startswith("Direct only"):
-    sidebar.info(
-        "Showing works with direct or unknown authorship. "
-        "Attributed works are hidden."
-    )
-# --- Advanced filters (year range) ---
+if auth_scope.startswith("Direct + Attributed + Circle"):
+    sidebar.info("Including direct, attributed and circle/school (plus unknown). Excludes workshop and after.")
+
 sidebar.subheader("Advanced filters")
 year_min, year_max = sidebar.slider("Year range (approx.)", 1500, 2025, (1600, 1900), step=10)
 sidebar.caption("Year filter is applied locally after results are fetched.")
 
-# --- Text filters (materials / production places) ---
 sidebar.subheader("Text filters (optional)")
 sidebar.caption("Material/place filters depend on metadata availability in the current mapping.")
 
@@ -367,15 +435,19 @@ elif place_choice == "Custom…":
 else:
     place_filter = place_choice
 
-# --- Local pagination controls ---
 sidebar.subheader("Pagination (local)")
 per_page = sidebar.selectbox("Results per page", options=[12, 24, 30], index=0)
 page_num = sidebar.number_input("Page", min_value=1, value=1, step=1)
 
-# --- Run search ---
 sidebar.markdown("<div style='height: 0.75rem'></div>", unsafe_allow_html=True)
 run_search = sidebar.button("🔍 Apply filters & search", use_container_width=True)
 
+# Pequeno lembrete sobre a seleção global (herdado da versão legacy)
+sidebar.caption(
+    "Artworks marked as **In my selection** remain saved across searches and sessions. "
+    "If you do not want previous selections to appear pre-selected in new searches, "
+    "clear your selection on the **My Selection** page."
+)
 
 # ============================================================
 # Main header
@@ -390,6 +462,11 @@ if HERO_IMAGE_PATH.exists():
 st.write(
     "Explore artworks from the Rijksmuseum collection using the Data Services (Linked Data). "
     "Use the sidebar to search and filter, then browse results below."
+)
+
+st.caption(
+    "Tip: use the checkbox **“In my selection”** in each card to build your personal selection. "
+    "You can then review, compare and export it on the **My Selection** page."
 )
 
 with st.expander("ℹ️ How the search works (quick guide)", expanded=False):
@@ -421,17 +498,15 @@ if run_search:
     else:
         try:
             with st.spinner("Fetching artworks from Rijksmuseum Data Services..."):
-                raw_results, total_found = search_artworks(
+                raw_results, _total_found = search_artworks(
                     query=search_term.strip(),
                     page_size=int(fetch_limit),
                     sort=sort_by,
                     object_type=object_type_param,
                 )
 
-            # Store full fetched results
             st.session_state["results_full"] = raw_results or []
 
-            # Apply local filters (authorship scope + metadata)
             filtered = [
                 art for art in (raw_results or [])
                 if passes_authorship_scope(art, auth_scope)
@@ -439,7 +514,6 @@ if run_search:
             ]
             st.session_state["results_filtered"] = filtered
 
-            # Store meta
             st.session_state["search_meta"] = {
                 "api_count": len(raw_results or []),
                 "filtered_count": len(filtered),
@@ -448,7 +522,6 @@ if run_search:
                 "per_page": int(per_page),
             }
 
-            # Analytics
             track_event(
                 event="search_executed",
                 page="Explorer",
@@ -474,10 +547,9 @@ if run_search:
             st.session_state["results_filtered"] = []
             st.session_state["search_meta"] = {}
 
-# Use filtered results for display
+
 filtered_results: List[Dict[str, Any]] = st.session_state.get("results_filtered", [])
 
-# Local pagination over filtered set
 total_filtered = len(filtered_results)
 max_pages = max(1, ceil(total_filtered / int(per_page))) if per_page else 1
 page_num = min(int(page_num), max_pages)
@@ -486,7 +558,6 @@ start_idx = (page_num - 1) * int(per_page)
 end_idx = start_idx + int(per_page)
 page_items = filtered_results[start_idx:end_idx]
 
-# UI caption
 if total_filtered > 0:
     st.caption(
         f"Showing page **{page_num} / {max_pages}** — "
@@ -509,7 +580,6 @@ if page_items:
 
     with col_add:
         add_all_clicked = st.button("⭐ Add ALL on this page", use_container_width=True, key="btn_add_all_page")
-
     with col_remove:
         remove_all_clicked = st.button("🗑️ Remove ALL on this page", use_container_width=True, key="btn_remove_all_page")
 
@@ -522,12 +592,14 @@ if page_items:
             if obj_num not in favorites:
                 favorites[obj_num] = art
                 added += 1
-                track_event(event="artwork_view", page="Explorer", props={"object_id": obj_num, "artist": art.get("principalOrFirstMaker", "Unknown artist"), "source": "selection_add_all_page"})
             st.session_state[f"fav_{obj_num}"] = True
 
         st.session_state["favorites"] = favorites
         save_favorites()
-        saved_pill_placeholder.markdown(f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>', unsafe_allow_html=True)
+        saved_pill_placeholder.markdown(
+            f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>',
+            unsafe_allow_html=True,
+        )
         st.success(f"Added {added} artwork(s) to your selection." if added else "All items on this page were already in your selection.")
 
     if remove_all_clicked:
@@ -543,7 +615,10 @@ if page_items:
 
         st.session_state["favorites"] = favorites
         save_favorites()
-        saved_pill_placeholder.markdown(f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>', unsafe_allow_html=True)
+        saved_pill_placeholder.markdown(
+            f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>',
+            unsafe_allow_html=True,
+        )
         st.success(f"Removed {removed} artwork(s) from your selection." if removed else "None of the items on this page were in your selection.")
 
 
@@ -562,38 +637,81 @@ if page_items:
 
                 object_number = art.get("objectNumber")
                 title = art.get("title", "Untitled")
-                maker = art.get("principalOrFirstMaker", "Unknown artist")
+
+                raw_maker = art.get("principalOrFirstMaker", "")
+                maker_norm = (raw_maker or "").strip()
+
+                if maker_norm.lower() in ("", "unknown", "unknown artist", "onbekend", "onbekende kunstenaar", "n/a",
+                                          "niet vermeld"):
+                    maker = "Unknown artist"
+                elif maker_norm.lower() in ("anonymous", "anoniem"):
+                    maker = "anonymous"
+                else:
+                    maker = maker_norm
+
                 web_link = (art.get("links") or {}).get("web")
 
                 note_text = notes.get(object_number, "") if object_number else ""
                 has_notes = isinstance(note_text, str) and note_text.strip() != ""
 
-                # Image
                 img_url = get_best_image_url(art)
-                if img_url:
-                    try:
-                        st.image(img_url, use_container_width=True)
-                    except Exception:
-                        st.markdown(
-                            """
-                            <div class="rijks-no-image-msg">
-                            The image for this artwork could not be loaded at this moment.<br>
-                            You can still open it on the Rijksmuseum website using the link below.
-                            </div>
-                            """,
-                            unsafe_allow_html=True,
-                        )
+
+                # status vindo do mapper (rijks_api.py)
+                status = (art.get("_image_status") or "no_public_image").lower()
+
+                # Default: assume que não vamos mostrar imagem
+                img_status = "no_public_image"
+
+                # Mensagens por status (UI)
+                if status == "copyright":
+                    img_note = (
+                        "This image cannot be shown due to copyright restrictions.<br>"
+                        "It may also be restricted on the Rijksmuseum website."
+                    )
+                elif status == "page_missing":
+                    img_note = (
+                        "The public Rijksmuseum page for this object appears to be unavailable (page not found).<br>"
+                        "The object may have moved or the link may be outdated."
+                    )
                 else:
+                    # no_public_image ou desconhecido
+                    img_note = (
+                        "No public image is available for this artwork via the current mapping.<br>"
+                        "You can still open it on the Rijksmuseum website using the link below."
+                    )
+
+                # Se temos URL de imagem, tentamos exibir
+                if img_url:
+                    probe = probe_image_url(img_url)
+                    if probe.get("ok"):
+                        img_status = "ok"
+                        st.image(img_url, use_container_width=True)
+                    else:
+                        # If the image URL exists but failed, refine using HTTP status codes
+                        pstatus = (probe.get("status") or "").lower()
+                        if pstatus == "copyright":
+                            status = "copyright"
+                            img_note = (
+                                "This image cannot be shown due to copyright restrictions.<br>"
+                                "It may also be unavailable on the Rijksmuseum website."
+                            )
+                        else:
+                            status = "broken"
+                            img_note = (
+                                "This image is currently unavailable (broken endpoint or temporary issue).<br>"
+                                "You can still open the object page on the Rijksmuseum website using the link below."
+                            )
+                # Caixa de aviso só quando NÃO exibiu imagem
+                if img_status != "ok":
                     st.markdown(
-                        """
+                        f"""
                         <div class="rijks-no-image-msg">
-                        No public image is available for this artwork via the current mapping.<br>
-                        You can still open it on the Rijksmuseum website using the link below.
+                        {img_note}
                         </div>
                         """,
                         unsafe_allow_html=True,
                     )
-
+                # Title + maker
                 st.markdown(f'<div class="rijks-card-title">{title}</div>', unsafe_allow_html=True)
                 st.markdown(f'<div class="rijks-card-caption">{maker}</div>', unsafe_allow_html=True)
 
@@ -605,14 +723,31 @@ if page_items:
                     if checked != was_fav:
                         if checked:
                             favorites[object_number] = art
-                            track_event(event="selection_add_item", page="Explorer", props={"object_id": object_number, "artist": maker, "source": "Explorer"})
+                            track_event(
+                                event="selection_add_item",
+                                page="Explorer",
+                                props={"object_id": object_number, "artist": maker, "source": "Explorer"},
+                            )
+                            # Herdado da versão legacy: também contamos como "view" para estatísticas
+                            track_event(
+                                event="artwork_view",
+                                page="Explorer",
+                                props={"object_id": object_number, "artist": maker, "source": "selection_checkbox"},
+                            )
                         else:
                             favorites.pop(object_number, None)
-                            track_event(event="selection_remove_item", page="Explorer", props={"object_id": object_number, "artist": maker, "source": "Explorer"})
-
+                            track_event(
+                                event="selection_remove_item",
+                                page="Explorer",
+                                props={"object_id": object_number, "artist": maker, "source": "Explorer"},
+                            )
+                            
                         st.session_state["favorites"] = favorites
                         save_favorites()
-                        saved_pill_placeholder.markdown(f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>', unsafe_allow_html=True)
+                        saved_pill_placeholder.markdown(
+                            f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>',
+                            unsafe_allow_html=True,
+                        )
 
                     is_fav = checked
                 else:
@@ -620,11 +755,19 @@ if page_items:
 
                 # Badges
                 badge_parts: List[str] = []
+
                 if is_fav:
                     badge_parts.append('<span class="rijks-badge rijks-badge-primary">⭐ In my selection</span>')
                 if has_notes:
                     badge_parts.append('<span class="rijks-badge rijks-badge-secondary">📝 Notes</span>')
+
                 badge_parts.append(attribution_badge_html(art))
+
+                # Only show image status badge if image is not displayed
+                if img_status != "ok":
+                    badge = image_status_badge_html(status)
+                    if badge:
+                        badge_parts.append(badge)
 
                 st.markdown('<div class="rijks-badge-row">' + " ".join(badge_parts) + "</div>", unsafe_allow_html=True)
 
@@ -638,17 +781,15 @@ if page_items:
                 elif year:
                     st.text(f"Year: {year}")
 
-                object_number = art.get("objectNumber")
-                title = art.get("title", "Untitled")
-                maker = art.get("principalOrFirstMaker", "Unknown artist")
-
-                # Try to get a web link from the data…
-                # Link público
-                links = art.get("links") or {}
-                web_link = links.get("web") if isinstance(links, dict) else None
+                # Object ID (herdado da versão legacy — útil para pesquisa)
+                if object_number:
+                    st.text(f"Object ID: {object_number}")
 
                 if web_link:
                     st.markdown(f"[View on Rijksmuseum website]({web_link})")
+
+                st.markdown("</div>", unsafe_allow_html=True)
+
 
 # ============================================================
 # Footer

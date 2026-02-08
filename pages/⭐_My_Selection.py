@@ -12,6 +12,8 @@ Features:
 """
 
 from __future__ import annotations
+from ui_theme import inject_global_css, show_global_footer, show_page_intro
+
 
 import base64
 import csv
@@ -51,46 +53,12 @@ except Exception:
 # ============================================================
 # Page config & CSS
 # ============================================================
-st.set_page_config(page_title="My Selection", page_icon="⭐", layout="wide")
 
-
-def inject_custom_css() -> None:
-    """Dark mode + cards + export panel styling."""
+def inject_page_css() -> None:
+    """CSS específico da página My Selection (cards, badges, export panel)."""
     st.markdown(
         """
         <style>
-        .stApp { background-color: #111111; color: #f5f5f5; }
-
-        /* Layout principal da área de conteúdo */
-        div.block-container {
-            max-width: 95vw;
-            padding-left: 2rem;
-            padding-right: 2rem;
-            padding-top: 1.3rem;   /* mais espaço no topo */
-            padding-bottom: 2.5rem;
-        }
-
-        /* Em telas muito largas, um pouco mais de respiro nas laterais */
-        @media (min-width: 1400px) {
-            div.block-container {
-                padding-left: 3rem;
-                padding-right: 3rem;
-            }
-        }
-
-        /* Garante que o primeiro elemento de conteúdo não “cole” no topo
-           mesmo quando o margin-top do <p>/<h2> colapsa com o container */
-        div.block-container > *:first-child {
-            margin-top: 0.5rem;
-        }
-        div[data-testid="stMarkdownContainer"] a {
-            color: #ff9900 !important;
-            text-decoration: none;
-        }
-        div[data-testid="stMarkdownContainer"] a:hover {
-            text-decoration: underline;
-        }
-
         .rijks-summary-pill {
             display: inline-block;
             padding: 4px 10px;
@@ -131,12 +99,14 @@ def inject_custom_css() -> None:
             margin-bottom: 1rem;
             margin-top: 0.35rem;
         }
+
         .rijks-card img {
             width: 100%;
             height: 260px;
             object-fit: cover;
             border-radius: 8px;
         }
+
         .rijks-card-title {
             font-size: 1rem;
             font-weight: 600;
@@ -144,15 +114,18 @@ def inject_custom_css() -> None:
             margin-bottom: 0.1rem;
             min-height: 1.3rem;
         }
+
         .rijks-card-caption {
             font-size: 0.9rem;
             color: #c7c7c7;
             margin-bottom: 0.25rem;
         }
+
         .rijks-badge-row {
             margin-top: 0.15rem;
             margin-bottom: 0.35rem;
         }
+
         .rijks-badge {
             display: inline-block;
             padding: 2px 8px;
@@ -163,49 +136,31 @@ def inject_custom_css() -> None:
             color: #f5f5f5;
             border: 1px solid #333333;
         }
+
         .rijks-badge-primary {
             background-color: #ff9900;
             color: #111111;
             border-color: #ff9900;
         }
+
         .rijks-badge-secondary {
             background-color: #262626;
             color: #ffddaa;
             border-color: #444444;
-        }
-
-        .rijks-footer {
-            margin-top: 2.5rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid #262626;
-            font-size: 0.8rem;
-            color: #aaaaaa;
-            text-align: center;
         }
         </style>
         """,
         unsafe_allow_html=True,
     )
 
+st.set_page_config(page_title="My Selection", page_icon="⭐", layout="wide")
 
-def show_footer() -> None:
-    st.markdown(
-        """
-        <div class="rijks-footer">
-            Rijksmuseum Explorer — prototype created for study & research purposes.<br>
-            Data & images provided by the Rijksmuseum Data Services.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
-inject_custom_css()
+inject_global_css()   # tema base para o app todo
+inject_page_css()     # ajustes específicos da My Selection
 
 # ============================================================
 # Helpers: favorites / notes
 # ============================================================
-
 
 def _safe_read_json(path) -> dict:
     try:
@@ -523,27 +478,18 @@ def set_compare_candidate(favorites: Dict[str, Any], obj_num: str, desired: bool
 # ============================================================
 # Page header & data load
 # ============================================================
-inject_custom_css()
 
-# Bloco explicativo no topo (HTML)
-st.markdown(
-    """
-<div style="margin-top:0.3rem; margin-bottom:0.8rem;">
-  <p style="font-weight:600; font-size:1rem;">
-    This page shows the user's saved artworks (local favorites). It provides:
-  </p>
-  <ul>
-    <li>Local persistence of favorites and research notes (JSON files).</li>
-    <li>Internal filters (metadata and notes) over the current selection.</li>
-    <li>Gallery controls (sorting, grouping by artist, compact mode, pagination).</li>
-    <li>Export tools (CSV / JSON / PDF, selection-sharing code, notes exports).</li>
-    <li>Artwork comparison (side-by-side) within the current selection.</li>
-    <li>Detail view for a single artwork with zoom and research notes editor.</li>
-    <li>Local analytics events for usage statistics (no data is sent anywhere).</li>
-  </ul>
-</div>
-""",
-    unsafe_allow_html=True,
+show_page_intro(
+    "This page shows the user's saved artworks (local favorites). It provides:",
+    [
+        "Local persistence of favorites and research notes (JSON files).",
+        "Internal filters (metadata and notes) over the current selection.",
+        "Gallery controls (sorting, grouping by artist, compact mode, pagination).",
+        "Export tools (CSV / JSON / PDF, selection-sharing code, notes exports).",
+        "Artwork comparison (side-by-side) within the current selection.",
+        "Detail view for a single artwork with zoom and research notes editor.",
+        "Local analytics events for usage statistics (no data is sent anywhere).",
+    ],
 )
 
 # Título + texto explicativo do legacy
@@ -587,7 +533,7 @@ if not favorites:
         "Go to the **Rijksmuseum Explorer** page and mark "
         "**In my selection** on any artwork you want to keep."
     )
-    show_footer()
+    show_global_footer()
     st.stop()
 
 # ============================================================
@@ -625,19 +571,6 @@ with st.expander("📊 Selection insights", expanded=True):
     else:
         st.write("- **Date range:** not available from API metadata.")
 
-
-        # Notes editor
-        with st.expander("📝 View / edit notes"):
-            current_text = notes.get(obj_num, "")
-            new_text = st.text_area(
-                "Notes",
-                value=current_text,
-                key=f"note_{obj_num}",
-            )
-            if st.button("Save notes", key=f"save_note_{obj_num}"):
-                notes[obj_num] = new_text
-                save_notes(notes)
-                st.success("Notes saved.")
 # ============================================================
 # Sidebar controls (filters, sorting, gallery options)
 # ============================================================
@@ -1681,4 +1614,4 @@ if detail_id and detail_id in favorites:
 # ============================================================
 # Footer
 # ============================================================
-show_footer()
+show_global_footer()

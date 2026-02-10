@@ -18,13 +18,33 @@ import streamlit as st
 from app_paths import PDF_META_FILE
 from analytics import track_event_once, track_event
 
+from ui_theme import inject_global_css, show_global_footer, show_page_intro
+
 st.set_page_config(page_title="PDF Setup", page_icon="🧾", layout="wide")
+st.set_page_config(
+    page_title="PDF Setup",
+    page_icon="📄",
+    layout="wide",
+)
+
+inject_global_css()
 
 track_event_once(
     event="page_view",
     page="PDF_Setup",
     once_key="page_view::PDF_Setup",
     props={},
+)
+
+show_page_intro(
+    "This page configures how PDF exports behave for your current selection.",
+    [
+        "Checks whether the optional `reportlab` dependency is installed.",
+        "Lets you choose basic layout options for PDF exports (page size, margins, thumbnails).",
+        "Shows diagnostic information if something is missing in your environment.",
+        "Explains how the **My Selection** page will use these settings when preparing a PDF.",
+        "All configuration stays local to this device — nothing is sent externally.",
+    ],
 )
 
 st.markdown("## 🧾 PDF Setup")
@@ -99,3 +119,8 @@ if st.button("Save PDF settings"):
     )
 
     st.success("PDF settings saved.")
+
+# ============================================================
+# Footer
+# ============================================================
+show_global_footer()

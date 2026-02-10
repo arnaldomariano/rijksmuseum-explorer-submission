@@ -23,14 +23,20 @@ import streamlit as st
 from app_paths import FAV_FILE, NOTES_FILE, HERO_IMAGE_PATH
 from analytics import track_event, track_event_once
 from rijks_api import search_artworks, extract_year, get_best_image_url, probe_image_url
-
+from ui_theme import inject_global_css, show_global_footer, show_page_intro
 
 # ============================================================
 # Page config
 # ============================================================
 st.set_page_config(page_title="Rijksmuseum Explorer", page_icon="🎨", layout="wide")
 
+st.set_page_config(
+    page_title="Rijksmuseum Explorer",
+    page_icon="🏛️",
+    layout="wide",
+)
 
+inject_global_css()
 # ============================================================
 # Styling & footer
 # ============================================================
@@ -133,6 +139,16 @@ def inject_custom_css() -> None:
         unsafe_allow_html=True,
     )
 
+show_page_intro(
+    "Welcome to the Rijksmuseum Explorer research app. This homepage gives you a quick overview of what you can do:",
+    [
+        "Search and browse artworks from the Rijksmuseum collection.",
+        "Build a personal research selection and keep it locally on this device.",
+        "Compare up to 4 artworks side-by-side for visual and contextual analysis.",
+        "Export your selection to CSV / JSON / PDF for further study.",
+        "Track basic usage statistics to understand your research workflow.",
+    ],
+)
 
 def show_footer() -> None:
     """Footer acknowledging Rijksmuseum Data Services."""
@@ -741,7 +757,7 @@ if page_items:
                                 page="Explorer",
                                 props={"object_id": object_number, "artist": maker, "source": "Explorer"},
                             )
-                            
+
                         st.session_state["favorites"] = favorites
                         save_favorites()
                         saved_pill_placeholder.markdown(
@@ -794,4 +810,4 @@ if page_items:
 # ============================================================
 # Footer
 # ============================================================
-show_footer()
+show_global_footer()

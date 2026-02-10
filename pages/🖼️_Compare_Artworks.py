@@ -12,20 +12,32 @@ Key rules:
 - DEV_MODE is hidden by default; if enabled, shows raw Linked Art JSON
 """
 
-from __future__ import annotations
+from __future__ import annotations  # TEM que ser o primeiro import
 
 import json
 from typing import Any, Dict, List, Tuple
 
 import streamlit as st
 
+from ui_theme import inject_global_css, show_global_footer, show_page_intro
 from app_paths import FAV_FILE
 from analytics import track_event
-from rijks_api import get_best_image_url, fetch_metadata_by_objectnumber, RijksAPIError
+from rijks_api import (
+    get_best_image_url,
+    fetch_metadata_by_objectnumber,
+    RijksAPIError,
+)
 
 DEV_MODE = bool(st.secrets.get("DEV_MODE", False))
 
 st.set_page_config(page_title="Compare Artworks", page_icon="🖼️", layout="wide")
+st.set_page_config(
+    page_title="Compare Artworks",
+    page_icon="🖼️",
+    layout="wide",
+)
+
+inject_global_css()
 
 st.markdown(
     """
@@ -102,6 +114,17 @@ def cached_fetch_metadata(object_number: str) -> dict:
 # ============================================================
 # Page header
 # ============================================================
+show_page_intro(
+    "This page lets you compare artworks side by side using your current selection.",
+    [
+        "Uses artworks previously marked as comparison candidates in **My Selection**.",
+        "Displays up to 4 artworks at the same time for side-by-side inspection.",
+        "Shows high-level metadata (title, artist, date, object number, web link).",
+        "Highlights whether each artwork has research notes in your local files.",
+        "Can be used as a compact presentation view during research discussions.",
+    ],
+)
+
 st.markdown("## 🖼️ Compare Artworks")
 st.caption("1) Mark up to **4 candidates** in **My Selection** · 2) Select **exactly 2** below · 3) Scroll for side-by-side comparison.")
 
@@ -244,3 +267,8 @@ def render_side(label: str, obj_id: str, art: Dict[str, Any], container) -> None
 
 render_side("Artwork A", id_a, art_a, col_a)
 render_side("Artwork B", id_b, art_b, col_b)
+
+# ============================================================
+# Footer
+# ============================================================
+show_global_footer()

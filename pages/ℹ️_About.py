@@ -13,6 +13,7 @@ This page explains:
 from __future__ import annotations
 
 import streamlit as st
+from ui_theme import inject_global_css, show_global_footer, show_page_intro
 
 
 # ============================================================
@@ -20,6 +21,13 @@ import streamlit as st
 # ============================================================
 st.set_page_config(page_title="About", page_icon="ℹ️", layout="wide")
 
+st.set_page_config(
+    page_title="About — Rijksmuseum Explorer",
+    page_icon="ℹ️",
+    layout="wide",
+)
+
+inject_global_css()  # <<< AQUI é onde ele passa a ser "usado"
 
 # ============================================================
 # CSS (keep consistent with the rest of the app)
@@ -67,6 +75,28 @@ def inject_custom_css() -> None:
         .about-pill strong { color: #ff9900; }
 
         ul { padding-left: 1.2rem; }
+        
+        /* ============================
+           Bloco de introdução padrão
+        ============================ */
+        .page-intro-wrapper {
+            margin-bottom: 1.2rem;
+        }
+
+        .page-intro-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .page-intro-list {
+            margin-top: 0.1rem;
+            margin-bottom: 0;
+            padding-left: 1.3rem;
+            font-size: 0.9rem;
+            color: #d4d4d4;
+        }
+        
         </style>
         """,
         unsafe_allow_html=True,
@@ -75,6 +105,17 @@ def inject_custom_css() -> None:
 
 inject_custom_css()
 
+
+show_page_intro(
+    "This page explains the goals and limitations of the Rijksmuseum Explorer prototype:",
+    [
+        "It is a personal research tool, not an official Rijksmuseum product.",
+        "All data and images come from the Rijksmuseum Data Services (API).",
+        "Favorites and notes are stored locally on your device (JSON files).",
+        "No personal data or research activity is sent to external servers.",
+        "The interface is designed for iterative research and experimentation.",
+    ],
+)
 
 # ============================================================
 # About
@@ -212,3 +253,8 @@ st.write(
 
 # (3) Final line: encourage Fetch up to
 st.caption("For best results, increase **Fetch up to**.")
+
+# ============================================================
+# Footer
+# ============================================================
+show_global_footer()

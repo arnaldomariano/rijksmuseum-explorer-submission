@@ -1,4 +1,3 @@
-# ui_theme.py
 import streamlit as st
 
 
@@ -20,8 +19,7 @@ def inject_global_css() -> None:
             max-width: 95vw;
             padding-left: 2rem;
             padding-right: 2rem;
-            padding-top: 2.1rem;   /* um pouco menos alto, aproxima do menu lateral */
-            padding-top: 2.1rem;   /* um pouco menos alto, aproxima do menu lateral */
+            padding-top: 1.3rem;   /* respiro no topo */
             padding-bottom: 2.5rem;
         }
 
@@ -32,10 +30,10 @@ def inject_global_css() -> None:
             }
         }
 
-        /* Bloco de introdução padrão (topo da página) */
-        .page-intro-wrapper {
-            margin-top: 1.5rem;      /* quase na mesma linha do “Home” */
-            margin-bottom: 0.9rem;   /* respiro antes do restante da página */
+        /* Evita que o primeiro elemento grude no topo
+           (resolve o problema do título “escondido”) */
+        div.block-container > *:first-child {
+            margin-top: 0.5rem;
         }
 
         /* Sidebar em dark mode */
@@ -61,30 +59,6 @@ def inject_global_css() -> None:
             margin-top: 1.25rem;
             margin-bottom: 0.5rem;
         }
-        
-                /* ============================
-           Blocos de introdução de página
-        ============================ */
-        .page-intro-wrapper {
-            margin-top: 0.4rem;
-            margin-bottom: 1.6rem;
-        }
-
-        .page-intro-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.55rem;
-            text-align: left;  /* ← garante alinhado à esquerda */
-        }
-
-        .page-intro-list {
-            margin: 0;
-            padding-left: 1.4rem;  /* recuo padrão da lista */
-        }
-
-        .page-intro-list li {
-            margin-bottom: 0.25rem;
-        }
 
         /* Links padrão do app */
         div[data-testid="stMarkdownContainer"] a {
@@ -93,6 +67,26 @@ def inject_global_css() -> None:
         }
         div[data-testid="stMarkdownContainer"] a:hover {
             text-decoration: underline;
+        }
+
+        /* ============================
+           Bloco de introdução de página
+        ============================ */
+        .page-intro-wrapper {
+            margin-top: 0.5rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .page-intro-title {
+            font-weight: 600;
+            font-size: 1.0rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .page-intro-list {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-left: 1.2rem;
         }
 
         /* ============================
@@ -111,10 +105,10 @@ def inject_global_css() -> None:
         unsafe_allow_html=True,
     )
 
+
 def show_page_intro(title: str, bullets: list[str]) -> None:
-    """Bloco padrão de introdução no topo da página."""
+    """Bloco padrão de introdução no topo de cada página."""
     items_html = "".join(f"<li>{b}</li>" for b in bullets)
-    import streamlit as st  # import local para evitar problemas de import circular
     st.markdown(
         f"""
         <div class="page-intro-wrapper">
@@ -126,6 +120,7 @@ def show_page_intro(title: str, bullets: list[str]) -> None:
         """,
         unsafe_allow_html=True,
     )
+
 
 def show_global_footer() -> None:
     """Rodapé padrão para todas as páginas."""

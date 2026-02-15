@@ -1,11 +1,41 @@
 import streamlit as st
 
 
+import streamlit as st
+
+
 def inject_global_css() -> None:
     """CSS base compartilhado por todas as páginas (dark mode + layout)."""
     st.markdown(
         """
         <style>
+        /* ============================
+           Painéis genéricos e pílulas
+        ============================ */
+
+        /* Painel genérico (usado em PDF Setup, etc.) */
+        .rijks-panel {
+            background-color: #181818;
+            border-radius: 12px;
+            padding: 1.0rem 1.25rem 1.1rem 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            border: 1px solid #262626;
+            margin-bottom: 1.3rem;
+        }
+
+        /* Pílula-resumo (contadores, contexto rápido) */
+        .rijks-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background-color: #262626;
+            color: #f5f5f5;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            margin-bottom: 0.9rem;
+        }
+        .rijks-pill strong { color: #ff9900; }
+
         /* ============================
            Layout e cores globais
         ============================ */
@@ -68,12 +98,11 @@ def inject_global_css() -> None:
         div[data-testid="stMarkdownContainer"] a:hover {
             text-decoration: underline;
         }
-
         /* ============================
            Bloco de introdução de página
         ============================ */
         .page-intro-wrapper {
-            margin-top: 0.5rem;
+            margin-top: 0.7rem;
             margin-bottom: 1.1rem;
         }
 
@@ -100,11 +129,20 @@ def inject_global_css() -> None:
             color: #aaaaaa;
             text-align: center;
         }
+        
+        /* Título principal da sidebar (HOME) */
+        .rijks-sidebar-main-title {
+            font-size: 1.0rem;
+            font-weight: 600;
+            padding: 0.3rem 0.3rem 0.35rem 0.4rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+        
         </style>
         """,
         unsafe_allow_html=True,
     )
-
 
 def show_page_intro(title: str, bullets: list[str]) -> None:
     """Bloco padrão de introdução no topo de cada página."""

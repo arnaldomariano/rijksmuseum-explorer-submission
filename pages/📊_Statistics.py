@@ -71,6 +71,24 @@ st.set_page_config(
 
 inject_global_css()
 
+# AJUSTE LOCAL DE ALTURA (STATISTICS / ADMIN)
+st.markdown(
+    """
+    <style>
+    /* sobe um pouco todo o conteúdo desta página */
+    div.block-container {
+        padding-top: 1.8rem;  /* ajuste fino aqui: 0.6, 0.7, 1.0... */
+    }
+
+    /* reduz a margem do primeiro título (Admin access required) */
+    div.block-container h1:first-of-type {
+        margin-top: 0.3rem;   /* diminua/aumente até alinhar visualmente */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Gate de senha (se falhar, a execução para aqui)
 require_stats_password()
 

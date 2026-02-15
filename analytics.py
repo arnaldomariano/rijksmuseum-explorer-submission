@@ -54,31 +54,24 @@ def _append_to_file(event: Dict[str, Any]) -> None:
 def track_event(event: str, page: str, props: Optional[Dict[str, Any]] = None) -> None:
     """
     Record an analytics event locally.
-
-    Parameters
-    ----------
-    event:
-        Event name, e.g. "search_executed", "selection_add_item"
-    page:
-        Page identifier, e.g. "Explorer", "My_Selection"
-    props:
-        Optional dictionary with event-specific properties.
     """
     _ensure_state()
 
+    # Usamos um único timestamp e gravamos em dois campos:
+    # - "timestamp": o nome que o dashboard Statistics espera
+    # - "ts": mantido por compatibilidade com arquivos antigos (se você quiser)
+    now = _utc_now_iso()
+
     payload = {
-        "ts": _utc_now_iso(),
+        "timestamp": now,
+        "ts": now,  # opcional, mas ajuda a ler eventos antigos e novos sem dor de cabeça
         "event": str(event),
         "page": str(page),
         "props": props or {},
     }
 
-    # Always store in session_state
     st.session_state["_analytics_events"].append(payload)
-
-    # Best-effort: append to JSONL
     _append_to_file(payload)
-
 
 def track_event_once(
     event: str,

@@ -15,7 +15,6 @@ from __future__ import annotations
 from ui_theme import inject_global_css, show_global_footer, show_page_intro
 
 
-import base64
 import csv
 import io
 import json
@@ -62,7 +61,7 @@ def inject_page_css() -> None:
         .rijks-summary-pill {
             display: inline-block;
             padding: 4px 10px;
-            border-radius: 999px;
+            #border-radius: 999px;
             background-color: #262626;
             color: #f5f5f5;
             font-size: 0.85rem;
@@ -76,7 +75,7 @@ def inject_page_css() -> None:
             border-radius: 12px;
             padding: 1rem 1.25rem 1.1rem 1.25rem;
             box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-            border: 1px solid #262626;
+            #border: 1px solid #262626;
             margin-top: 0.75rem;
             margin-bottom: 1.5rem;
         }
@@ -88,6 +87,17 @@ def inject_page_css() -> None:
             border: 1px solid #333333;
             box-shadow: 0 2px 6px rgba(0,0,0,0.45);
             text-align: center;
+        }
+
+        .export-card h4 {
+            margin: 0 0 0.4rem 0;
+            font-size: 0.95rem;
+        }
+
+        .export-card p {
+            font-size: 0.8rem;
+            color: #c7c7c7;
+            margin-bottom: 0.6rem;
         }
 
         .rijks-card {
@@ -134,7 +144,7 @@ def inject_page_css() -> None:
             margin-right: 0.25rem;
             background-color: #262626;
             color: #f5f5f5;
-            border: 1px solid #333333;
+            #border: 1px solid #333333;
         }
 
         .rijks-badge-primary {
@@ -238,6 +248,38 @@ def compute_selection_stats(favorites: Dict[str, Any]) -> Dict[str, Any]:
         "max_year": max(years) if years else None,
     }
     return stats
+
+def load_pdf_meta() -> Dict[str, Any]:
+    """
+    Load PDF configuration saved by the PDF Setup page.
+
+    The config file (PDF_META_FILE) stores:
+      - include_cover: bool
+      - include_opening_text: bool
+      - include_notes: bool
+      - opening_text: str
+    """
+    base = {
+        "include_cover": True,
+        "include_opening_text": True,
+        "include_notes": True,
+        "include_summary": True,
+        "include_about": True,
+        "opening_text": "",
+    }
+
+    try:
+        if PDF_META_FILE.exists():
+            with open(PDF_META_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            if isinstance(data, dict):
+                base.update(data)
+    except Exception:
+        # If anything goes wrong, we silently fall back to defaults.
+        pass
+
+    return base
+
 
 # ============================================================
 # Cached image helper (for faster gallery rendering)
@@ -351,29 +393,134 @@ def build_share_code(favorites: Dict[str, Any]) -> str:
     payload = {"objectNumbers": ids, "generated_at": datetime.utcnow().isoformat()}
     return json.dumps(payload, ensure_ascii=False)
 
-
-def build_pdf_buffer(favorites: Dict[str, Any], notes: Dict[str, str]) -> bytes:
+def build_pdf_buffer(
+    favorites: Dict[str, Any],
+    notes: Dict[str, str],
+    pdf_meta: Dict[str, Any],
+) -> bytes:
     """
-    Simple illustrated PDF:
-    - One page per artwork
-    - Title, artist, objectNumber, date, web link
-    - Thumbnail when possível
-    - Notes embaixo, se existirem
+    Illustrated PDF controlled by PDF Setup options.
+
+    - Optional cover page with selection summary
+    - Optional index/summary page ("Selection overview")
+    - Optional opening text / introduction
+    - One page per artwork:
+        title, artist, objectNumber, date, web link, thumbnail
+    - Optional Rijksmuseum “About” text block
+    - Optional research notes at the bottom of each artwork page
+    - Global footer on every page (app name + page number)
     """
     if not REPORTLAB_AVAILABLE:
         raise RuntimeError("ReportLab not available")
 
+    # --------------------------------------------------------
+    # Layout constants (ajustes finos de espaçamento e fontes)
+    # --------------------------------------------------------
+    PAGE_MARGIN = 50
+    TITLE_WRAP = 70           # largura para quebrar título da obra
+    BODY_WRAP = 88            # largura para textos gerais
+    ABOUT_WRAP = 86           # largura para About
+    NOTES_WRAP = 86           # largura para Notes
+
+    COVER_TITLE_SIZE = 22
+    SECTION_TITLE_SIZE = 18
+    ARTWORK_TITLE_SIZE = 15
+    META_FONT_SIZE = 11
+    BODY_FONT_SIZE = 10
+    FOOTER_FONT_SIZE = 8
+
+    # --------------------------------------------------------
+    # Helper: fetch Rijks "About" text with a tiny in-memory cache
+    # --------------------------------------------------------
+    about_cache: Dict[str, str] = {}
+
+    def get_about_text(obj_num: str) -> str:
+        """
+        Return the Rijksmuseum 'About' text for this object, if available.
+
+        Works with the linked-data detail JSON (like the SK-A-4273 file),
+        where the description usually lives in the `referred_to_by` list.
+        """
+        # Cache em memória para não bater na API toda hora
+        if obj_num in about_cache:
+            return about_cache[obj_num]
+
+        # Chama a API de detalhe
+        try:
+            detail = fetch_metadata_by_objectnumber(obj_num)
+        except RijksAPIError:
+            about_cache[obj_num] = ""
+            return ""
+        except Exception:
+            about_cache[obj_num] = ""
+            return ""
+
+        if not isinstance(detail, dict):
+            about_cache[obj_num] = ""
+            return ""
+
+        # 1) Formato novo: pegar o maior texto em `referred_to_by[*].content`
+        best = ""
+        referred = detail.get("referred_to_by") or []
+        if isinstance(referred, list):
+            for entry in referred:
+                if not isinstance(entry, dict):
+                    continue
+                content = (entry.get("content") or "").strip()
+                if content and len(content) > len(best):
+                    best = content
+
+        # 2) Fallback para formatos antigos (artObject / top-level description)
+        if not best:
+            art_obj = detail.get("artObject") or {}
+            best = (
+                art_obj.get("plaqueDescriptionEnglish")
+                or art_obj.get("description")
+                or detail.get("plaqueDescriptionEnglish")
+                or detail.get("description")
+                or ""
+            )
+
+        best = (best or "").strip()
+        about_cache[obj_num] = best
+        return best
+
+    # --------------------------------------------------------
+    # Options coming from PDF Setup
+    # --------------------------------------------------------
+    include_cover = bool(pdf_meta.get("include_cover", True))
+    include_opening_text = bool(pdf_meta.get("include_opening_text", True))
+    include_notes = bool(pdf_meta.get("include_notes", True))
+    include_summary = bool(pdf_meta.get("include_summary", True))
+    include_about = bool(pdf_meta.get("include_about", True))
+    opening_text = (pdf_meta.get("opening_text") or "").strip()
+
     buf = io.BytesIO()
     c = canvas.Canvas(buf, pagesize=A4)
     width, height = A4
-    margin = 50
+    margin = PAGE_MARGIN
 
+    # Running page counter (for footer)
+    page_num = 1
+
+    def draw_footer() -> None:
+        """Draw a small footer at the bottom of the current page."""
+        nonlocal page_num
+        c.setFont("Helvetica", FOOTER_FONT_SIZE)
+        c.setFillGray(0.5)
+        footer_text = f"Rijksmuseum Explorer — research selection · page {page_num}"
+        c.drawCentredString(width / 2, margin / 2, footer_text)
+        c.setFillGray(0.0)
+
+    # --------------------------------------------------------
+    # Stable list of items ordered by artist, then title
+    # --------------------------------------------------------
     items: List[Tuple[str, Dict[str, Any]]] = [
         (obj, art) for obj, art in favorites.items() if isinstance(art, dict)
     ]
 
-    # Ordena por artista, depois título
     def sort_key(item: Tuple[str, Dict[str, Any]]):
+        """Sort by artist, then title, then objectNumber."""
         obj_num, art = item
         artist = (art.get("principalOrFirstMaker") or "").lower()
         title = (art.get("title") or "").lower()
@@ -381,6 +528,154 @@ def build_pdf_buffer(favorites: Dict[str, Any], notes: Dict[str, str]) -> bytes:
 
     items.sort(key=sort_key)
 
+    # --------------------------------------------------------
+    # Optional cover page
+    # --------------------------------------------------------
+    if include_cover:
+        stats = compute_selection_stats(favorites)
+
+        c.setFont("Helvetica-Bold", COVER_TITLE_SIZE)
+        c.drawString(margin, height - margin - 20, "Rijksmuseum Explorer — Selection")
+
+        c.setFont("Helvetica", META_FONT_SIZE)
+        y = height - margin - 60
+        c.drawString(
+            margin,
+            y,
+            f"Generated at: {datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}",
+        )
+        y -= 20
+        c.drawString(margin, y, f"Artworks in selection: {stats.get('count', 0)}")
+        y -= 20
+        c.drawString(margin, y, f"Distinct artists: {stats.get('artists', 0)}")
+
+        min_y = stats.get("min_year")
+        max_y = stats.get("max_year")
+        if min_y and max_y:
+            y -= 20
+            if min_y == max_y:
+                c.drawString(margin, y, f"Approximate date: around {min_y}")
+            else:
+                c.drawString(margin, y, f"Approximate date range: {min_y}–{max_y}")
+
+        draw_footer()
+        c.showPage()
+        page_num += 1
+
+    # --------------------------------------------------------
+    # Optional summary / index page
+    # --------------------------------------------------------
+    if include_summary and items:
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(margin, height - margin - 20, "Selection overview")
+
+        # Fonte base do corpo da tabela
+        c.setFont("Helvetica", 10)
+        y = height - margin - 50
+
+        # Column positions
+        x_id = margin
+        # Empurramos título e artista 15 pontos para a direita
+        x_title = margin + 100
+        x_artist = margin + 315
+        x_date = width - margin - 70  # deixa espaço à direita
+
+        # Header row (um pouco mais forte)
+        c.setFont("Helvetica-Bold", 11)
+        c.drawString(x_id, y, "Object ID")
+        c.drawString(x_title, y, "Title")
+        c.drawString(x_artist, y, "Artist")
+        c.drawString(x_date, y, "Date")
+
+        # Volta para a fonte normal para as linhas da tabela
+        c.setFont("Helvetica", 10)
+        y -= 16
+
+        for obj_num, art in items:
+            if y < margin + 40:
+                draw_footer()
+                c.showPage()
+                page_num += 1
+
+                c.setFont("Helvetica-Bold", 14)
+                c.drawString(margin, height - margin - 20, "Selection overview (cont.)")
+
+                # Fonte base do corpo da tabela
+                c.setFont("Helvetica", 10)
+                y = height - margin - 50
+
+                # Header row (continuação, mesmo estilo da página 1)
+                c.setFont("Helvetica-Bold", 11)
+                c.drawString(x_id, y, "Object ID")
+                c.drawString(x_title, y, "Title")
+                c.drawString(x_artist, y, "Artist")
+                c.drawString(x_date, y, "Date")
+
+                # Volta para a fonte normal para as linhas da tabela
+                c.setFont("Helvetica", 10)
+                y -= 16
+
+            title = art.get("title") or "Untitled"
+            maker = art.get("principalOrFirstMaker") or "Unknown artist"
+            dating = art.get("dating") or {}
+            year = extract_year(dating) if isinstance(dating, dict) else None
+            date_full = dating.get("presentingDate") or (str(year) if year else "")
+
+            # ======= TRUNCAMENTOS =======
+
+            # Object ID: limita para não encostar no título
+            obj_id_display = obj_num
+            if len(obj_id_display) > 15:
+                obj_id_display = obj_id_display[:14] + "…"
+
+            # Título: um pouco menor para caber melhor
+            if len(title) > 40:
+                title = title[:37] + "..."
+
+            # Artista: corta mais cedo para não pegar a coluna de data
+            if len(maker) > 20:
+                maker = maker[:17] + "..."
+
+            # Data: só os primeiros 10 caracteres (ex.: '1675-01-01')
+            date_str = date_full[:10]
+
+            # ======= DESENHO DAS COLUNAS =======
+            c.drawString(x_id, y, obj_id_display)
+            c.drawString(x_title, y, title)
+            c.drawString(x_artist, y, maker)
+            c.drawString(x_date, y, date_str)
+            y -= 14
+        draw_footer()
+        c.showPage()
+        page_num += 1
+
+    # --------------------------------------------------------
+    # Optional opening text / introduction
+    # --------------------------------------------------------
+    if include_opening_text and opening_text:
+        c.setFont("Helvetica-Bold", SECTION_TITLE_SIZE)
+        c.drawString(margin, height - margin - 20, "Introduction")
+
+        c.setFont("Helvetica", META_FONT_SIZE)
+        y = height - margin - 60
+        wrapped_intro = wrap(opening_text, width=80)  # antes era 90
+        for line in wrapped_intro:
+            if y < margin + 40:
+                draw_footer()
+                c.showPage()
+                page_num += 1
+                c.setFont("Helvetica", META_FONT_SIZE)
+                y = height - margin
+            c.drawString(margin, y, line)
+            y -= 14
+
+        draw_footer()
+        c.showPage()
+        page_num += 1
+
+    # --------------------------------------------------------
+    # One page per artwork
+    # --------------------------------------------------------
     for obj_num, art in items:
         title = art.get("title") or "Untitled"
         maker = art.get("principalOrFirstMaker") or "Unknown artist"
@@ -389,22 +684,31 @@ def build_pdf_buffer(favorites: Dict[str, Any], notes: Dict[str, str]) -> bytes:
         date_str = dating.get("presentingDate") or (str(year) if year else "")
         link = (art.get("links") or {}).get("web", "")
 
-        c.setFont("Helvetica-Bold", 14)
-        c.drawString(margin, height - margin - 10, f"{title}")
-        c.setFont("Helvetica", 11)
-        y = height - margin - 30
+        # Header: título da obra com quebra de linha
+        c.setFont("Helvetica-Bold", ARTWORK_TITLE_SIZE)
+        y = height - margin - 15
+        title_lines = wrap(title, width=TITLE_WRAP) or ["Untitled"]
+        for line in title_lines:
+            c.drawString(margin, y, line)
+            y -= 17
+
+        # Metadados (artista, data, object number)
+        c.setFont("Helvetica", META_FONT_SIZE)
+        y -= 4
         c.drawString(margin, y, f"Artist: {maker}")
         y -= 16
         if date_str:
             c.drawString(margin, y, f"Date: {date_str}")
             y -= 16
         c.drawString(margin, y, f"Object number: {obj_num}")
-        y -= 20
+        y -= 18
 
+        # Link (se existir)
         if link:
-            c.setFont("Helvetica-Oblique", 9)
-            c.drawString(margin, y, f"Rijksmuseum: {link[:90]}")
-            y -= 22
+            c.setFont("Helvetica-Oblique", BODY_FONT_SIZE - 1)
+            short_link = link[:80]
+            c.drawString(margin, y, f"Rijksmuseum (web): {short_link}")
+            y -= 20
 
         # Thumbnail
         img_url = get_best_image_url(art)
@@ -416,41 +720,100 @@ def build_pdf_buffer(favorites: Dict[str, Any], notes: Dict[str, str]) -> bytes:
                     img = ImageReader(img_data)
 
                     max_w = width - 2 * margin
-                    max_h = 260
+                    max_h = 240   # um pouco menor para sobrar espaço p/ texto
                     iw, ih = img.getSize()
                     scale = min(max_w / iw, max_h / ih)
                     img_w = iw * scale
                     img_h = ih * scale
                     img_x = margin
                     img_y = y - img_h
-                    c.drawImage(img, img_x, img_y, width=img_w, height=img_h, preserveAspectRatio=True)
-                    y = img_y - 20
+                    c.drawImage(
+                        img,
+                        img_x,
+                        img_y,
+                        width=img_w,
+                        height=img_h,
+                        preserveAspectRatio=True,
+                    )
+                    y = img_y - 18
+
+                    # pequena linha de separação visual
+                    c.setLineWidth(0.3)
+                    c.line(margin, y + 6, width - margin, y + 6)
+                    y -= 10
             except Exception:
-                # Ignora falha de imagem; seguimos com texto
+                # Ignore image errors; continue with text-only page
                 pass
 
-        # Notes
+        # ----------------------------------------------------
+        # About text from Rijksmuseum (if available)
+        # ----------------------------------------------------
+        if include_about:
+            about_text = get_about_text(obj_num)
+            if about_text:
+                c.setFont("Helvetica-Bold", META_FONT_SIZE)
+                if y < margin + 60:
+                    # Not enough space for heading + algumas linhas
+                    draw_footer()
+                    c.showPage()
+                    page_num += 1
+                    y = height - margin
+                c.drawString(margin, y, "About this artwork (Rijksmuseum):")
+                y -= 14
+
+                c.setFont("Helvetica", BODY_FONT_SIZE)
+                for line in wrap(about_text, width=ABOUT_WRAP):
+                    if y < margin + 40:
+                        draw_footer()
+                        c.showPage()
+                        page_num += 1
+                        c.setFont("Helvetica", BODY_FONT_SIZE)
+                        y = height - margin
+                    # leve recuo para o bloco de texto
+                    c.drawString(margin + 10, y, line)
+                    y -= 12
+
+                y -= 6  # pequeno respiro antes das notas
+
+        # ----------------------------------------------------
+        # Notes (only if enabled in PDF Setup)
+        # ----------------------------------------------------
         note_text = (notes.get(obj_num, "") or "").strip()
-        if note_text:
+        if include_notes and note_text:
+            # Se estiver muito perto do rodapé, pula de página antes de abrir o bloco
+            if y < margin + 70:
+                draw_footer()
+                c.showPage()
+                page_num += 1
+                y = height - margin
+
+            # Pequeno espaço extra antes do título "Notes:"
+            y -= 4
+
             c.setFont("Helvetica-Bold", 11)
             c.drawString(margin, y, "Notes:")
             y -= 14
+
             c.setFont("Helvetica", 10)
-            wrapped = wrap(note_text, width=90)
-            for line in wrapped:
+            wrapped_notes = wrap(note_text, width=90)
+            for line in wrapped_notes:
                 if y < margin + 40:
+                    draw_footer()
                     c.showPage()
-                    y = height - margin
+                    page_num += 1
                     c.setFont("Helvetica", 10)
+                    y = height - margin
                 c.drawString(margin, y, line)
                 y -= 12
 
+        # Close last page for this artwork
+        draw_footer()
         c.showPage()
+        page_num += 1
 
     c.save()
     buf.seek(0)
     return buf.getvalue()
-
 
 # ============================================================
 # Compare candidates helpers
@@ -746,8 +1109,10 @@ else:
     )
 
 # ============================================================
-# Export panel (mantendo o panel mais novo)
+# Export panel (keeping the newer panel style)
 # ============================================================
+
+pdf_meta = load_pdf_meta()  # <-- NEW: read PDF settings saved on PDF Setup
 
 st.markdown('<div class="rijks-export-panel">', unsafe_allow_html=True)
 st.markdown("### Export & share selection")
@@ -763,8 +1128,8 @@ col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.markdown('<div class="export-card">', unsafe_allow_html=True)
-    st.markdown("<h4>Selection CSV</h4>", unsafe_allow_html=True)
-    st.markdown("<p>For spreadsheets / quick analysis.</p>", unsafe_allow_html=True)
+    st.markdown("<h4>CSV</h4>", unsafe_allow_html=True)
+    st.markdown("<p>Table format for Excel/Sheets.</p>", unsafe_allow_html=True)
     if csv_data:
         if st.download_button(
             "📄 Download CSV",
@@ -785,7 +1150,7 @@ with col1:
 with col2:
     st.markdown('<div class="export-card">', unsafe_allow_html=True)
     st.markdown("<h4>JSON</h4>", unsafe_allow_html=True)
-    st.markdown("<p>Full payload for developers.</p>", unsafe_allow_html=True)
+    st.markdown("<p>For scripts, apps and APIs.</p>", unsafe_allow_html=True)
     if st.download_button(
         "🧾 Download JSON (pretty)",
         favorites_json_pretty,
@@ -815,7 +1180,31 @@ with col2:
 with col3:
     st.markdown('<div class="export-card">', unsafe_allow_html=True)
     st.markdown("<h4>PDF</h4>", unsafe_allow_html=True)
-    st.markdown("<p>Printable report (simple).</p>", unsafe_allow_html=True)
+    st.markdown("<p>Printable report of your selection.</p>", unsafe_allow_html=True)
+
+    # Small human-readable summary of current PDF profile
+    include_cover_ui = bool(pdf_meta.get("include_cover", True))
+    include_opening_text_ui = bool(pdf_meta.get("include_opening_text", True))
+    include_notes_ui = bool(pdf_meta.get("include_notes", True))
+    include_summary_ui = bool(pdf_meta.get("include_summary", True))
+    include_about_ui = bool(pdf_meta.get("include_about", True))
+
+    flags = []
+    if include_cover_ui:
+        flags.append("cover")
+    if include_opening_text_ui:
+        flags.append("opening text")
+    if include_summary_ui:
+        flags.append("overview page")
+    if include_about_ui:
+        flags.append("about text")
+    if include_notes_ui:
+        flags.append("notes")
+
+    if flags:
+        st.caption("Current PDF setup: " + ", ".join(flags))
+    else:
+        st.caption("Current PDF setup: none (very minimal PDF).")
 
     if "pdf_buffer" not in st.session_state:
         st.session_state["pdf_buffer"] = None
@@ -825,13 +1214,17 @@ with col3:
             st.warning("Install `reportlab` to enable PDF export.")
         else:
             with st.spinner("Preparing PDF..."):
-                st.session_state["pdf_buffer"] = build_pdf_buffer(favorites, notes)
+                # <-- NEW: pass pdf_meta
+                st.session_state["pdf_buffer"] = build_pdf_buffer(
+                    favorites, notes, pdf_meta
+                )
                 track_event(
                     event="export_prepare",
                     page="My_Selection",
                     props={"format": "pdf", "count": len(favorites)},
                 )
 
+    # If a PDF buffer is available, show download button
     if st.session_state.get("pdf_buffer"):
         if st.download_button(
             "📑 Download PDF",
@@ -851,7 +1244,10 @@ with col3:
 with col4:
     st.markdown('<div class="export-card">', unsafe_allow_html=True)
     st.markdown("<h4>Share & notes</h4>", unsafe_allow_html=True)
-    st.markdown("<p>Share selection + export notes.</p>", unsafe_allow_html=True)
+    st.markdown(
+        "<p>Share your selection and export research notes.</p>",
+        unsafe_allow_html=True,
+    )
 
     with st.expander("🔗 Share selection code", expanded=False):
         st.caption("Copy this code to share your selection with another user:")
@@ -877,8 +1273,6 @@ with col4:
         )
 
     st.markdown("</div>", unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================
 # Clear entire selection (como no legacy)

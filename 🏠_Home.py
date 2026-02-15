@@ -37,6 +37,8 @@ st.set_page_config(
 )
 
 inject_global_css()
+
+# daqui pra frente continua tudo igual (show_page_intro, etc.)
 # ============================================================
 # Styling & footer
 # ============================================================
@@ -46,7 +48,11 @@ def inject_custom_css() -> None:
         """
         <style>
         .stApp { background-color: #111111; color: #f5f5f5; }
-        div.block-container { max-width: 1200px; padding-top: 1.5rem; padding-bottom: 3rem; }
+        div.block-container {
+        max-width: 1200px;
+        padding-top: 2.5rem;   /* <= mexa aqui até alinhar com as outras páginas */
+        padding-bottom: 3rem;
+         }
 
         section[data-testid="stSidebar"] { background-color: #181818 !important; }
         section[data-testid="stSidebar"] h1,
@@ -375,6 +381,13 @@ track_event_once(
 sidebar = st.sidebar
 sidebar.header("🧭 Explore & Filter")
 
+with st.sidebar:
+    st.markdown(
+        '<div class="rijks-sidebar-main-title">🏠 Home</div>',
+        unsafe_allow_html=True,
+    )
+    # resto dos controles da sidebar...
+
 sidebar.subheader("Search")
 search_term = sidebar.text_input("Search term", value="Rembrandt", help="Artist, title keyword, theme, etc.")
 
@@ -426,6 +439,26 @@ if auth_scope.startswith("Direct + Attributed + Circle"):
 sidebar.subheader("Advanced filters")
 year_min, year_max = sidebar.slider("Year range (approx.)", 1500, 2025, (1600, 1900), step=10)
 sidebar.caption("Year filter is applied locally after results are fetched.")
+
+# ------------------------
+# Text filters (helper explanation)
+# ------------------------
+sidebar.markdown(
+    """
+**Text filters (helper)**  
+
+Text filters search inside the textual metadata of each artwork (title, long
+title, description and notes returned by the API).
+
+Use short keywords, for example:
+
+- `self-portrait`
+- `landscape`
+- `night watch`
+- `religious`
+"""
+)
+
 
 sidebar.subheader("Text filters (optional)")
 sidebar.caption("Material/place filters depend on metadata availability in the current mapping.")

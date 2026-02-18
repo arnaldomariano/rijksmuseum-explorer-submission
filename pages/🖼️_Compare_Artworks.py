@@ -155,22 +155,46 @@ candidate_arts: List[Tuple[str, Dict[str, Any]]] = [(obj_id, favorites[obj_id]) 
 # ============================================================
 # Pair selection state (max 2) — callback-safe
 # ============================================================
+# Lista global com os IDs que vão realmente para a comparação grande
 if "cmp_pair_ids" not in st.session_state:
-    st.session_state["cmp_pair_ids"] = candidate_ids[:2]
-    for obj_id in candidate_ids:
-        st.session_state[f"cmp_pair_{obj_id}"] = obj_id in st.session_state["cmp_pair_ids"]
+    # ✅ Agora começamos sem nenhuma obra selecionada
+    st.session_state["cmp_pair_ids"] = []
+
+# Flag para mostrar aviso de limite estourado
+if "cmp_pair_warning" not in st.session_state:
+    st.session_state["cmp_pair_warning"] = False
+
+# Garante que exista um estado booleano para cada candidato atual
+for obj_id in candidate_ids:
+    st.session_state.setdefault(f"cmp_pair_{obj_id}", False)
 
 
 def on_pair_toggle(changed_id: str) -> None:
-    """Enforce a maximum of 2 selected items (safe inside widget callback)."""
-    selected = [x for x in candidate_ids if bool(st.session_state.get(f"cmp_pair_{x}", False))]
+    """
+    Enforce a maximum of 2 selected items (safe inside widget callback).
+
+    Sempre que uma checkbox 'Include in comparison pair' mudar,
+    recalculamos a lista de selecionados a partir de st.session_state.
+    """
+    # Quais candidatos estão marcados nas checkboxes?
+    selected = [
+        x for x in candidate_ids
+        if bool(st.session_state.get(f"cmp_pair_{x}", False))
+    ]
+
+    # Se passou de 2, desmarca o que acabou de mudar e liga o warning
     if len(selected) > 2:
         st.session_state[f"cmp_pair_{changed_id}"] = False
         st.session_state["cmp_pair_warning"] = True
 
-    selected = [x for x in candidate_ids if bool(st.session_state.get(f"cmp_pair_{x}", False))]
-    st.session_state["cmp_pair_ids"] = selected[:2]
+        # Recalcula depois de desfazer a última marcação
+        selected = [
+            x for x in candidate_ids
+            if bool(st.session_state.get(f"cmp_pair_{x}", False))
+        ]
 
+    # Guarda a lista final (0, 1 ou 2 itens) para usar na comparação grande
+    st.session_state["cmp_pair_ids"] = selected
 
 # ============================================================
 # Candidate cards

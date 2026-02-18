@@ -22,7 +22,14 @@ import streamlit as st
 
 from app_paths import FAV_FILE, NOTES_FILE, HERO_IMAGE_PATH
 from analytics import track_event, track_event_once
-from rijks_api import search_artworks, extract_year, get_best_image_url, probe_image_url
+from rijks_api import (
+    search_artworks,
+    extract_year,
+    get_best_image_url,
+    probe_image_url,
+    fetch_metadata_by_objectnumber,
+    RijksAPIError,
+)
 from ui_theme import inject_global_css, show_global_footer, show_page_intro
 
 # ============================================================
@@ -152,7 +159,7 @@ show_page_intro(
         "Build a personal research selection and keep it locally on this device.",
         "Compare up to 4 artworks side-by-side for visual and contextual analysis.",
         "Export your selection to CSV / JSON / PDF for further study.",
-        "Track basic usage statistics to understand your research workflow.",
+        "Keep all research activity local: favorites, notes and basic usage counts stay on this device only — nothing is sent to external servers.",
     ],
 )
 
@@ -365,7 +372,10 @@ notes: Dict[str, str] = st.session_state.setdefault("notes", {})
 
 st.session_state.setdefault("results_full", [])
 st.session_state.setdefault("results_filtered", [])
-st.session_state.setdefault("search_meta", {})
+
+# garante que sempre exista um max_pages pelo menos 1
+if "search_meta" not in st.session_state:
+    st.session_state["search_meta"] = {"max_pages": 1}
 
 track_event_once(
     event="page_view",
@@ -485,8 +495,29 @@ else:
     place_filter = place_choice
 
 sidebar.subheader("Pagination (local)")
-per_page = sidebar.selectbox("Results per page", options=[12, 24, 30], index=0)
-page_num = sidebar.number_input("Page", min_value=1, value=1, step=1)
+
+# valores anteriores para manter estado entre reruns
+prev_per_page = st.session_state.get("per_page", 12)
+prev_page = int(st.session_state.get("page_num", 1))
+
+# max_pages conhecido da última busca (ou 1 se nunca buscou)
+max_pages_known = int(st.session_state.get("search_meta", {}).get("max_pages", 1))
+
+per_page = sidebar.selectbox(
+    "Results per page",
+    options=[12, 24, 30],
+    index=[12, 24, 30].index(prev_per_page) if prev_per_page in [12, 24, 30] else 0,
+)
+st.session_state["per_page"] = per_page
+
+page_num = sidebar.number_input(
+    "Page",
+    min_value=1,
+    max_value=max_pages_known,     # 👈 aqui some o '+' quando só há 1 página
+    value=min(prev_page, max_pages_known),
+    step=1,
+)
+st.session_state["page_num"] = int(page_num)
 
 sidebar.markdown("<div style='height: 0.75rem'></div>", unsafe_allow_html=True)
 run_search = sidebar.button("🔍 Apply filters & search", use_container_width=True)
@@ -601,11 +632,40 @@ filtered_results: List[Dict[str, Any]] = st.session_state.get("results_filtered"
 
 total_filtered = len(filtered_results)
 max_pages = max(1, ceil(total_filtered / int(per_page))) if per_page else 1
+
+# clamp da página atual
 page_num = min(int(page_num), max_pages)
+
+# guarda no session_state para o próximo rerun
+meta = st.session_state.get("search_meta", {})
+meta["max_pages"] = max_pages
+st.session_state["search_meta"] = meta
+st.session_state["page_num"] = int(page_num)
 
 start_idx = (page_num - 1) * int(per_page)
 end_idx = start_idx + int(per_page)
 page_items = filtered_results[start_idx:end_idx]
+
+# ---------------------------------------
+# Dedup: evita obras repetidas na página
+# (e evita conflito de key na checkbox)
+# ---------------------------------------
+seen_ids = set()
+dedup_items = []
+for art in page_items:
+    obj = art.get("objectNumber")
+    # se não tiver ID, a gente deixa passar
+    if not obj:
+        dedup_items.append(art)
+        continue
+    # se já vimos esse ID, pula
+    if obj in seen_ids:
+        continue
+    seen_ids.add(obj)
+    dedup_items.append(art)
+
+page_items = dedup_items
+# ---------------------------------------
 
 if total_filtered > 0:
     st.caption(
@@ -628,48 +688,90 @@ if page_items:
     col_add, col_remove = st.columns(2)
 
     with col_add:
-        add_all_clicked = st.button("⭐ Add ALL on this page", use_container_width=True, key="btn_add_all_page")
+        add_all_clicked = st.button(
+            "⭐ Add ALL on this page",
+            use_container_width=True,
+            key="btn_add_all_page",
+        )
     with col_remove:
-        remove_all_clicked = st.button("🗑️ Remove ALL on this page", use_container_width=True, key="btn_remove_all_page")
+        remove_all_clicked = st.button(
+            "🗑️ Remove ALL on this page",
+            use_container_width=True,
+            key="btn_remove_all_page",
+        )
 
+    # ADD ALL: força todas as obras desta página a entrarem na seleção
     if add_all_clicked:
-        added = 0
         for art in page_items:
             obj_num = art.get("objectNumber")
             if not obj_num:
                 continue
-            if obj_num not in favorites:
-                favorites[obj_num] = art
-                added += 1
+
+            # garante que está em favorites
+            favorites[obj_num] = art
+            # força o checkbox correspondente a ficar marcado
             st.session_state[f"fav_{obj_num}"] = True
 
         st.session_state["favorites"] = favorites
         save_favorites()
         saved_pill_placeholder.markdown(
-            f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>',
+            f'<div class="rijks-summary-pill">Saved artworks: '
+            f'<strong>{len(favorites)}</strong></div>',
             unsafe_allow_html=True,
         )
-        st.success(f"Added {added} artwork(s) to your selection." if added else "All items on this page were already in your selection.")
+        st.success("All artworks on this page were added to your selection.")
+        st.rerun()
 
+    # REMOVE ALL: força todas as obras desta página a saírem da seleção
     if remove_all_clicked:
-        removed = 0
         for art in page_items:
             obj_num = art.get("objectNumber")
             if not obj_num:
                 continue
-            if obj_num in favorites:
-                favorites.pop(obj_num)
-                removed += 1
+
+            # remove de favorites (se existir)
+            favorites.pop(obj_num, None)
+            # força o checkbox a ficar desmarcado
             st.session_state[f"fav_{obj_num}"] = False
 
         st.session_state["favorites"] = favorites
         save_favorites()
         saved_pill_placeholder.markdown(
-            f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>',
+            f'<div class="rijks-summary-pill">Saved artworks: '
+            f'<strong>{len(favorites)}</strong></div>',
             unsafe_allow_html=True,
         )
-        st.success(f"Removed {removed} artwork(s) from your selection." if removed else "None of the items on this page were in your selection.")
+        st.success("All artworks on this page were removed from your selection.")
+        st.rerun()
 
+@st.cache_data(show_spinner=False)
+def _fetch_better_title(object_number: str) -> str | None:
+    """
+    Quando o resultado da busca só traz o objectNumber como 'title'
+    (ou nada), tentamos buscar um título melhor na API de detalhe.
+
+    Fica em cache para não bater na API toda hora.
+    """
+    if not object_number:
+        return None
+
+    try:
+        detail = fetch_metadata_by_objectnumber(object_number)
+    except (RijksAPIError, Exception):
+        return None
+
+    if not isinstance(detail, dict):
+        return None
+
+    art_obj = detail.get("artObject") or detail
+
+    # Tentativas em ordem de preferência
+    for key in ("titleEnglish", "title", "longTitle"):
+        val = (art_obj.get(key) or "").strip()
+        if val:
+            return val
+
+    return None
 
 # ============================================================
 # Results grid (cards)
@@ -685,13 +787,38 @@ if page_items:
                 st.markdown('<div class="rijks-card">', unsafe_allow_html=True)
 
                 object_number = art.get("objectNumber")
-                title = art.get("title", "Untitled")
 
+                # ---------------------------------------
+                # 1) Título (com fallback via detalhe)
+                # ---------------------------------------
+                raw_title = (art.get("title") or "").strip()
+                long_title = (art.get("longTitle") or "").strip()
+                obj_num_str = (object_number or "").strip()
+
+                display_title = raw_title or long_title or "Untitled"
+
+                # Se o "título" for só o ID ou estiver vazio,
+                # tentamos buscar algo melhor via API de detalhe.
+                if obj_num_str and (display_title == obj_num_str or display_title == "Untitled"):
+                    better = _fetch_better_title(obj_num_str)
+                    if better and better != obj_num_str:
+                        display_title = better
+
+                # ---------------------------------------
+                # 2) Artista (normalizado)
+                # ---------------------------------------
                 raw_maker = art.get("principalOrFirstMaker", "")
                 maker_norm = (raw_maker or "").strip()
 
-                if maker_norm.lower() in ("", "unknown", "unknown artist", "onbekend", "onbekende kunstenaar", "n/a",
-                                          "niet vermeld"):
+                if maker_norm.lower() in (
+                    "",
+                    "unknown",
+                    "unknown artist",
+                    "onbekend",
+                    "onbekende kunstenaar",
+                    "n/a",
+                    "niet vermeld",
+                ):
                     maker = "Unknown artist"
                 elif maker_norm.lower() in ("anonymous", "anoniem"):
                     maker = "anonymous"
@@ -703,71 +830,59 @@ if page_items:
                 note_text = notes.get(object_number, "") if object_number else ""
                 has_notes = isinstance(note_text, str) and note_text.strip() != ""
 
+                # ---------------------------------------
+                # 3) Imagem + status
+                # ---------------------------------------
                 img_url = get_best_image_url(art)
-
-                # status vindo do mapper (rijks_api.py)
                 status = (art.get("_image_status") or "no_public_image").lower()
-
-                # Default: assume que não vamos mostrar imagem
                 img_status = "no_public_image"
 
-                # Mensagens por status (UI)
-                if status == "copyright":
-                    img_note = (
-                        "This image cannot be shown due to copyright restrictions.<br>"
-                        "It may also be restricted on the Rijksmuseum website."
-                    )
-                elif status == "page_missing":
-                    img_note = (
-                        "The public Rijksmuseum page for this object appears to be unavailable (page not found).<br>"
-                        "The object may have moved or the link may be outdated."
-                    )
-                else:
-                    # no_public_image ou desconhecido
-                    img_note = (
-                        "No public image is available for this artwork via the current mapping.<br>"
-                        "You can still open it on the Rijksmuseum website using the link below."
-                    )
-
-                # Se temos URL de imagem, tentamos exibir
                 if img_url:
                     probe = probe_image_url(img_url)
                     if probe.get("ok"):
                         img_status = "ok"
                         st.image(img_url, use_container_width=True)
                     else:
-                        # If the image URL exists but failed, refine using HTTP status codes
                         pstatus = (probe.get("status") or "").lower()
                         if pstatus == "copyright":
                             status = "copyright"
-                            img_note = (
-                                "This image cannot be shown due to copyright restrictions.<br>"
-                                "It may also be unavailable on the Rijksmuseum website."
-                            )
                         else:
                             status = "broken"
-                            img_note = (
-                                "This image is currently unavailable (broken endpoint or temporary issue).<br>"
-                                "You can still open the object page on the Rijksmuseum website using the link below."
-                            )
-                # Caixa de aviso só quando NÃO exibiu imagem
-                if img_status != "ok":
-                    st.markdown(
-                        f"""
-                        <div class="rijks-no-image-msg">
-                        {img_note}
-                        </div>
-                        """,
-                        unsafe_allow_html=True,
-                    )
-                # Title + maker
-                st.markdown(f'<div class="rijks-card-title">{title}</div>', unsafe_allow_html=True)
-                st.markdown(f'<div class="rijks-card-caption">{maker}</div>', unsafe_allow_html=True)
 
-                # Selection checkbox
+                if img_status != "ok":
+                    render_image_message(status)
+
+                # ---------------------------------------
+                # 4) Título + artista no card
+                # ---------------------------------------
+                st.markdown(
+                    f'<div class="rijks-card-title">{display_title}</div>',
+                    unsafe_allow_html=True,
+                )
+                st.markdown(
+                    f'<div class="rijks-card-caption">{maker}</div>',
+                    unsafe_allow_html=True,
+                )
+
+                # ---------------------------------------
+                # 5) Checkbox "In my selection"
+                #    (controlada só via session_state)
+                # ---------------------------------------
                 if object_number:
+                    checkbox_key = f"fav_{object_number}"
+
+                    # Inicializa o estado da checkbox uma única vez
+                    if checkbox_key not in st.session_state:
+                        st.session_state[checkbox_key] = object_number in favorites
+
+                    # A partir daqui, quem manda é st.session_state[checkbox_key]
+                    checked = st.checkbox(
+                        "In my selection",
+                        key=checkbox_key,
+                    )
+
+                    # Situação atual no "modelo de verdade"
                     was_fav = object_number in favorites
-                    checked = st.checkbox("In my selection", value=was_fav, key=f"fav_{object_number}")
 
                     if checked != was_fav:
                         if checked:
@@ -775,52 +890,73 @@ if page_items:
                             track_event(
                                 event="selection_add_item",
                                 page="Explorer",
-                                props={"object_id": object_number, "artist": maker, "source": "Explorer"},
+                                props={
+                                    "object_id": object_number,
+                                    "artist": maker,
+                                    "source": "Explorer",
+                                },
                             )
-                            # Herdado da versão legacy: também contamos como "view" para estatísticas
                             track_event(
                                 event="artwork_view",
                                 page="Explorer",
-                                props={"object_id": object_number, "artist": maker, "source": "selection_checkbox"},
+                                props={
+                                    "object_id": object_number,
+                                    "artist": maker,
+                                    "source": "selection_checkbox",
+                                },
                             )
                         else:
                             favorites.pop(object_number, None)
                             track_event(
                                 event="selection_remove_item",
                                 page="Explorer",
-                                props={"object_id": object_number, "artist": maker, "source": "Explorer"},
+                                props={
+                                    "object_id": object_number,
+                                    "artist": maker,
+                                    "source": "Explorer",
+                                },
                             )
 
                         st.session_state["favorites"] = favorites
                         save_favorites()
                         saved_pill_placeholder.markdown(
-                            f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>',
+                            f'<div class="rijks-summary-pill">Saved artworks: '
+                            f'<strong>{len(favorites)}</strong></div>',
                             unsafe_allow_html=True,
                         )
 
                     is_fav = checked
                 else:
                     is_fav = False
-
-                # Badges
+                # ---------------------------------------
+                # 6) Badges
+                # ---------------------------------------
                 badge_parts: List[str] = []
 
                 if is_fav:
-                    badge_parts.append('<span class="rijks-badge rijks-badge-primary">⭐ In my selection</span>')
+                    badge_parts.append(
+                        '<span class="rijks-badge rijks-badge-primary">⭐ In my selection</span>'
+                    )
                 if has_notes:
-                    badge_parts.append('<span class="rijks-badge rijks-badge-secondary">📝 Notes</span>')
+                    badge_parts.append(
+                        '<span class="rijks-badge rijks-badge-secondary">📝 Notes</span>'
+                    )
 
                 badge_parts.append(attribution_badge_html(art))
 
-                # Only show image status badge if image is not displayed
                 if img_status != "ok":
                     badge = image_status_badge_html(status)
                     if badge:
                         badge_parts.append(badge)
 
-                st.markdown('<div class="rijks-badge-row">' + " ".join(badge_parts) + "</div>", unsafe_allow_html=True)
+                st.markdown(
+                    '<div class="rijks-badge-row">' + " ".join(badge_parts) + "</div>",
+                    unsafe_allow_html=True,
+                )
 
-                # Basic metadata
+                # ---------------------------------------
+                # 7) Metadados básicos
+                # ---------------------------------------
                 dating = art.get("dating") or {}
                 presenting_date = dating.get("presentingDate")
                 year = extract_year(dating) if dating else None
@@ -830,7 +966,6 @@ if page_items:
                 elif year:
                     st.text(f"Year: {year}")
 
-                # Object ID (herdado da versão legacy — útil para pesquisa)
                 if object_number:
                     st.text(f"Object ID: {object_number}")
 
@@ -838,7 +973,6 @@ if page_items:
                     st.markdown(f"[View on Rijksmuseum website]({web_link})")
 
                 st.markdown("</div>", unsafe_allow_html=True)
-
 
 # ============================================================
 # Footer

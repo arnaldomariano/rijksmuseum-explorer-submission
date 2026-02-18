@@ -416,11 +416,11 @@ def build_pdf_buffer(
     # --------------------------------------------------------
     # Layout constants (ajustes finos de espaçamento e fontes)
     # --------------------------------------------------------
-    PAGE_MARGIN = 50
-    TITLE_WRAP = 70           # largura para quebrar título da obra
-    BODY_WRAP = 88            # largura para textos gerais
-    ABOUT_WRAP = 86           # largura para About
-    NOTES_WRAP = 86           # largura para Notes
+    PAGE_MARGIN = 40          # antes 50  → um pouco mais de área útil
+    TITLE_WRAP = 70           # antes 80
+    BODY_WRAP = 105           # antes 88
+    ABOUT_WRAP = 100          # antes 86
+    NOTES_WRAP = 100          # antes 86
 
     COVER_TITLE_SIZE = 22
     SECTION_TITLE_SIZE = 18
@@ -658,7 +658,7 @@ def build_pdf_buffer(
 
         c.setFont("Helvetica", META_FONT_SIZE)
         y = height - margin - 60
-        wrapped_intro = wrap(opening_text, width=80)  # antes era 90
+        wrapped_intro = wrap(opening_text, width=BODY_WRAP)
         for line in wrapped_intro:
             if y < margin + 40:
                 draw_footer()
@@ -795,7 +795,7 @@ def build_pdf_buffer(
             y -= 14
 
             c.setFont("Helvetica", 10)
-            wrapped_notes = wrap(note_text, width=90)
+            wrapped_notes = wrap(note_text, width=NOTES_WRAP)
             for line in wrapped_notes:
                 if y < margin + 40:
                     draw_footer()
@@ -1275,26 +1275,67 @@ with col4:
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================
-# Clear entire selection (como no legacy)
+# Clear entire selection (agora com confirmação)
 # ============================================================
 
-if st.button("Clear my entire selection"):
-    # Clear favorites in memory and on disk
-    st.session_state["favorites"] = {}
-    favorites = {}
-    try:
-        with open(FAV_FILE, "w", encoding="utf-8") as f:
-            json.dump({}, f, ensure_ascii=False, indent=2)
-    except Exception:
-        pass
+st.markdown("---")
+st.markdown("### Danger zone")
 
-    # Reset compare candidates and PDF buffer
-    st.session_state["compare_candidates"] = []
-    st.session_state["pdf_buffer"] = None
-    st.session_state["detail_art_id"] = None
+# Primeiro clique: apenas pede confirmação
+clear_clicked = st.button(
+    "🗑️ Clear my entire selection",
+    help="Remove all artworks from your selection on this device.",
+    key="btn_clear_selection",
+)
 
-    st.success("Your selection has been cleared.")
-    st.rerun()
+if clear_clicked:
+    st.session_state["confirm_clear_selection"] = True
+
+# Se o usuário clicou no botão, exibimos o diálogo de confirmação
+if st.session_state.get("confirm_clear_selection", False):
+    st.warning(
+        "This action will remove **all artworks** from your selection "
+        "and reset comparison candidates and detail view. "
+        "This cannot be undone.",
+        icon="⚠️",
+    )
+
+    col_yes, col_no = st.columns(2)
+
+    with col_yes:
+        confirm_clear = st.button(
+            "Yes, clear everything",
+            key="btn_confirm_clear_selection",
+        )
+    with col_no:
+        cancel_clear = st.button(
+            "Cancel",
+            key="btn_cancel_clear_selection",
+        )
+
+    if confirm_clear:
+        # Clear favorites in memory and on disk
+        st.session_state["favorites"] = {}
+        favorites = {}
+        try:
+            with open(FAV_FILE, "w", encoding="utf-8") as f:
+                json.dump({}, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
+
+        # Reset compare candidates and PDF buffer
+        st.session_state["compare_candidates"] = []
+        st.session_state["pdf_buffer"] = None
+        st.session_state["detail_art_id"] = None
+
+        st.session_state["confirm_clear_selection"] = False
+
+        st.success("Your selection has been cleared.")
+        st.rerun()
+
+    elif cancel_clear:
+        # Usuário desistiu de limpar tudo
+        st.session_state["confirm_clear_selection"] = False
 
 # ============================================================
 # Gallery + comparison logic (grid + group-by-artist, legacy-style)
@@ -1567,9 +1608,23 @@ else:
                     else:
                         st.caption("Thumbnails hidden for faster browsing.")
 
-                    # Basic metadata
-                    title = art.get("title", "Untitled")
+                    # Basic metadata — escolher o melhor título possível
+                    obj_num_str = (obj_num or "").strip()
+                    raw_title = (art.get("title") or "").strip()
+                    long_title = (art.get("longTitle") or "").strip()
+
+                    # Regra:
+                    # 1) Usa title se existir
+                    # 2) Senão, usa longTitle
+                    # 3) Se o "título" for só o próprio objectNumber (ex.: "SK-C-230"),
+                    #    e existir longTitle, usa o longTitle
+                    title = raw_title or long_title or "Untitled"
+                    if obj_num_str and title == obj_num_str and long_title:
+                        title = long_title
+
                     maker = art.get("principalOrFirstMaker", "Unknown artist")
+
+                    # Compact mode ainda funciona igual, só em cima do título final
                     if compact_mode and isinstance(title, str) and len(title) > 60:
                         title = title[:57] + "..."
 
@@ -1684,6 +1739,7 @@ else:
 
                     st.markdown("</div>", unsafe_allow_html=True)
 
+
     # =========================================================
     # MODE A) GROUP BY ARTIST
     # =========================================================
@@ -1748,6 +1804,7 @@ else:
             f"{total_artists} artist(s) and {len(base_items)} artwork(s) total after filters."
         )
 
+
         def sort_items_for_artist(items_for_artist: List[Tuple[str, Dict[str, Any]]]) -> None:
             if sort_within_artist == "Title (A–Z)":
                 items_for_artist.sort(
@@ -1760,14 +1817,14 @@ else:
                 items_for_artist.sort(
                     key=lambda it: (
                         get_year_for_sort(it[1]) is None,
-                        get_year_for_sort(it[1]) or 10**9,
+                        get_year_for_sort(it[1]) or 10 ** 9,
                     )
                 )
             elif sort_within_artist == "Year (newest → oldest)":
                 items_for_artist.sort(
                     key=lambda it: (
                         get_year_for_sort(it[1]) is None,
-                        -(get_year_for_sort(it[1]) or -10**9),
+                        -(get_year_for_sort(it[1]) or -10 ** 9),
                     )
                 )
             elif sort_within_artist == "Notes first":
@@ -1777,6 +1834,7 @@ else:
                         it[1].get("title", ""),
                     )
                 )
+
 
         for artist in page_artists:
             items_for_artist = grouped.get(artist, [])
@@ -1798,7 +1856,7 @@ else:
             header_line = " • ".join(subtitle_parts)
 
             with st.expander(
-                f"👤 {artist} — {header_line}", expanded=expand_artists
+                    f"👤 {artist} — {header_line}", expanded=expand_artists
             ):
                 render_cards(items_for_artist, allow_compare=enable_compare_grouped)
 
@@ -1807,6 +1865,14 @@ else:
     # =========================================================
 
     else:
+        # 🔧 Ajuste: se a galeria estiver restrita aos candidatos de comparação
+        # e tivermos até 4 obras, exibimos todas lado a lado (1, 2, 3 ou 4 colunas).
+        if show_only_cmp and candidate_ids and len(base_items) <= 4:
+            cards_per_row = max(1, len(base_items))
+        else:
+            # comportamento padrão
+            cards_per_row = 5 if compact_mode else 3
+
         items_per_page = st.select_slider(
             "Artworks per page",
             options=[6, 9, 12, 18, 24, 36],
@@ -1860,152 +1926,176 @@ else:
                 f"Currently marked for comparison: **{num_candidates}** artwork(s). "
                 "Open the **Compare Artworks** page to run the side-by-side view."
             )
+    # ============================================================
+    # Detail view + research notes editor (ajustado: layout 1 coluna)
+    # ============================================================
 
-# ============================================================
-# Detail view + research notes editor (legacy style)
-# ============================================================
+    detail_id = st.session_state.get("detail_art_id")
 
-detail_id = st.session_state.get("detail_art_id")
-if detail_id and detail_id in favorites:
-    art = favorites[detail_id]
+    if detail_id and detail_id in favorites:
+        art = favorites[detail_id]
 
-    analytics_key = f"analytics_detail_opened_{detail_id}"
-    if analytics_key not in st.session_state:
-        st.session_state[analytics_key] = True
+        # Analytics para abertura da detail view (igual ao original)
+        analytics_key = f"analytics_detail_opened_{detail_id}"
+        if analytics_key not in st.session_state:
+            st.session_state[analytics_key] = True
+            dating = art.get("dating") or {}
+            year_analytics = dating.get("year") or dating.get("presentingDate")
+            title_analytics = art.get("title")
+            track_event(
+                event="artwork_detail_opened",
+                page="My_Selection",
+                props={
+                    "object_id": detail_id,
+                    "artist": art.get("principalOrFirstMaker"),
+                    "title": title_analytics,
+                    "year": year_analytics,
+                    "has_notes": bool(
+                        isinstance(st.session_state.get("notes", {}).get(detail_id), str)
+                        and st.session_state["notes"][detail_id].strip()
+                    ),
+                },
+            )
+
+        st.markdown("---")
+        st.subheader("🔍 Detail view")
+
+        # --------- Novo layout: tudo em uma coluna ---------
+
+        img_url = get_best_image_url(art)
+
+        raw_title = (art.get("title") or "").strip()
+        long_title = (art.get("longTitle") or "").strip()
+        obj_num_str = (detail_id or "").strip()
+
+        title = raw_title or long_title or "Untitled"
+        if obj_num_str and title == obj_num_str and long_title:
+            title = long_title
+
+        maker = art.get("principalOrFirstMaker", "Unknown artist")
+        web_link = (art.get("links") or {}).get("web")
         dating = art.get("dating") or {}
-        year = dating.get("year") or dating.get("presentingDate")
-        title = art.get("title")
-        track_event(
-            event="artwork_detail_opened",
-            page="My_Selection",
-            props={
-                "object_id": detail_id,
-                "artist": art.get("principalOrFirstMaker"),
-                "title": title,
-                "year": year,
-                "has_notes": bool(
-                    isinstance(
-                        st.session_state.get("notes", {}).get(detail_id), str
-                    )
-                    and st.session_state["notes"][detail_id].strip()
-                ),
-            },
-        )
+        presenting_date = dating.get("presentingDate")
+        year = dating.get("year")
 
-    st.markdown("---")
-    st.subheader("🔍 Detail view")
-
-    img_url = get_best_image_url(art)
-    title = art.get("title", "Untitled")
-    maker = art.get("principalOrFirstMaker", "Unknown artist")
-    web_link = (art.get("links") or {}).get("web")
-    dating = art.get("dating") or {}
-    presenting_date = dating.get("presentingDate")
-    year = dating.get("year")
-
-    col_img, col_meta = st.columns([3, 2])
-
-    with col_img:
+        # Slider + imagem ocupando largura toda do conteúdo central
         if img_url:
             zoom = st.slider(
                 "Zoom (relative size)",
-                min_value=50,
-                max_value=200,
+                min_value=60,
+                max_value=220,
                 value=120,
                 step=10,
                 key=f"zoom_{detail_id}",
             )
-            base_width = 600
+            base_width = 900  # base mais larga; Streamlit limita se passar do container
             width = int(base_width * zoom / 100)
             st.image(img_url, width=width)
         else:
             st.write("No valid image available via API.")
 
-    with col_meta:
-        st.write(f"**Title:** {title}")
-        st.write(f"**Artist:** {maker}")
-        st.write(f"**Object ID:** {detail_id}")
-        if presenting_date:
-            st.write(f"**Date:** {presenting_date}")
-        elif year:
-            st.write(f"**Year:** {year}")
+        # Metadados logo abaixo da imagem, com fonte um pouco menor
+        meta_parts = [
+            f"<strong>Title:</strong> {title}",
+            f"<strong>Artist:</strong> {maker}",
+            f"<strong>Object ID:</strong> {detail_id}",
+        ]
 
-        long_title = art.get("longTitle")
+        if presenting_date:
+            meta_parts.append(f"<strong>Date:</strong> {presenting_date}")
+        elif year:
+            meta_parts.append(f"<strong>Year:</strong> {year}")
+
+        long_title_meta = art.get("longTitle")
         object_types = art.get("objectTypes")
         materials = art.get("materials")
         techniques = art.get("techniques")
         production_places = art.get("productionPlaces")
 
-        if long_title and long_title != title:
-            st.write(f"**Long title:** {long_title}")
+        if long_title_meta and long_title_meta != title:
+            meta_parts.append(f"<strong>Long title:</strong> {long_title_meta}")
         if object_types:
-            st.write(f"**Object type(s):** {', '.join(object_types)}")
+            meta_parts.append(f"<strong>Object type(s):</strong> {', '.join(object_types)}")
         if materials:
-            st.write(f"**Materials:** {', '.join(materials)}")
+            meta_parts.append(f"<strong>Materials:</strong> {', '.join(materials)}")
         if techniques:
-            st.write(f"**Techniques:** {', '.join(techniques)}")
+            meta_parts.append(f"<strong>Techniques:</strong> {', '.join(techniques)}")
         if production_places:
-            st.write(f"**Production place(s): {', '.join(production_places)}")
+            meta_parts.append(
+                f"<strong>Production place(s):</strong> {', '.join(production_places)}"
+            )
+
         if web_link:
-            st.markdown(f"[Open on Rijksmuseum website for full zoom]({web_link})")
+            meta_parts.append(
+                f'<a href="{web_link}" target="_blank">'
+                f"Open on Rijksmuseum website for full zoom</a>"
+            )
 
-    st.markdown("### 📝 Research notes")
-    existing_note = notes.get(detail_id, "")
-    note_text = st.text_area(
-        "Write your notes for this artwork:",
-        value=existing_note,
-        height=160,
-        key=f"note_{detail_id}",
-    )
-
-    if st.button("Save notes", key=f"save_note_{detail_id}"):
-        notes[detail_id] = note_text
-        save_notes(notes)
-        st.success("Notes saved successfully.")
-        track_event(
-            event="note_saved",
-            page="My_Selection",
-            props={
-                "object_id": detail_id,
-                "note_len": len(note_text.strip())
-                if isinstance(note_text, str)
-                else 0,
-                "has_note": bool(isinstance(note_text, str) and note_text.strip()),
-            },
+        st.markdown(
+            """
+            <div style="font-size:0.9rem; line-height:1.5; margin-top:0.9rem;">
+            """ + "<br>".join(meta_parts) + "</div>",
+            unsafe_allow_html=True,
         )
 
-    if st.button("Remove from my selection", key=f"remove_detail_{detail_id}"):
-        track_event(
-            event="selection_remove_item",
-            page="My_Selection",
-            props={
-                "object_id": detail_id,
-                "artist": art.get("principalOrFirstMaker"),
-                "had_notes": bool((notes.get(detail_id, "") or "").strip()),
-                "prev_count": len(favorites),
-                "origin": "detail_view",
-            },
+        # --------- Notas de pesquisa (igual ao original) ---------
+        st.markdown("### 📝 Research notes")
+        existing_note = notes.get(detail_id, "")
+        note_text = st.text_area(
+            "Write your notes for this artwork:",
+            value=existing_note,
+            height=160,
+            key=f"note_{detail_id}",
         )
-        favorites.pop(detail_id, None)
-        st.session_state["favorites"] = favorites
-        try:
-            with open(FAV_FILE, "w", encoding="utf-8") as f:
-                json.dump(favorites, f, ensure_ascii=False, indent=2)
-        except Exception:
-            pass
 
-        notes.pop(detail_id, None)
-        save_notes(notes)
+        if st.button("Save notes", key=f"save_note_{detail_id}"):
+            notes[detail_id] = note_text
+            save_notes(notes)
+            st.success("Notes saved successfully.")
+            track_event(
+                event="note_saved",
+                page="My_Selection",
+                props={
+                    "object_id": detail_id,
+                    "note_len": len(note_text.strip())
+                    if isinstance(note_text, str)
+                    else 0,
+                    "has_note": bool(isinstance(note_text, str) and note_text.strip()),
+                },
+            )
 
-        st.session_state["detail_art_id"] = None
-        st.success("Artwork removed from your selection.")
-        st.rerun()
+        if st.button("Remove from my selection", key=f"remove_detail_{detail_id}"):
+            track_event(
+                event="selection_remove_item",
+                page="My_Selection",
+                props={
+                    "object_id": detail_id,
+                    "artist": art.get("principalOrFirstMaker"),
+                    "had_notes": bool((notes.get(detail_id, "") or "").strip()),
+                    "prev_count": len(favorites),
+                    "origin": "detail_view",
+                },
+            )
+            favorites.pop(detail_id, None)
+            st.session_state["favorites"] = favorites
+            try:
+                with open(FAV_FILE, "w", encoding="utf-8") as f:
+                    json.dump(favorites, f, ensure_ascii=False, indent=2)
+            except Exception:
+                pass
 
-    if st.button("Close detail view", key=f"close_detail_{detail_id}"):
-        st.session_state["detail_art_id"] = None
-        st.rerun()
+            notes.pop(detail_id, None)
+            save_notes(notes)
 
-# ============================================================
-# Footer
-# ============================================================
-show_global_footer()
+            st.session_state["detail_art_id"] = None
+            st.success("Artwork removed from your selection.")
+            st.rerun()
+
+        if st.button("Close detail view", key=f"close_detail_{detail_id}"):
+            st.session_state["detail_art_id"] = None
+            st.rerun()
+
+    # ============================================================
+    # Footer
+    # ============================================================
+    show_global_footer()

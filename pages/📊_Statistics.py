@@ -3,17 +3,46 @@ from __future__ import annotations
 import csv
 import io
 import json
-from collections import Counter, defaultdict
-from datetime import datetime
-from typing import Any, Dict, List, Iterable
-
 import streamlit as st
+from collections import Counter, defaultdict
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Iterable
 
 from app_paths import ANALYTICS_LOG_FILE, FAV_FILE
 from analytics import track_event_once
 from ui_theme import inject_global_css, show_global_footer, show_page_intro
+from datetime import datetime
 
 
+from datetime import datetime, timezone
+from typing import Optional, Union
+
+def format_ts_local(value: Union[str, datetime, None]) -> str:
+    """
+    Aceita:
+      - string ISO em UTC
+      - datetime (ingênuo ou com timezone)
+      - None
+    E devolve 'YYYY-MM-DD HH:MM (local time)'.
+    """
+    if value is None:
+        return "—"
+
+    try:
+        # Se já veio como datetime
+        if isinstance(value, datetime):
+            dt_utc = value
+            if dt_utc.tzinfo is None:
+                dt_utc = dt_utc.replace(tzinfo=timezone.utc)
+        else:
+            # Se veio como string
+            ts_str_clean = value.replace("Z", "+00:00")
+            dt_utc = datetime.fromisoformat(ts_str_clean)
+
+        dt_local = dt_utc.astimezone()  # fuso local da máquina
+        return dt_local.strftime("%Y-%m-%d %H:%M") + " (local time)"
+    except Exception:
+        return str(value)
 # ============================================================
 # Optional password gate (admin-only access)
 # ============================================================
@@ -75,6 +104,19 @@ inject_global_css()
 st.markdown(
     """
     <style>
+    st.markdown(
+    
+    /* Diminui o valor principal de st.metric */
+    div[data-testid="stMetricValue"] {
+        font-size: 1.8rem;  /* teste 1.6, 1.4 se quiser menor ainda */
+    }
+
+    /* Opcional: diminui um pouco o label também */
+    div[data-testid="stMetricLabel"] {
+        font-size: 0.9rem;
+    }
+)
+
     /* sobe um pouco todo o conteúdo desta página */
     div.block-container {
         padding-top: 1.8rem;  /* ajuste fino aqui: 0.6, 0.7, 1.0... */
@@ -267,6 +309,26 @@ if not events:
     st.info("No analytics events recorded yet. Use the app and come back here.")
     st.stop()
 
+
+
+def _format_dt_local(dt: datetime | None) -> str:
+    """
+    Recebe um datetime (em UTC, vindo do _parse_timestamp)
+    e devolve algo curto e em horário local, sem microssegundos.
+    """
+    if dt is None:
+        return "—"
+
+    try:
+        # Converte para o fuso local da máquina
+        local_dt = dt.astimezone()  # usa timezone do sistema (ex.: Europe/Amsterdam)
+        # Formato enxuto: AAAA-MM-DD HH:MM
+        return local_dt.strftime("%Y-%m-%d %H:%M")
+    except Exception:
+        # Se der qualquer erro, cai pro str() original
+        return str(dt)
+
+
 # Basic high-level metrics
 all_event_names = [e.get("event") for e in events if isinstance(e, dict)]
 event_counts = Counter(all_event_names)
@@ -283,9 +345,8 @@ col_c.metric("Source", value=source_label)
 col_d.metric("Saved artworks (favorites.json)", value=_load_favorites_count())
 
 col_e, col_f = st.columns(2)
-col_e.metric("First event", value=str(first_event) if first_event else "—")
-col_f.metric("Last event", value=str(last_event) if last_event else "—")
-
+col_e.metric("First event", value=_format_dt_local(first_event))
+col_f.metric("Last event", value=_format_dt_local(last_event))
 
 # ============================================================
 # Event type filter
@@ -476,22 +537,63 @@ with col_dl2:
 # ============================================================
 # Maintenance: clear analytics
 # ============================================================
-st.markdown("### 🧹 Maintenance")
+st.markdown("---")
+st.markdown("### Danger zone")
 
-st.caption(
-    "This will clear the local analytics file only. "
-    "No external data is affected."
+# Primeiro clique: só ativa o modo de confirmação
+clear_analytics_clicked = st.button(
+    "🧹 Clear analytics log",
+    help="Delete all locally stored analytics events (JSONL file + session).",
+    key="btn_clear_analytics_log",
 )
 
-if st.button("Clear analytics data", type="secondary"):
-    # Remove file + clear in-memory events
-    try:
-        if ANALYTICS_LOG_FILE.exists():
-            ANALYTICS_LOG_FILE.unlink()
-    except Exception as e:
-        st.error(f"Could not delete analytics file: {e}")
-    st.session_state.pop("_analytics_events", None)
-    st.success("Analytics data cleared. New events will be recorded from now on.")
+if clear_analytics_clicked:
+    st.session_state["confirm_clear_analytics_log"] = True
+
+# Se o modo de confirmação estiver ativo, mostra o aviso e os botões
+if st.session_state.get("confirm_clear_analytics_log", False):
+    st.warning(
+        "This action will delete **all analytics events** stored locally "
+        "(the JSONL file and the in-memory buffer). "
+        "This cannot be undone.",
+        icon="⚠️",
+    )
+
+    col_yes, col_no = st.columns(2)
+
+    with col_yes:
+        confirm_clear_analytics = st.button(
+            "Yes, delete all analytics",
+            key="btn_confirm_clear_analytics_log",
+        )
+
+    with col_no:
+        cancel_clear_analytics = st.button(
+            "Cancel",
+            key="btn_cancel_clear_analytics_log",
+        )
+
+    if confirm_clear_analytics:
+        # 1) Zera o buffer em memória
+        st.session_state["_analytics_events"] = []
+
+        # 2) Tenta limpar o arquivo JSONL no disco
+        try:
+            with open(ANALYTICS_LOG_FILE, "w", encoding="utf-8") as f:
+                f.write("")
+        except Exception:
+            # Se der erro, só seguimos; não quebramos a UI
+            pass
+
+        # 3) Reseta o flag de confirmação
+        st.session_state["confirm_clear_analytics_log"] = False
+
+        st.success("All analytics events have been cleared.")
+        st.rerun()
+
+    elif cancel_clear_analytics:
+        # Usuário desistiu: só desliga o modo de confirmação
+        st.session_state["confirm_clear_analytics_log"] = False
 
 # ============================================================
 # Footer

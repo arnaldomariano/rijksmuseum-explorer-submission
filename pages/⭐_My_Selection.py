@@ -1562,17 +1562,27 @@ else:
                 for obj_num in candidate_ids:
                     art = favorites.get(obj_num)
                     if isinstance(art, dict):
+                        # Remove the comparison flag from each artwork
                         art.pop("_compare_candidate", None)
                         favorites[obj_num] = art
+
+                # Persist updated favorites
                 st.session_state["favorites"] = favorites
                 try:
                     with open(FAV_FILE, "w", encoding="utf-8") as f:
                         json.dump(favorites, f, ensure_ascii=False, indent=2)
                 except Exception:
                     pass
+
+                # Reset comparison candidates and checkbox generation
                 st.session_state["compare_candidates"] = []
+                st.session_state["cmp_key_generation"] = (
+                    st.session_state.get("cmp_key_generation", 0) + 1
+                )
+
                 st.success("All comparison marks have been cleared.")
                 st.rerun()
+
     else:
         st.caption("No artworks are currently marked for cross-page comparison.")
 

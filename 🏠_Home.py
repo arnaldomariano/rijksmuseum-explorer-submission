@@ -35,19 +35,18 @@ from ui_theme import inject_global_css, show_global_footer, show_page_intro
 # ============================================================
 # Page config
 # ============================================================
-st.set_page_config(page_title="Rijksmuseum Explorer", page_icon="🎨", layout="wide")
-
 st.set_page_config(
     page_title="Rijksmuseum Explorer",
     page_icon="🏛️",
     layout="wide",
 )
 
+# Apply global dark theme & layout
 inject_global_css()
 
-# daqui pra frente continua tudo igual (show_page_intro, etc.)
+
 # ============================================================
-# Styling & footer
+# Styling
 # ============================================================
 def inject_custom_css() -> None:
     """Inject dark theme and card styling for the Explorer page."""
@@ -56,10 +55,10 @@ def inject_custom_css() -> None:
         <style>
         .stApp { background-color: #111111; color: #f5f5f5; }
         div.block-container {
-        max-width: 1200px;
-        padding-top: 2.5rem;   /* <= mexa aqui até alinhar com as outras páginas */
-        padding-bottom: 3rem;
-         }
+            max-width: 1200px;
+            padding-top: 2.5rem;
+            padding-bottom: 3rem;
+        }
 
         section[data-testid="stSidebar"] { background-color: #181818 !important; }
         section[data-testid="stSidebar"] h1,
@@ -67,8 +66,13 @@ def inject_custom_css() -> None:
         section[data-testid="stSidebar"] h3,
         section[data-testid="stSidebar"] label { color: #f5f5f5 !important; }
 
-        div[data-testid="stMarkdownContainer"] a { color: #ff9900 !important; text-decoration: none; }
-        div[data-testid="stMarkdownContainer"] a:hover { text-decoration: underline; }
+        div[data-testid="stMarkdownContainer"] a {
+            color: #ff9900 !important;
+            text-decoration: none;
+        }
+        div[data-testid="stMarkdownContainer"] a:hover {
+            text-decoration: underline;
+        }
 
         .rijks-hero {
             border-radius: 14px;
@@ -111,7 +115,11 @@ def inject_custom_css() -> None:
             margin-bottom: 0.1rem;
             min-height: 1.3rem;
         }
-        .rijks-card-caption { font-size: 0.9rem; color: #c7c7c7; margin-bottom: 0.25rem; }
+        .rijks-card-caption {
+            font-size: 0.9rem;
+            color: #c7c7c7;
+            margin-bottom: 0.25rem;
+        }
 
         .rijks-badge-row { margin-top: 0.15rem; margin-bottom: 0.35rem; }
         .rijks-badge {
@@ -124,8 +132,16 @@ def inject_custom_css() -> None:
             color: #f5f5f5;
             border: 1px solid #333333;
         }
-        .rijks-badge-primary { background-color: #ff9900; color: #111111; border-color: #ff9900; }
-        .rijks-badge-secondary { background-color: #262626; color: #ffddaa; border-color: #444444; }
+        .rijks-badge-primary {
+            background-color: #ff9900;
+            color: #111111;
+            border-color: #ff9900;
+        }
+        .rijks-badge-secondary {
+            background-color: #262626;
+            color: #ffddaa;
+            border-color: #444444;
+        }
 
         .rijks-no-image-msg {
             font-size: 0.8rem;
@@ -152,6 +168,8 @@ def inject_custom_css() -> None:
         unsafe_allow_html=True,
     )
 
+
+# Intro block (consistent with other pages)
 show_page_intro(
     "Welcome to the Rijksmuseum Explorer research app. This homepage gives you a quick overview of what you can do:",
     [
@@ -163,19 +181,7 @@ show_page_intro(
     ],
 )
 
-def show_footer() -> None:
-    """Footer acknowledging Rijksmuseum Data Services."""
-    st.markdown(
-        """
-        <div class="rijks-footer">
-            Rijksmuseum Explorer — prototype created for study & research purposes.<br>
-            Data & images provided by the Rijksmuseum Data Services (Linked Data / Linked Art).
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-
+# Apply page-specific CSS
 inject_custom_css()
 
 
@@ -196,22 +202,27 @@ def _read_json_file(path_str: str) -> dict:
 def load_favorites() -> None:
     """Load favorites into session_state from disk."""
     if "favorites" not in st.session_state:
-        st.session_state["favorites"] = _read_json_file(str(FAV_FILE)) if FAV_FILE.exists() else {}
+        st.session_state["favorites"] = (
+            _read_json_file(str(FAV_FILE)) if FAV_FILE.exists() else {}
+        )
 
 
 def load_notes() -> None:
     """Load notes into session_state from disk."""
     if "notes" not in st.session_state:
-        st.session_state["notes"] = _read_json_file(str(NOTES_FILE)) if NOTES_FILE.exists() else {}
+        st.session_state["notes"] = (
+            _read_json_file(str(NOTES_FILE)) if NOTES_FILE.exists() else {}
+        )
 
 
 def save_favorites() -> None:
-    """Persist favorites to disk."""
+    """Persist favorites to disk and clear JSON cache."""
     try:
         with open(FAV_FILE, "w", encoding="utf-8") as f:
             json.dump(st.session_state["favorites"], f, ensure_ascii=False, indent=2)
         _read_json_file.clear()
     except Exception:
+        # Do not break UI if saving fails
         pass
 
 
@@ -222,8 +233,8 @@ def passes_authorship_scope(art: Dict[str, Any], auth_scope: str) -> bool:
     """
     Filter artworks by authorship scope.
 
-    Note:
-    - Many objects still come with `_attribution="unknown"`.
+    Notes:
+    - Many objects come with `_attribution="unknown"`.
     - To avoid hiding everything, most scopes keep "unknown".
     """
     tag = (art.get("_attribution") or "unknown").lower()
@@ -243,7 +254,9 @@ def passes_authorship_scope(art: Dict[str, Any], auth_scope: str) -> bool:
     if auth_scope.startswith("Show all"):
         return True
 
+    # Fallback: do not filter out
     return True
+
 
 def passes_metadata_filters(
     art: Dict[str, Any],
@@ -288,7 +301,7 @@ def attribution_badge_html(art: Dict[str, Any]) -> str:
 
 
 def render_image_message(img_status: str) -> None:
-    """Show the correct message box for missing/unavailable images."""
+    """Show a small helper message when the image cannot be displayed."""
 
     if img_status == "copyright":
         st.markdown(
@@ -326,7 +339,7 @@ def render_image_message(img_status: str) -> None:
         )
         return
 
-    # default
+    # Default fallback
     st.markdown(
         """
         <div class="rijks-no-image-msg">
@@ -339,6 +352,7 @@ def render_image_message(img_status: str) -> None:
 
 
 def image_status_badge_html(img_status: str) -> str:
+    """Return an additional badge for special image status."""
     img_status = (img_status or "").lower()
     if img_status == "copyright":
         return '<span class="rijks-badge rijks-badge-secondary">🔒 Copyright</span>'
@@ -351,13 +365,22 @@ def image_status_badge_html(img_status: str) -> str:
     return ""
 
 def work_kind_badge_html(kind: str) -> str:
+    """
+    Return a small badge describing the work kind
+    (original work, reproduction or photograph).
+
+    The value comes from the `_work_kind` field mapped in `rijks_api.py`.
+    """
     k = (kind or "").lower()
+
     if k == "original":
         return '<span class="rijks-badge rijks-badge-secondary">🖼️ Original work</span>'
     if k == "reproduction":
         return '<span class="rijks-badge rijks-badge-secondary">🎞️ Reproduction</span>'
     if k == "photograph":
         return '<span class="rijks-badge rijks-badge-secondary">📷 Photograph</span>'
+
+    # For "unknown" or anything else, do not show a badge
     return ""
 
 
@@ -373,7 +396,7 @@ notes: Dict[str, str] = st.session_state.setdefault("notes", {})
 st.session_state.setdefault("results_full", [])
 st.session_state.setdefault("results_filtered", [])
 
-# garante que sempre exista um max_pages pelo menos 1
+# Ensure there is always a search_meta with at least max_pages=1
 if "search_meta" not in st.session_state:
     st.session_state["search_meta"] = {"max_pages": 1}
 
@@ -391,15 +414,18 @@ track_event_once(
 sidebar = st.sidebar
 sidebar.header("🧭 Explore & Filter")
 
-with st.sidebar:
+with sidebar:
     st.markdown(
         '<div class="rijks-sidebar-main-title">🏠 Home</div>',
         unsafe_allow_html=True,
     )
-    # resto dos controles da sidebar...
 
 sidebar.subheader("Search")
-search_term = sidebar.text_input("Search term", value="Rembrandt", help="Artist, title keyword, theme, etc.")
+search_term = sidebar.text_input(
+    "Search term",
+    value="Rembrandt",
+    help="Artist, title keyword, theme, etc.",
+)
 
 sidebar.subheader("Basic filters")
 object_type = sidebar.selectbox(
@@ -411,7 +437,12 @@ object_type_param = None if object_type == "Any" else object_type
 
 sort_label = sidebar.selectbox(
     "Sort results by",
-    options=["Relevance (default)", "Artist name (A–Z)", "Date (oldest → newest)", "Date (newest → oldest)"],
+    options=[
+        "Relevance (default)",
+        "Artist name (A–Z)",
+        "Date (oldest → newest)",
+        "Date (newest → oldest)",
+    ],
 )
 sort_map = {
     "Relevance (default)": "relevance",
@@ -441,18 +472,25 @@ auth_scope = sidebar.selectbox(
         "Include workshop/circle/after",
         "Show all (including unknown)",
     ],
-    index=2,  # se quiser manter "Direct only" como default, ajuste o index
+    index=2,  # Keep "Direct only" as default
 )
 if auth_scope.startswith("Direct + Attributed + Circle"):
-    sidebar.info("Including direct, attributed and circle/school (plus unknown). Excludes workshop and after.")
+    sidebar.info(
+        "Including direct, attributed and circle/school (plus unknown). "
+        "Excludes workshop and after."
+    )
 
 sidebar.subheader("Advanced filters")
-year_min, year_max = sidebar.slider("Year range (approx.)", 1500, 2025, (1600, 1900), step=10)
+year_min, year_max = sidebar.slider(
+    "Year range (approx.)",
+    1500,
+    2025,
+    (1600, 1900),
+    step=10,
+)
 sidebar.caption("Year filter is applied locally after results are fetched.")
 
-# ------------------------
-# Text filters (helper explanation)
-# ------------------------
+# Helper explanation for text filters
 sidebar.markdown(
     """
 **Text filters (helper)**  
@@ -469,12 +507,26 @@ Use short keywords, for example:
 """
 )
 
-
 sidebar.subheader("Text filters (optional)")
-sidebar.caption("Material/place filters depend on metadata availability in the current mapping.")
+sidebar.caption(
+    "Material/place filters depend on metadata availability in the current mapping."
+)
 
-material_presets = ["(any)", "oil on canvas", "paper", "wood", "ink", "etching", "bronze", "silver", "porcelain"]
-material_choice = sidebar.selectbox("Material contains", options=material_presets + ["Custom…"])
+material_presets = [
+    "(any)",
+    "oil on canvas",
+    "paper",
+    "wood",
+    "ink",
+    "etching",
+    "bronze",
+    "silver",
+    "porcelain",
+]
+material_choice = sidebar.selectbox(
+    "Material contains",
+    options=material_presets + ["Custom…"],
+)
 if material_choice == "(any)":
     material_filter = ""
 elif material_choice == "Custom…":
@@ -483,10 +535,25 @@ else:
     material_filter = material_choice
 
 place_presets = [
-    "(any)", "Amsterdam", "Haarlem", "Delft", "Utrecht", "The Hague", "Rotterdam", "Leiden",
-    "Antwerp", "Paris", "London", "Italy", "Germany", "Brazil",
+    "(any)",
+    "Amsterdam",
+    "Haarlem",
+    "Delft",
+    "Utrecht",
+    "The Hague",
+    "Rotterdam",
+    "Leiden",
+    "Antwerp",
+    "Paris",
+    "London",
+    "Italy",
+    "Germany",
+    "Brazil",
 ]
-place_choice = sidebar.selectbox("Production place contains", options=place_presets + ["Custom…"])
+place_choice = sidebar.selectbox(
+    "Production place contains",
+    options=place_presets + ["Custom…"],
+)
 if place_choice == "(any)":
     place_filter = ""
 elif place_choice == "Custom…":
@@ -496,38 +563,44 @@ else:
 
 sidebar.subheader("Pagination (local)")
 
-# valores anteriores para manter estado entre reruns
+# Previous values to keep state between reruns
 prev_per_page = st.session_state.get("per_page", 12)
 prev_page = int(st.session_state.get("page_num", 1))
 
-# max_pages conhecido da última busca (ou 1 se nunca buscou)
+# Maximum page count known from last search (or 1 if none yet)
 max_pages_known = int(st.session_state.get("search_meta", {}).get("max_pages", 1))
 
 per_page = sidebar.selectbox(
     "Results per page",
     options=[12, 24, 30],
-    index=[12, 24, 30].index(prev_per_page) if prev_per_page in [12, 24, 30] else 0,
+    index=[12, 24, 30].index(prev_per_page)
+    if prev_per_page in [12, 24, 30]
+    else 0,
 )
 st.session_state["per_page"] = per_page
 
 page_num = sidebar.number_input(
     "Page",
     min_value=1,
-    max_value=max_pages_known,     # 👈 aqui some o '+' quando só há 1 página
+    max_value=max_pages_known,
     value=min(prev_page, max_pages_known),
     step=1,
 )
 st.session_state["page_num"] = int(page_num)
 
 sidebar.markdown("<div style='height: 0.75rem'></div>", unsafe_allow_html=True)
-run_search = sidebar.button("🔍 Apply filters & search", use_container_width=True)
+run_search = sidebar.button(
+    "🔍 Apply filters & search",
+    use_container_width=True,
+)
 
-# Pequeno lembrete sobre a seleção global (herdado da versão legacy)
+# Small reminder about global selection behavior
 sidebar.caption(
     "Artworks marked as **In my selection** remain saved across searches and sessions. "
     "If you do not want previous selections to appear pre-selected in new searches, "
     "clear your selection on the **My Selection** page."
 )
+
 
 # ============================================================
 # Main header
@@ -561,7 +634,8 @@ with st.expander("ℹ️ How the search works (quick guide)", expanded=False):
 
 saved_pill_placeholder = st.empty()
 saved_pill_placeholder.markdown(
-    f'<div class="rijks-summary-pill">Saved artworks: <strong>{len(favorites)}</strong></div>',
+    f'<div class="rijks-summary-pill">Saved artworks: '
+    f"<strong>{len(favorites)}</strong></div>",
     unsafe_allow_html=True,
 )
 
@@ -588,9 +662,12 @@ if run_search:
             st.session_state["results_full"] = raw_results or []
 
             filtered = [
-                art for art in (raw_results or [])
+                art
+                for art in (raw_results or [])
                 if passes_authorship_scope(art, auth_scope)
-                and passes_metadata_filters(art, year_min, year_max, material_filter, place_filter)
+                and passes_metadata_filters(
+                    art, year_min, year_max, material_filter, place_filter
+                )
             ]
             st.session_state["results_filtered"] = filtered
 
@@ -622,21 +699,24 @@ if run_search:
             )
 
         except Exception as e:
-            st.error(f"Unexpected error while searching the Rijksmuseum online collection: {e}")
+            st.error(
+                f"Unexpected error while searching the Rijksmuseum online collection: {e}"
+            )
             st.session_state["results_full"] = []
             st.session_state["results_filtered"] = []
             st.session_state["search_meta"] = {}
 
-
-filtered_results: List[Dict[str, Any]] = st.session_state.get("results_filtered", [])
+filtered_results: List[Dict[str, Any]] = st.session_state.get(
+    "results_filtered", []
+)
 
 total_filtered = len(filtered_results)
 max_pages = max(1, ceil(total_filtered / int(per_page))) if per_page else 1
 
-# clamp da página atual
+# Clamp current page to valid range
 page_num = min(int(page_num), max_pages)
 
-# guarda no session_state para o próximo rerun
+# Store updated max_pages back into session
 meta = st.session_state.get("search_meta", {})
 meta["max_pages"] = max_pages
 st.session_state["search_meta"] = meta
@@ -647,19 +727,19 @@ end_idx = start_idx + int(per_page)
 page_items = filtered_results[start_idx:end_idx]
 
 # ---------------------------------------
-# Dedup: evita obras repetidas na página
-# (e evita conflito de key na checkbox)
+# Deduplicate: avoid repeated artworks
+# (also avoids checkbox key conflicts)
 # ---------------------------------------
 seen_ids = set()
 dedup_items = []
 for art in page_items:
     obj = art.get("objectNumber")
-    # se não tiver ID, a gente deixa passar
     if not obj:
+        # No ID → keep as-is
         dedup_items.append(art)
         continue
-    # se já vimos esse ID, pula
     if obj in seen_ids:
+        # Already seen on this page
         continue
     seen_ids.add(obj)
     dedup_items.append(art)
@@ -671,13 +751,20 @@ if total_filtered > 0:
     st.caption(
         f"Showing page **{page_num} / {max_pages}** — "
         f"**{len(page_items)}** item(s) on this page — "
-        f"**{total_filtered}** item(s) after filters (fetched: {len(st.session_state.get('results_full', []))})."
+        f"**{total_filtered}** item(s) after filters "
+        f"(fetched: {len(st.session_state.get('results_full', []))})."
     )
 else:
     if st.session_state.get("results_full"):
-        st.warning("Results were fetched, but none match your current filters. Try broadening scope and/or filters.")
+        st.warning(
+            "Results were fetched, but none match your current filters. "
+            "Try broadening scope and/or filters."
+        )
     else:
-        st.info("No artworks to display yet. Use the sidebar and click **Apply filters & search**.")
+        st.info(
+            "No artworks to display yet. Use the sidebar and click "
+            "**Apply filters & search**."
+        )
 
 
 # ============================================================
@@ -700,57 +787,56 @@ if page_items:
             key="btn_remove_all_page",
         )
 
-    # ADD ALL: força todas as obras desta página a entrarem na seleção
+    # ADD ALL: force all artworks on this page into the selection
     if add_all_clicked:
         for art in page_items:
             obj_num = art.get("objectNumber")
             if not obj_num:
                 continue
 
-            # garante que está em favorites
+            # Ensure it is in favorites
             favorites[obj_num] = art
-            # força o checkbox correspondente a ficar marcado
+            # Force the corresponding checkbox to be checked
             st.session_state[f"fav_{obj_num}"] = True
 
         st.session_state["favorites"] = favorites
         save_favorites()
         saved_pill_placeholder.markdown(
             f'<div class="rijks-summary-pill">Saved artworks: '
-            f'<strong>{len(favorites)}</strong></div>',
+            f"<strong>{len(favorites)}</strong></div>",
             unsafe_allow_html=True,
         )
         st.success("All artworks on this page were added to your selection.")
         st.rerun()
 
-    # REMOVE ALL: força todas as obras desta página a saírem da seleção
+    # REMOVE ALL: remove all artworks on this page from the selection
     if remove_all_clicked:
         for art in page_items:
             obj_num = art.get("objectNumber")
             if not obj_num:
                 continue
 
-            # remove de favorites (se existir)
             favorites.pop(obj_num, None)
-            # força o checkbox a ficar desmarcado
             st.session_state[f"fav_{obj_num}"] = False
 
         st.session_state["favorites"] = favorites
         save_favorites()
         saved_pill_placeholder.markdown(
             f'<div class="rijks-summary-pill">Saved artworks: '
-            f'<strong>{len(favorites)}</strong></div>',
+            f"<strong>{len(favorites)}</strong></div>",
             unsafe_allow_html=True,
         )
         st.success("All artworks on this page were removed from your selection.")
         st.rerun()
 
+
 @st.cache_data(show_spinner=False)
 def _fetch_better_title(object_number: str) -> str | None:
     """
-    Quando o resultado da busca só traz o objectNumber como 'title'
-    (ou nada), tentamos buscar um título melhor na API de detalhe.
+    When the search result only shows the objectNumber as title (or nothing),
+    try to fetch a better title from the detail API.
 
-    Fica em cache para não bater na API toda hora.
+    Cached to avoid repeated requests while browsing.
     """
     if not object_number:
         return None
@@ -765,7 +851,7 @@ def _fetch_better_title(object_number: str) -> str | None:
 
     art_obj = detail.get("artObject") or detail
 
-    # Tentativas em ordem de preferência
+    # Try these keys in order of preference
     for key in ("titleEnglish", "title", "longTitle"):
         val = (art_obj.get(key) or "").strip()
         if val:
@@ -773,13 +859,14 @@ def _fetch_better_title(object_number: str) -> str | None:
 
     return None
 
+
 # ============================================================
 # Results grid (cards)
 # ============================================================
 if page_items:
     cards_per_row = 3
     for start in range(0, len(page_items), cards_per_row):
-        row = page_items[start:start + cards_per_row]
+        row = page_items[start : start + cards_per_row]
         cols = st.columns(len(row))
 
         for col, art in zip(cols, row):
@@ -789,7 +876,7 @@ if page_items:
                 object_number = art.get("objectNumber")
 
                 # ---------------------------------------
-                # 1) Título (com fallback via detalhe)
+                # 1) Title (with detail-API fallback)
                 # ---------------------------------------
                 raw_title = (art.get("title") or "").strip()
                 long_title = (art.get("longTitle") or "").strip()
@@ -797,15 +884,17 @@ if page_items:
 
                 display_title = raw_title or long_title or "Untitled"
 
-                # Se o "título" for só o ID ou estiver vazio,
-                # tentamos buscar algo melhor via API de detalhe.
-                if obj_num_str and (display_title == obj_num_str or display_title == "Untitled"):
+                # If the "title" is just the objectNumber or empty,
+                # try to fetch something more descriptive via detail API.
+                if obj_num_str and (
+                    display_title == obj_num_str or display_title == "Untitled"
+                ):
                     better = _fetch_better_title(obj_num_str)
                     if better and better != obj_num_str:
                         display_title = better
 
                 # ---------------------------------------
-                # 2) Artista (normalizado)
+                # 2) Artist (normalized)
                 # ---------------------------------------
                 raw_maker = art.get("principalOrFirstMaker", "")
                 maker_norm = (raw_maker or "").strip()
@@ -831,7 +920,7 @@ if page_items:
                 has_notes = isinstance(note_text, str) and note_text.strip() != ""
 
                 # ---------------------------------------
-                # 3) Imagem + status
+                # 3) Image + status
                 # ---------------------------------------
                 img_url = get_best_image_url(art)
                 status = (art.get("_image_status") or "no_public_image").lower()
@@ -853,7 +942,7 @@ if page_items:
                     render_image_message(status)
 
                 # ---------------------------------------
-                # 4) Título + artista no card
+                # 4) Title + artist in the card
                 # ---------------------------------------
                 st.markdown(
                     f'<div class="rijks-card-title">{display_title}</div>',
@@ -866,22 +955,20 @@ if page_items:
 
                 # ---------------------------------------
                 # 5) Checkbox "In my selection"
-                #    (controlada só via session_state)
+                #    (controlled only via session_state)
                 # ---------------------------------------
                 if object_number:
                     checkbox_key = f"fav_{object_number}"
 
-                    # Inicializa o estado da checkbox uma única vez
+                    # Initialize checkbox state only once
                     if checkbox_key not in st.session_state:
                         st.session_state[checkbox_key] = object_number in favorites
 
-                    # A partir daqui, quem manda é st.session_state[checkbox_key]
                     checked = st.checkbox(
                         "In my selection",
                         key=checkbox_key,
                     )
 
-                    # Situação atual no "modelo de verdade"
                     was_fav = object_number in favorites
 
                     if checked != was_fav:
@@ -921,13 +1008,14 @@ if page_items:
                         save_favorites()
                         saved_pill_placeholder.markdown(
                             f'<div class="rijks-summary-pill">Saved artworks: '
-                            f'<strong>{len(favorites)}</strong></div>',
+                            f"<strong>{len(favorites)}</strong></div>",
                             unsafe_allow_html=True,
                         )
 
                     is_fav = checked
                 else:
                     is_fav = False
+
                 # ---------------------------------------
                 # 6) Badges
                 # ---------------------------------------
@@ -942,20 +1030,29 @@ if page_items:
                         '<span class="rijks-badge rijks-badge-secondary">📝 Notes</span>'
                     )
 
+                # Authorship scope (direct / attributed / etc.)
                 badge_parts.append(attribution_badge_html(art))
 
+                # Work kind: original / reproduction / photograph
+                work_kind = art.get("_work_kind")
+                if isinstance(work_kind, str) and work_kind:
+                    wk_badge = work_kind_badge_html(work_kind)
+                    if wk_badge:
+                        badge_parts.append(wk_badge)
+
+                # Special image status (copyright, page missing, etc.)
                 if img_status != "ok":
-                    badge = image_status_badge_html(status)
-                    if badge:
-                        badge_parts.append(badge)
+                    extra = image_status_badge_html(status)
+                    if extra:
+                        badge_parts.append(extra)
 
-                st.markdown(
-                    '<div class="rijks-badge-row">' + " ".join(badge_parts) + "</div>",
-                    unsafe_allow_html=True,
-                )
-
+                if badge_parts:
+                    st.markdown(
+                        '<div class="rijks-badge-row">' + " ".join(badge_parts) + "</div>",
+                        unsafe_allow_html=True,
+                    )
                 # ---------------------------------------
-                # 7) Metadados básicos
+                # 7) Basic metadata
                 # ---------------------------------------
                 dating = art.get("dating") or {}
                 presenting_date = dating.get("presentingDate")
@@ -973,6 +1070,7 @@ if page_items:
                     st.markdown(f"[View on Rijksmuseum website]({web_link})")
 
                 st.markdown("</div>", unsafe_allow_html=True)
+
 
 # ============================================================
 # Footer

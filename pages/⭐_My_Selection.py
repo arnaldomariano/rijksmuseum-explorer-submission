@@ -12,8 +12,8 @@ Features:
 """
 
 from __future__ import annotations
-from ui_theme import inject_global_css, show_global_footer, show_page_intro
 
+from ui_theme import inject_global_css, show_global_footer, show_page_intro
 
 import csv
 import io
@@ -53,8 +53,9 @@ except Exception:
 # Page config & CSS
 # ============================================================
 
+
 def inject_page_css() -> None:
-    """CSS específico da página My Selection (cards, badges, export panel)."""
+    """CSS specific to the My Selection page (cards, badges, export panel)."""
     st.markdown(
         """
         <style>
@@ -163,14 +164,17 @@ def inject_page_css() -> None:
         unsafe_allow_html=True,
     )
 
+
 st.set_page_config(page_title="My Selection", page_icon="⭐", layout="wide")
 
-inject_global_css()   # tema base para o app todo
-inject_page_css()     # ajustes específicos da My Selection
+inject_global_css()  # base theme for the entire app
+inject_page_css()  # fine-tuned adjustments for My Selection
+
 
 # ============================================================
 # Helpers: favorites / notes
 # ============================================================
+
 
 def _safe_read_json(path) -> dict:
     try:
@@ -249,6 +253,7 @@ def compute_selection_stats(favorites: Dict[str, Any]) -> Dict[str, Any]:
     }
     return stats
 
+
 def load_pdf_meta() -> Dict[str, Any]:
     """
     Load PDF configuration saved by the PDF Setup page.
@@ -284,11 +289,52 @@ def load_pdf_meta() -> Dict[str, Any]:
 # ============================================================
 # Cached image helper (for faster gallery rendering)
 # ============================================================
+
+
 @st.cache_data(show_spinner=False)
 def cached_best_image_url(art: Dict[str, Any]) -> str | None:
     """Small cache wrapper around get_best_image_url for faster gallery rendering."""
     return get_best_image_url(art)
 
+def attribution_badge_html(art: Dict[str, Any]) -> str:
+    """Return HTML badge for attribution label (direct / workshop / circle / etc.)."""
+    tag = (art.get("_attribution") or "unknown").lower()
+    label_map = {
+        "direct": "✅ Direct",
+        "attributed": "🟡 Attributed",
+        "workshop": "🟠 Workshop",
+        "circle": "🔵 Circle/School",
+        "after": "🟣 After",
+        "unknown": "⚪ Unknown",
+    }
+    label = label_map.get(tag, "⚪ Unknown")
+    return f'<span class="rijks-badge">{label}</span>'
+
+
+def work_kind_badge_html(kind: str) -> str:
+    """Return badge HTML for work kind (original / reproduction / photograph)."""
+    k = (kind or "").lower()
+    if k == "original":
+        return '<span class="rijks-badge rijks-badge-secondary">🖼️ Original work</span>'
+    if k == "reproduction":
+        return '<span class="rijks-badge rijks-badge-secondary">🎞️ Reproduction</span>'
+    if k == "photograph":
+        return '<span class="rijks-badge rijks-badge-secondary">📷 Photograph</span>'
+    return ""
+
+
+def image_status_badge_html(img_status: str) -> str:
+    """Return badge for special image status (copyright, missing page, etc.)."""
+    s = (img_status or "").lower()
+    if s == "copyright":
+        return '<span class="rijks-badge rijks-badge-secondary">🔒 Copyright</span>'
+    if s == "page_missing":
+        return '<span class="rijks-badge rijks-badge-secondary">⚠️ Page missing</span>'
+    if s == "broken":
+        return '<span class="rijks-badge rijks-badge-secondary">⚠️ Image unavailable</span>'
+    if s == "no_public_image":
+        return '<span class="rijks-badge rijks-badge-secondary">🚫 No public image</span>'
+    return ""
 
 # ============================================================
 # Filters
@@ -386,12 +432,13 @@ def build_notes_csv(notes: Dict[str, str]) -> str:
 
 def build_share_code(favorites: Dict[str, Any]) -> str:
     """
-    Minimal share code: JSON with list of objectNumbers.
-    (Podemos sofisticar depois se você quiser carregar coleções completas.)
+    Minimal share code: JSON with a list of objectNumbers.
+    (We can later extend this to carry full collection metadata if needed.)
     """
     ids = sorted([obj for obj in favorites.keys() if isinstance(obj, str)])
     payload = {"objectNumbers": ids, "generated_at": datetime.utcnow().isoformat()}
     return json.dumps(payload, ensure_ascii=False)
+
 
 def build_pdf_buffer(
     favorites: Dict[str, Any],
@@ -414,13 +461,13 @@ def build_pdf_buffer(
         raise RuntimeError("ReportLab not available")
 
     # --------------------------------------------------------
-    # Layout constants (ajustes finos de espaçamento e fontes)
+    # Layout constants (fine-tuned spacing and font sizes)
     # --------------------------------------------------------
-    PAGE_MARGIN = 40          # antes 50  → um pouco mais de área útil
-    TITLE_WRAP = 70           # antes 80
-    BODY_WRAP = 105           # antes 88
-    ABOUT_WRAP = 100          # antes 86
-    NOTES_WRAP = 100          # antes 86
+    PAGE_MARGIN = 40          # previously 50 → slightly more usable area
+    TITLE_WRAP = 70           # previously 80
+    BODY_WRAP = 105           # previously 88
+    ABOUT_WRAP = 100          # previously 86
+    NOTES_WRAP = 100          # previously 86
 
     COVER_TITLE_SIZE = 22
     SECTION_TITLE_SIZE = 18
@@ -441,11 +488,11 @@ def build_pdf_buffer(
         Works with the linked-data detail JSON (like the SK-A-4273 file),
         where the description usually lives in the `referred_to_by` list.
         """
-        # Cache em memória para não bater na API toda hora
+        # In-memory cache to avoid hitting the API repeatedly
         if obj_num in about_cache:
             return about_cache[obj_num]
 
-        # Chama a API de detalhe
+        # Call the detail API
         try:
             detail = fetch_metadata_by_objectnumber(obj_num)
         except RijksAPIError:
@@ -459,7 +506,7 @@ def build_pdf_buffer(
             about_cache[obj_num] = ""
             return ""
 
-        # 1) Formato novo: pegar o maior texto em `referred_to_by[*].content`
+        # 1) New format: pick the longest text in `referred_to_by[*].content`
         best = ""
         referred = detail.get("referred_to_by") or []
         if isinstance(referred, list):
@@ -470,7 +517,7 @@ def build_pdf_buffer(
                 if content and len(content) > len(best):
                     best = content
 
-        # 2) Fallback para formatos antigos (artObject / top-level description)
+        # 2) Fallback for older formats (artObject / top-level description)
         if not best:
             art_obj = detail.get("artObject") or {}
             best = (
@@ -569,25 +616,25 @@ def build_pdf_buffer(
         c.setFont("Helvetica-Bold", 16)
         c.drawString(margin, height - margin - 20, "Selection overview")
 
-        # Fonte base do corpo da tabela
+        # Base font for the table body
         c.setFont("Helvetica", 10)
         y = height - margin - 50
 
         # Column positions
         x_id = margin
-        # Empurramos título e artista 15 pontos para a direita
+        # Shift title and artist slightly to the right
         x_title = margin + 100
         x_artist = margin + 315
-        x_date = width - margin - 70  # deixa espaço à direita
+        x_date = width - margin - 70  # keep some space on the right
 
-        # Header row (um pouco mais forte)
+        # Header row (slightly stronger)
         c.setFont("Helvetica-Bold", 11)
         c.drawString(x_id, y, "Object ID")
         c.drawString(x_title, y, "Title")
         c.drawString(x_artist, y, "Artist")
         c.drawString(x_date, y, "Date")
 
-        # Volta para a fonte normal para as linhas da tabela
+        # Back to regular font for table rows
         c.setFont("Helvetica", 10)
         y -= 16
 
@@ -598,20 +645,22 @@ def build_pdf_buffer(
                 page_num += 1
 
                 c.setFont("Helvetica-Bold", 14)
-                c.drawString(margin, height - margin - 20, "Selection overview (cont.)")
+                c.drawString(
+                    margin, height - margin - 20, "Selection overview (cont.)"
+                )
 
-                # Fonte base do corpo da tabela
+                # Base font for the table body
                 c.setFont("Helvetica", 10)
                 y = height - margin - 50
 
-                # Header row (continuação, mesmo estilo da página 1)
+                # Header row (same style as first page)
                 c.setFont("Helvetica-Bold", 11)
                 c.drawString(x_id, y, "Object ID")
                 c.drawString(x_title, y, "Title")
                 c.drawString(x_artist, y, "Artist")
                 c.drawString(x_date, y, "Date")
 
-                # Volta para a fonte normal para as linhas da tabela
+                # Back to regular font for table rows
                 c.setFont("Helvetica", 10)
                 y -= 16
 
@@ -621,30 +670,31 @@ def build_pdf_buffer(
             year = extract_year(dating) if isinstance(dating, dict) else None
             date_full = dating.get("presentingDate") or (str(year) if year else "")
 
-            # ======= TRUNCAMENTOS =======
+            # ======= TRUNCATION RULES =======
 
-            # Object ID: limita para não encostar no título
+            # Object ID: truncate to avoid overlapping the title column
             obj_id_display = obj_num
             if len(obj_id_display) > 15:
                 obj_id_display = obj_id_display[:14] + "…"
 
-            # Título: um pouco menor para caber melhor
+            # Title: slightly shorter to fit the layout
             if len(title) > 40:
                 title = title[:37] + "..."
 
-            # Artista: corta mais cedo para não pegar a coluna de data
+            # Artist: cut earlier so it doesn’t reach the date column
             if len(maker) > 20:
                 maker = maker[:17] + "..."
 
-            # Data: só os primeiros 10 caracteres (ex.: '1675-01-01')
+            # Date: only the first 10 characters (e.g. "1675-01-01")
             date_str = date_full[:10]
 
-            # ======= DESENHO DAS COLUNAS =======
+            # ======= DRAW THE ROW =======
             c.drawString(x_id, y, obj_id_display)
             c.drawString(x_title, y, title)
             c.drawString(x_artist, y, maker)
             c.drawString(x_date, y, date_str)
             y -= 14
+
         draw_footer()
         c.showPage()
         page_num += 1
@@ -684,7 +734,7 @@ def build_pdf_buffer(
         date_str = dating.get("presentingDate") or (str(year) if year else "")
         link = (art.get("links") or {}).get("web", "")
 
-        # Header: título da obra com quebra de linha
+        # Header: artwork title with line wraps
         c.setFont("Helvetica-Bold", ARTWORK_TITLE_SIZE)
         y = height - margin - 15
         title_lines = wrap(title, width=TITLE_WRAP) or ["Untitled"]
@@ -692,7 +742,7 @@ def build_pdf_buffer(
             c.drawString(margin, y, line)
             y -= 17
 
-        # Metadados (artista, data, object number)
+        # Metadata (artist, date, object number)
         c.setFont("Helvetica", META_FONT_SIZE)
         y -= 4
         c.drawString(margin, y, f"Artist: {maker}")
@@ -703,7 +753,7 @@ def build_pdf_buffer(
         c.drawString(margin, y, f"Object number: {obj_num}")
         y -= 18
 
-        # Link (se existir)
+        # Link (if available)
         if link:
             c.setFont("Helvetica-Oblique", BODY_FONT_SIZE - 1)
             short_link = link[:80]
@@ -720,7 +770,7 @@ def build_pdf_buffer(
                     img = ImageReader(img_data)
 
                     max_w = width - 2 * margin
-                    max_h = 240   # um pouco menor para sobrar espaço p/ texto
+                    max_h = 240   # a bit smaller so we keep room for text
                     iw, ih = img.getSize()
                     scale = min(max_w / iw, max_h / ih)
                     img_w = iw * scale
@@ -737,12 +787,12 @@ def build_pdf_buffer(
                     )
                     y = img_y - 18
 
-                    # pequena linha de separação visual
+                    # small horizontal separator line
                     c.setLineWidth(0.3)
                     c.line(margin, y + 6, width - margin, y + 6)
                     y -= 10
             except Exception:
-                # Ignore image errors; continue with text-only page
+                # Ignore image errors; continue with a text-only page
                 pass
 
         # ----------------------------------------------------
@@ -753,7 +803,7 @@ def build_pdf_buffer(
             if about_text:
                 c.setFont("Helvetica-Bold", META_FONT_SIZE)
                 if y < margin + 60:
-                    # Not enough space for heading + algumas linhas
+                    # Not enough room for heading + a few lines
                     draw_footer()
                     c.showPage()
                     page_num += 1
@@ -769,25 +819,25 @@ def build_pdf_buffer(
                         page_num += 1
                         c.setFont("Helvetica", BODY_FONT_SIZE)
                         y = height - margin
-                    # leve recuo para o bloco de texto
+                    # Slight left indentation for the text block
                     c.drawString(margin + 10, y, line)
                     y -= 12
 
-                y -= 6  # pequeno respiro antes das notas
+                y -= 6  # small breathing space before notes
 
         # ----------------------------------------------------
         # Notes (only if enabled in PDF Setup)
         # ----------------------------------------------------
         note_text = (notes.get(obj_num, "") or "").strip()
         if include_notes and note_text:
-            # Se estiver muito perto do rodapé, pula de página antes de abrir o bloco
+            # If we are too close to the footer, start a new page before the Notes block
             if y < margin + 70:
                 draw_footer()
                 c.showPage()
                 page_num += 1
                 y = height - margin
 
-            # Pequeno espaço extra antes do título "Notes:"
+            # Small extra space before the "Notes:" heading
             y -= 4
 
             c.setFont("Helvetica-Bold", 11)
@@ -814,6 +864,7 @@ def build_pdf_buffer(
     c.save()
     buf.seek(0)
     return buf.getvalue()
+
 
 # ============================================================
 # Compare candidates helpers
@@ -842,6 +893,7 @@ def set_compare_candidate(favorites: Dict[str, Any], obj_num: str, desired: bool
 # Page header & data load
 # ============================================================
 
+
 show_page_intro(
     "This page shows the user's saved artworks (local favorites). It provides:",
     [
@@ -855,7 +907,7 @@ show_page_intro(
     ],
 )
 
-# Título + texto explicativo do legacy
+# Heading + explanatory text
 st.markdown("## ⭐ My selection")
 st.write(
     "This page shows all artworks you have saved in your selection. "
@@ -1109,10 +1161,10 @@ else:
     )
 
 # ============================================================
-# Export panel (keeping the newer panel style)
+# Export panel (newer panel style)
 # ============================================================
 
-pdf_meta = load_pdf_meta()  # <-- NEW: read PDF settings saved on PDF Setup
+pdf_meta = load_pdf_meta()  # read PDF settings saved on PDF Setup
 
 st.markdown('<div class="rijks-export-panel">', unsafe_allow_html=True)
 st.markdown("### Export & share selection")
@@ -1120,7 +1172,9 @@ st.markdown("### Export & share selection")
 csv_data = build_selection_csv(favorites, notes)
 notes_csv_data = build_notes_csv(notes)
 favorites_json_pretty = json.dumps(favorites, ensure_ascii=False, indent=2)
-favorites_json_compact = json.dumps(favorites, ensure_ascii=False, separators=(",", ":"))
+favorites_json_compact = json.dumps(
+    favorites, ensure_ascii=False, separators=(",", ":")
+)
 
 collection_code = build_share_code(favorites)
 
@@ -1214,7 +1268,6 @@ with col3:
             st.warning("Install `reportlab` to enable PDF export.")
         else:
             with st.spinner("Preparing PDF..."):
-                # <-- NEW: pass pdf_meta
                 st.session_state["pdf_buffer"] = build_pdf_buffer(
                     favorites, notes, pdf_meta
                 )
@@ -1275,13 +1328,13 @@ with col4:
     st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================
-# Clear entire selection (agora com confirmação)
+# Clear entire selection (now with confirmation step)
 # ============================================================
 
 st.markdown("---")
 st.markdown("### Danger zone")
 
-# Primeiro clique: apenas pede confirmação
+# First click: only asks for confirmation
 clear_clicked = st.button(
     "🗑️ Clear my entire selection",
     help="Remove all artworks from your selection on this device.",
@@ -1291,7 +1344,7 @@ clear_clicked = st.button(
 if clear_clicked:
     st.session_state["confirm_clear_selection"] = True
 
-# Se o usuário clicou no botão, exibimos o diálogo de confirmação
+# If the user clicked the button, show a confirmation dialog
 if st.session_state.get("confirm_clear_selection", False):
     st.warning(
         "This action will remove **all artworks** from your selection "
@@ -1334,12 +1387,13 @@ if st.session_state.get("confirm_clear_selection", False):
         st.rerun()
 
     elif cancel_clear:
-        # Usuário desistiu de limpar tudo
+        # User canceled the "clear selection" action
         st.session_state["confirm_clear_selection"] = False
 
 # ============================================================
-# Gallery + comparison logic (grid + group-by-artist, legacy-style)
+# Gallery + comparison logic (grid + group-by-artist)
 # ============================================================
+
 
 def get_year_for_sort(art: Dict[str, Any]) -> int | None:
     """Return a numeric year for sorting (when available)."""
@@ -1428,7 +1482,9 @@ if note_filter_lower:
 if selection_filter_code == "with_notes":
     base_items = [(obj_num, art) for obj_num, art in base_items if has_note(obj_num)]
 elif selection_filter_code == "without_notes":
-    base_items = [(obj_num, art) for obj_num, art in base_items if not has_note(obj_num)]
+    base_items = [
+        (obj_num, art) for obj_num, art in base_items if not has_note(obj_num)
+    ]
 
 # Summary after all filters (metadata + notes)
 total_after_filters = len(base_items)
@@ -1458,7 +1514,9 @@ else:
         if artist_filter.strip():
             filters_summary.append(f"artist contains '{artist_filter.strip()}'")
         if object_type_filter.strip():
-            filters_summary.append(f"object type contains '{object_type_filter.strip()}'")
+            filters_summary.append(
+                f"object type contains '{object_type_filter.strip()}'"
+            )
     if selection_filter_code == "with_notes":
         filters_summary.append("only artworks with notes")
     elif selection_filter_code == "without_notes":
@@ -1538,10 +1596,11 @@ else:
 
     def handle_compare_logic(obj_num: str, desired: bool) -> None:
         """
-        Atualiza o status de comparação de um artwork.
-        - Garante no máximo 4 candidatos.
-        - Atualiza favorites[obj_num]['_compare_candidate'].
-        - Persiste em disco.
+        Update the comparison status of a given artwork.
+
+        - Enforces a maximum of 4 candidates.
+        - Updates favorites[obj_num]['_compare_candidate'].
+        - Persists the change on disk.
         """
         art = favorites.get(obj_num)
         if not isinstance(art, dict):
@@ -1608,23 +1667,23 @@ else:
                     else:
                         st.caption("Thumbnails hidden for faster browsing.")
 
-                    # Basic metadata — escolher o melhor título possível
+                    # Basic metadata — pick the best possible title
                     obj_num_str = (obj_num or "").strip()
                     raw_title = (art.get("title") or "").strip()
                     long_title = (art.get("longTitle") or "").strip()
 
-                    # Regra:
-                    # 1) Usa title se existir
-                    # 2) Senão, usa longTitle
-                    # 3) Se o "título" for só o próprio objectNumber (ex.: "SK-C-230"),
-                    #    e existir longTitle, usa o longTitle
+                    # Rule:
+                    # 1) Use title if available
+                    # 2) Otherwise, use longTitle
+                    # 3) If the "title" is just the objectNumber (e.g. "SK-C-230"),
+                    #    and longTitle exists, use longTitle instead
                     title = raw_title or long_title or "Untitled"
                     if obj_num_str and title == obj_num_str and long_title:
                         title = long_title
 
                     maker = art.get("principalOrFirstMaker", "Unknown artist")
 
-                    # Compact mode ainda funciona igual, só em cima do título final
+                    # Compact mode: shorten long titles on the final title value
                     if compact_mode and isinstance(title, str) and len(title) > 60:
                         title = title[:57] + "..."
 
@@ -1642,8 +1701,36 @@ else:
                         unsafe_allow_html=True,
                     )
 
+                    # Badges row: notes, attribution, work kind, image status
+                    badge_parts: List[str] = []
+
                     if has_notes_flag:
-                        st.caption("📝 Notes available for this artwork")
+                        badge_parts.append(
+                            '<span class="rijks-badge rijks-badge-secondary">📝 Notes</span>'
+                        )
+
+                    # Authorship scope badge (_attribution from rijks_api)
+                    badge_parts.append(attribution_badge_html(art))
+
+                    # Work kind badge (_work_kind from rijks_api: original / reproduction / photograph)
+                    work_kind = art.get("_work_kind")
+                    if isinstance(work_kind, str) and work_kind:
+                        wk_badge = work_kind_badge_html(work_kind)
+                        if wk_badge:
+                            badge_parts.append(wk_badge)
+
+                    # Image status badge (if we know there is any issue or restriction)
+                    img_status = (art.get("_image_status") or "").lower()
+                    if img_status and img_status != "ok":
+                        extra = image_status_badge_html(img_status)
+                        if extra:
+                            badge_parts.append(extra)
+
+                    if badge_parts:
+                        st.markdown(
+                            '<div class="rijks-badge-row">' + " ".join(badge_parts) + "</div>",
+                            unsafe_allow_html=True,
+                        )
 
                     if presenting_date:
                         st.text(f"Date: {presenting_date}")
@@ -1739,7 +1826,6 @@ else:
 
                     st.markdown("</div>", unsafe_allow_html=True)
 
-
     # =========================================================
     # MODE A) GROUP BY ARTIST
     # =========================================================
@@ -1804,8 +1890,9 @@ else:
             f"{total_artists} artist(s) and {len(base_items)} artwork(s) total after filters."
         )
 
-
-        def sort_items_for_artist(items_for_artist: List[Tuple[str, Dict[str, Any]]]) -> None:
+        def sort_items_for_artist(
+            items_for_artist: List[Tuple[str, Dict[str, Any]]]
+        ) -> None:
             if sort_within_artist == "Title (A–Z)":
                 items_for_artist.sort(
                     key=lambda it: (
@@ -1817,14 +1904,14 @@ else:
                 items_for_artist.sort(
                     key=lambda it: (
                         get_year_for_sort(it[1]) is None,
-                        get_year_for_sort(it[1]) or 10 ** 9,
+                        get_year_for_sort(it[1]) or 10**9,
                     )
                 )
             elif sort_within_artist == "Year (newest → oldest)":
                 items_for_artist.sort(
                     key=lambda it: (
                         get_year_for_sort(it[1]) is None,
-                        -(get_year_for_sort(it[1]) or -10 ** 9),
+                        -(get_year_for_sort(it[1]) or -10**9),
                     )
                 )
             elif sort_within_artist == "Notes first":
@@ -1835,7 +1922,6 @@ else:
                     )
                 )
 
-
         for artist in page_artists:
             items_for_artist = grouped.get(artist, [])
             sort_items_for_artist(items_for_artist)
@@ -1844,7 +1930,9 @@ else:
             years = [y for y in years if isinstance(y, int)]
             min_y = min(years) if years else None
             max_y = max(years) if years else None
-            notes_count = sum(1 for obj_id, _ in items_for_artist if has_note_text(obj_id))
+            notes_count = sum(
+                1 for obj_id, _ in items_for_artist if has_note_text(obj_id)
+            )
 
             subtitle_parts = [
                 f"{len(items_for_artist)} artwork(s)",
@@ -1856,7 +1944,7 @@ else:
             header_line = " • ".join(subtitle_parts)
 
             with st.expander(
-                    f"👤 {artist} — {header_line}", expanded=expand_artists
+                f"👤 {artist} — {header_line}", expanded=expand_artists
             ):
                 render_cards(items_for_artist, allow_compare=enable_compare_grouped)
 
@@ -1865,12 +1953,12 @@ else:
     # =========================================================
 
     else:
-        # 🔧 Ajuste: se a galeria estiver restrita aos candidatos de comparação
-        # e tivermos até 4 obras, exibimos todas lado a lado (1, 2, 3 ou 4 colunas).
+        # 🔧 Adjustment: if the gallery is restricted to comparison candidates
+        # and we have up to 4 artworks, show them all side by side (1–4 columns).
         if show_only_cmp and candidate_ids and len(base_items) <= 4:
             cards_per_row = max(1, len(base_items))
         else:
-            # comportamento padrão
+            # Default behavior
             cards_per_row = 5 if compact_mode else 3
 
         items_per_page = st.select_slider(
@@ -1926,8 +2014,9 @@ else:
                 f"Currently marked for comparison: **{num_candidates}** artwork(s). "
                 "Open the **Compare Artworks** page to run the side-by-side view."
             )
+
     # ============================================================
-    # Detail view + research notes editor (ajustado: layout 1 coluna)
+    # Detail view + research notes editor (1-column layout)
     # ============================================================
 
     detail_id = st.session_state.get("detail_art_id")
@@ -1935,7 +2024,7 @@ else:
     if detail_id and detail_id in favorites:
         art = favorites[detail_id]
 
-        # Analytics para abertura da detail view (igual ao original)
+        # Analytics when opening the detail view
         analytics_key = f"analytics_detail_opened_{detail_id}"
         if analytics_key not in st.session_state:
             st.session_state[analytics_key] = True
@@ -1951,7 +2040,9 @@ else:
                     "title": title_analytics,
                     "year": year_analytics,
                     "has_notes": bool(
-                        isinstance(st.session_state.get("notes", {}).get(detail_id), str)
+                        isinstance(
+                            st.session_state.get("notes", {}).get(detail_id), str
+                        )
                         and st.session_state["notes"][detail_id].strip()
                     ),
                 },
@@ -1960,7 +2051,7 @@ else:
         st.markdown("---")
         st.subheader("🔍 Detail view")
 
-        # --------- Novo layout: tudo em uma coluna ---------
+        # --------- New layout: single-column detail view ---------
 
         img_url = get_best_image_url(art)
 
@@ -1978,7 +2069,7 @@ else:
         presenting_date = dating.get("presentingDate")
         year = dating.get("year")
 
-        # Slider + imagem ocupando largura toda do conteúdo central
+        # Slider + image taking the full content width
         if img_url:
             zoom = st.slider(
                 "Zoom (relative size)",
@@ -1988,13 +2079,13 @@ else:
                 step=10,
                 key=f"zoom_{detail_id}",
             )
-            base_width = 900  # base mais larga; Streamlit limita se passar do container
+            base_width = 900  # Streamlit will cap this to the container width
             width = int(base_width * zoom / 100)
             st.image(img_url, width=width)
         else:
             st.write("No valid image available via API.")
 
-        # Metadados logo abaixo da imagem, com fonte um pouco menor
+        # Metadata right below the image, in a slightly smaller font size
         meta_parts = [
             f"<strong>Title:</strong> {title}",
             f"<strong>Artist:</strong> {maker}",
@@ -2015,14 +2106,17 @@ else:
         if long_title_meta and long_title_meta != title:
             meta_parts.append(f"<strong>Long title:</strong> {long_title_meta}")
         if object_types:
-            meta_parts.append(f"<strong>Object type(s):</strong> {', '.join(object_types)}")
+            meta_parts.append(
+                f"<strong>Object type(s):</strong> {', '.join(object_types)}"
+            )
         if materials:
             meta_parts.append(f"<strong>Materials:</strong> {', '.join(materials)}")
         if techniques:
             meta_parts.append(f"<strong>Techniques:</strong> {', '.join(techniques)}")
         if production_places:
             meta_parts.append(
-                f"<strong>Production place(s):</strong> {', '.join(production_places)}"
+                f"<strong>Production place(s):</strong> "
+                f"{', '.join(production_places)}"
             )
 
         if web_link:
@@ -2034,11 +2128,46 @@ else:
         st.markdown(
             """
             <div style="font-size:0.9rem; line-height:1.5; margin-top:0.9rem;">
-            """ + "<br>".join(meta_parts) + "</div>",
+            """
+            + "<br>".join(meta_parts)
+            + "</div>",
             unsafe_allow_html=True,
         )
 
-        # --------- Notas de pesquisa (igual ao original) ---------
+        # Badges row in detail view: notes, attribution, work kind, image status
+        badge_parts: List[str] = []
+
+        # Notes badge (if there is a saved note for this artwork)
+        note_text_detail = (notes.get(detail_id, "") or "").strip()
+        if note_text_detail:
+            badge_parts.append(
+                '<span class="rijks-badge rijks-badge-secondary">📝 Notes</span>'
+            )
+
+        # Authorship scope badge (_attribution from rijks_api)
+        badge_parts.append(attribution_badge_html(art))
+
+        # Work kind badge (original / reproduction / photograph)
+        wk = art.get("_work_kind")
+        if isinstance(wk, str) and wk:
+            wk_badge = work_kind_badge_html(wk)
+            if wk_badge:
+                badge_parts.append(wk_badge)
+
+        # Image status badge (copyright / missing / broken / no public image)
+        img_status_detail = (art.get("_image_status") or "").lower()
+        if img_status_detail and img_status_detail != "ok":
+            extra = image_status_badge_html(img_status_detail)
+            if extra:
+                badge_parts.append(extra)
+
+        if badge_parts:
+            st.markdown(
+                '<div class="rijks-badge-row">' + " ".join(badge_parts) + "</div>",
+                unsafe_allow_html=True,
+            )
+
+        # --------- Research notes (same behaviour as before) ---------
         st.markdown("### 📝 Research notes")
         existing_note = notes.get(detail_id, "")
         note_text = st.text_area(

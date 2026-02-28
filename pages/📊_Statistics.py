@@ -3,46 +3,17 @@ from __future__ import annotations
 import csv
 import io
 import json
-import streamlit as st
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Iterable
+from datetime import datetime
+from typing import Any, Dict, Iterable, List
+
+import streamlit as st
 
 from app_paths import ANALYTICS_LOG_FILE, FAV_FILE
 from analytics import track_event_once
 from ui_theme import inject_global_css, show_global_footer, show_page_intro
-from datetime import datetime
 
 
-from datetime import datetime, timezone
-from typing import Optional, Union
-
-def format_ts_local(value: Union[str, datetime, None]) -> str:
-    """
-    Aceita:
-      - string ISO em UTC
-      - datetime (ingênuo ou com timezone)
-      - None
-    E devolve 'YYYY-MM-DD HH:MM (local time)'.
-    """
-    if value is None:
-        return "—"
-
-    try:
-        # Se já veio como datetime
-        if isinstance(value, datetime):
-            dt_utc = value
-            if dt_utc.tzinfo is None:
-                dt_utc = dt_utc.replace(tzinfo=timezone.utc)
-        else:
-            # Se veio como string
-            ts_str_clean = value.replace("Z", "+00:00")
-            dt_utc = datetime.fromisoformat(ts_str_clean)
-
-        dt_local = dt_utc.astimezone()  # fuso local da máquina
-        return dt_local.strftime("%Y-%m-%d %H:%M") + " (local time)"
-    except Exception:
-        return str(value)
 # ============================================================
 # Optional password gate (admin-only access)
 # ============================================================
@@ -50,17 +21,17 @@ def require_stats_password() -> None:
     """
     Optional password gate for the statistics page.
 
-    - Se STATS_PASSWORD não estiver definido, mostra só um aviso e libera.
-    - Se estiver definido:
-        * Se ainda não autenticou, mostra o formulário de senha.
-        * Se já autenticou em this session, não mostra mais nada.
+    - If STATS_PASSWORD is not configured: show an info message and allow access.
+    - If STATS_PASSWORD is configured:
+        * If not authenticated yet, show a password form and block the page.
+        * If already authenticated in this session, do nothing.
     """
     try:
         admin_password = st.secrets.get("STATS_PASSWORD", "")
     except Exception:
         admin_password = ""
 
-    # Caso 1: sem senha configurada → libera e avisa
+    # Case 1: no password configured → allow and show info
     if not admin_password:
         st.info(
             "Statistics are visible because no admin password is configured. "
@@ -68,29 +39,30 @@ def require_stats_password() -> None:
         )
         return
 
-    # Caso 2: já autenticado nesta sessão → não mostra o formulário
+    # Case 2: already authenticated in this session
     if st.session_state.get("stats_admin_ok", False):
         return
 
-    # Caso 3: precisa autenticar
+    # Case 3: require authentication
     st.markdown("#### Admin access required")
     pwd = st.text_input("Enter statistics password", type="password")
 
-    # Enquanto não digitou nada, não deixa passar
+    # No password typed yet → block further execution
     if not pwd:
         st.stop()
 
-    # Senha errada → trava aqui
+    # Wrong password → block further execution
     if pwd != admin_password:
         st.error("Incorrect password.")
         st.stop()
 
-    # Senha correta → marca como autenticado e rerun para limpar o formulário
+    # Correct password → mark as authenticated and rerun to clear the form
     st.session_state["stats_admin_ok"] = True
     st.rerun()
 
+
 # ============================================================
-# Page config + tema
+# Page config & theme
 # ============================================================
 st.set_page_config(
     page_title="Statistics — Usage analytics (local, anonymous)",
@@ -100,41 +72,38 @@ st.set_page_config(
 
 inject_global_css()
 
-# AJUSTE LOCAL DE ALTURA (STATISTICS / ADMIN)
+# Local layout tweaks for the Statistics / admin page
 st.markdown(
     """
     <style>
-    st.markdown(
-    
-    /* Diminui o valor principal de st.metric */
+    /* Make st.metric values a bit smaller on this page */
     div[data-testid="stMetricValue"] {
-        font-size: 1.8rem;  /* teste 1.6, 1.4 se quiser menor ainda */
+        font-size: 1.8rem;
     }
 
-    /* Opcional: diminui um pouco o label também */
+    /* Slightly reduce the metric label as well */
     div[data-testid="stMetricLabel"] {
         font-size: 0.9rem;
     }
-)
 
-    /* sobe um pouco todo o conteúdo desta página */
+    /* Move main page content a bit up */
     div.block-container {
-        padding-top: 1.8rem;  /* ajuste fino aqui: 0.6, 0.7, 1.0... */
+        padding-top: 1.8rem;
     }
 
-    /* reduz a margem do primeiro título (Admin access required) */
+    /* Reduce top margin of the first H1 (if any) */
     div.block-container h1:first-of-type {
-        margin-top: 0.3rem;   /* diminua/aumente até alinhar visualmente */
+        margin-top: 0.3rem;
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# Gate de senha (se falhar, a execução para aqui)
+# Password gate – if it fails, execution stops here
 require_stats_password()
 
-# Intro padrão da página (só aparece depois da senha correta)
+# Intro section (only shown after passing the gate)
 show_page_intro(
     "Usage statistics for Rijksmuseum Explorer (local & anonymous). This dashboard is for internal review only:",
     [
@@ -157,6 +126,7 @@ track_event_once(
     once_key="page_view::Statistics",
     props={},
 )
+
 
 # ============================================================
 # Helpers
@@ -196,17 +166,15 @@ def _load_favorites_count() -> int:
 
 
 def _parse_timestamp(ev: Dict[str, Any]) -> datetime | None:
-    """Try to parse the event timestamp (ISO string) to datetime."""
+    """Try to parse the event timestamp (ISO string) into a datetime."""
     ts = ev.get("timestamp")
     if not isinstance(ts, str):
         return None
-    # Try a couple of ISO-like formats
-    for fmt in ("%Y-%m-%dT%H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S"):
-        try:
-            return datetime.fromisoformat(ts.replace("Z", ""))
-        except Exception:
-            continue
-    return None
+    try:
+        # Remove trailing 'Z' if present (common ISO-8601 variant)
+        return datetime.fromisoformat(ts.replace("Z", ""))
+    except Exception:
+        return None
 
 
 def _flatten_events_to_csv(events: Iterable[Dict[str, Any]]) -> str:
@@ -276,13 +244,28 @@ def _aggregated_stats_to_csv(
     return out.getvalue()
 
 
+def _format_dt_local(dt: datetime | None) -> str:
+    """
+    Receive a datetime (UTC or naive) and return a short string
+    in local time, without microseconds.
+    """
+    if dt is None:
+        return "—"
+
+    try:
+        local_dt = dt.astimezone()  # Use system timezone (e.g. Europe/Amsterdam)
+        return local_dt.strftime("%Y-%m-%d %H:%M")
+    except Exception:
+        return str(dt)
+
+
 # ============================================================
 # Load events (file + session)
 # ============================================================
 session_events = st.session_state.get("_analytics_events", [])
 file_events = _read_jsonl(ANALYTICS_LOG_FILE)
 
-# Debug / context about the analytics file
+# Debug/context about the analytics file
 debug_str = (
     f"DEBUG file: `{ANALYTICS_LOG_FILE}` | "
     f"exists={ANALYTICS_LOG_FILE.exists()} "
@@ -291,7 +274,10 @@ debug_str = (
 if ANALYTICS_LOG_FILE.exists():
     try:
         stat = ANALYTICS_LOG_FILE.stat()
-        debug_str += f"| size={stat.st_size} bytes | mtime={datetime.fromtimestamp(stat.st_mtime)}"
+        debug_str += (
+            f"| size={stat.st_size} bytes | "
+            f"mtime={datetime.fromtimestamp(stat.st_mtime)}"
+        )
     except Exception:
         pass
 
@@ -309,27 +295,9 @@ if not events:
     st.info("No analytics events recorded yet. Use the app and come back here.")
     st.stop()
 
-
-
-def _format_dt_local(dt: datetime | None) -> str:
-    """
-    Recebe um datetime (em UTC, vindo do _parse_timestamp)
-    e devolve algo curto e em horário local, sem microssegundos.
-    """
-    if dt is None:
-        return "—"
-
-    try:
-        # Converte para o fuso local da máquina
-        local_dt = dt.astimezone()  # usa timezone do sistema (ex.: Europe/Amsterdam)
-        # Formato enxuto: AAAA-MM-DD HH:MM
-        return local_dt.strftime("%Y-%m-%d %H:%M")
-    except Exception:
-        # Se der qualquer erro, cai pro str() original
-        return str(dt)
-
-
+# ============================================================
 # Basic high-level metrics
+# ============================================================
 all_event_names = [e.get("event") for e in events if isinstance(e, dict)]
 event_counts = Counter(all_event_names)
 
@@ -361,7 +329,8 @@ selected_types = st.multiselect(
 
 if selected_types:
     filtered_events = [
-        e for e in events
+        e
+        for e in events
         if isinstance(e, dict) and e.get("event") in selected_types
     ]
 else:
@@ -375,7 +344,6 @@ filtered_counts = Counter(
     e.get("event") for e in filtered_events if isinstance(e, dict)
 )
 
-
 # ============================================================
 # Download buttons (events & aggregated)
 # ============================================================
@@ -383,8 +351,7 @@ st.markdown("### Export analytics")
 
 events_csv = _flatten_events_to_csv(filtered_events)
 
-# Aggregated stats will be filled after we compute them, but we can
-# declare the variable here to keep the structure clear.
+# Aggregated stats will be filled after we compute them
 aggregated_csv: str | None = None
 
 col_dl1, col_dl2 = st.columns(2)
@@ -396,8 +363,6 @@ with col_dl1:
         mime="text/csv",
         use_container_width=True,
     )
-# aggregated_csv will be set after computing aggregates; download button is below
-
 
 # ============================================================
 # Aggregated views
@@ -438,8 +403,8 @@ for e in filtered_events:
 if not page_views:
     st.caption("No page_view events recorded yet.")
 else:
-    for page, cnt in page_views.most_common():
-        st.write(f"- **{page}**: {cnt}")
+    for page_name, cnt in page_views.most_common():
+        st.write(f"- **{page_name}**: {cnt}")
 
 # --- Top search queries ---
 st.markdown("### Top search queries")
@@ -459,13 +424,14 @@ for e in filtered_events:
         continue
     search_queries[q] += 1
 
-max_queries = st.slider("How many queries to show", min_value=5, max_value=50, value=10)
+max_queries = st.slider(
+    "How many queries to show", min_value=5, max_value=50, value=10
+)
 if not search_queries:
     st.caption("No search_executed events recorded yet.")
 else:
     for q, cnt in search_queries.most_common(max_queries):
         st.write(f"- **{q}**: {cnt}")
-
 
 # --- Top artworks (views) ---
 st.markdown("### Top artworks (views)")
@@ -486,7 +452,9 @@ for e in filtered_events:
         if isinstance(artist, str) and artist.strip():
             artist_by_object[obj_id] = artist.strip()
 
-max_artworks = st.slider("How many artworks to show", min_value=5, max_value=50, value=15)
+max_artworks = st.slider(
+    "How many artworks to show", min_value=5, max_value=50, value=15
+)
 top_artworks_list = sorted(
     views_by_object.items(), key=lambda x: x[1], reverse=True
 )[:max_artworks]
@@ -498,7 +466,6 @@ else:
         artist = artist_by_object.get(obj_id, "Unknown artist")
         st.write(f"- `{obj_id}` — **{artist}**: {cnt} view(s)")
 
-
 # --- Top artists (views) ---
 st.markdown("### Top artists (views)")
 
@@ -507,7 +474,9 @@ for obj_id, cnt in views_by_object.items():
     artist = artist_by_object.get(obj_id, "Unknown artist")
     views_by_artist[artist] += cnt
 
-max_artists = st.slider("How many artists to show", min_value=5, max_value=50, value=15)
+max_artists = st.slider(
+    "How many artists to show", min_value=5, max_value=50, value=15
+)
 top_artists_list = views_by_artist.most_common(max_artists)
 
 if not top_artists_list:
@@ -533,14 +502,13 @@ with col_dl2:
         use_container_width=True,
     )
 
-
 # ============================================================
 # Maintenance: clear analytics
 # ============================================================
 st.markdown("---")
 st.markdown("### Danger zone")
 
-# Primeiro clique: só ativa o modo de confirmação
+# First click: only activates confirmation mode
 clear_analytics_clicked = st.button(
     "🧹 Clear analytics log",
     help="Delete all locally stored analytics events (JSONL file + session).",
@@ -550,7 +518,7 @@ clear_analytics_clicked = st.button(
 if clear_analytics_clicked:
     st.session_state["confirm_clear_analytics_log"] = True
 
-# Se o modo de confirmação estiver ativo, mostra o aviso e os botões
+# If confirmation mode is active, show the warning and buttons
 if st.session_state.get("confirm_clear_analytics_log", False):
     st.warning(
         "This action will delete **all analytics events** stored locally "
@@ -574,26 +542,28 @@ if st.session_state.get("confirm_clear_analytics_log", False):
         )
 
     if confirm_clear_analytics:
-        # 1) Zera o buffer em memória
+        # 1) Clear in-memory buffer
         st.session_state["_analytics_events"] = []
 
-        # 2) Tenta limpar o arquivo JSONL no disco
+        # 2) Clear JSONL file on disk
         try:
             with open(ANALYTICS_LOG_FILE, "w", encoding="utf-8") as f:
                 f.write("")
         except Exception:
-            # Se der erro, só seguimos; não quebramos a UI
+            # Do not break UI if something goes wrong
             pass
 
-        # 3) Reseta o flag de confirmação
+        # 3) Reset confirmation flag
         st.session_state["confirm_clear_analytics_log"] = False
 
         st.success("All analytics events have been cleared.")
         st.rerun()
 
     elif cancel_clear_analytics:
-        # Usuário desistiu: só desliga o modo de confirmação
+        # User canceled the "clear analytics" action
         st.session_state["confirm_clear_analytics_log"] = False
+        st.info("Analytics log was not cleared.")
+        st.rerun()
 
 # ============================================================
 # Footer

@@ -1,16 +1,18 @@
 # pages/📑_PDF_Setup.py
-
 """
 PDF Setup page.
 
 This page configures how the illustrated PDF is generated from the
 "My Selection" page. It controls:
+
 - Whether to include a cover page.
 - Whether to include a global opening text / introduction.
 - Whether to include research notes in each artwork page.
+- Whether to include an overview/summary page.
+- Whether to include Rijksmuseum “About” text.
 
 Settings are stored in a small JSON file (PDF_META_FILE) and are
-shared with the My_Selection page.
+shared with the My_Selection page via the same file.
 """
 
 from __future__ import annotations
@@ -28,23 +30,23 @@ from ui_theme import inject_global_css, show_global_footer, show_page_intro
 # ============================================================
 # Page config & global CSS
 # ============================================================
-
 st.set_page_config(page_title="PDF Setup", page_icon="📑", layout="wide")
 
 # Apply the shared dark theme + layout for the whole app
 inject_global_css()
 
-# AJUSTE LOCAL DE ALTURA (PDF SETUP)
+# Small local height adjustment so this page aligns with the others
 st.markdown(
     """
     <style>
     div.block-container {
-        padding-top: 1.5rem;  /* ajuste esse valor até alinhar com as outras páginas */
+        padding-top: 1.5rem;
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
 
 # ============================================================
 # Helpers: default meta, load/save, selection count
@@ -61,16 +63,17 @@ def _default_pdf_meta() -> Dict[str, Any]:
         "include_cover": True,
         "include_opening_text": True,
         "include_notes": True,
-        "include_summary": True,      # se você já estiver usando summary
-        "include_about": True,        # NEW: include Rijks “About” text
+        "include_summary": True,  # summary / overview page
+        "include_about": True,    # Rijks “About” text block
     }
+
 
 def load_pdf_meta() -> Dict[str, Any]:
     """
     Load PDF configuration shared with the My_Selection page.
 
     The result is cached in st.session_state["pdf_meta"] so we
-    don't hit the filesystem on every rerun.
+    do not hit the filesystem on every rerun.
 
     Known keys (all optional in the JSON file):
       - opening_text: str
@@ -78,6 +81,7 @@ def load_pdf_meta() -> Dict[str, Any]:
       - include_opening_text: bool
       - include_notes: bool
       - include_summary: bool
+      - include_about: bool
     """
     # If already in session_state, normalize and return
     if "pdf_meta" in st.session_state:
@@ -116,7 +120,6 @@ def save_pdf_meta(meta: Dict[str, Any]) -> None:
         base.update(meta)
 
     st.session_state["pdf_meta"] = base
-
     try:
         with open(PDF_META_FILE, "w", encoding="utf-8") as f:
             json.dump(base, f, ensure_ascii=False, indent=2)
@@ -125,15 +128,11 @@ def save_pdf_meta(meta: Dict[str, Any]) -> None:
         pass
 
 
-# Load current PDF configuration (from file or defaults)
-meta = load_pdf_meta()
-
-
 def load_selection_count() -> int:
     """
     Return the number of artworks currently in the global selection.
 
-    It first tries st.session_state['favorites'] (when the user has
+    It first tries st.session_state["favorites"] (when the user has
     already visited My Selection). If that is not available, it
     falls back to reading the local favorites file.
     """
@@ -155,7 +154,6 @@ def load_selection_count() -> int:
 # ============================================================
 # Analytics — page view (once per session)
 # ============================================================
-
 track_event_once(
     event="page_view",
     page="PDF_Setup",
@@ -163,13 +161,13 @@ track_event_once(
     props={"has_existing_config": PDF_META_FILE.exists()},
 )
 
+
 # ============================================================
 # Page header
 # ============================================================
-
-# 1) Texto de abertura no topo (padrão global)
+# 1) Global intro block (shared visual pattern)
 show_page_intro(
-    "Use this page to configure how the illustrated PDF is generated from your My Selection page.",
+    "Use this page to configure how the illustrated PDF is generated from your **My Selection** page.",
     [
         "These options control the PDF created when you click **Prepare PDF** on the My Selection page.",
         "All configuration is stored locally in a small JSON file and never sent anywhere.",
@@ -177,10 +175,10 @@ show_page_intro(
     ],
 )
 
-# 2) Título “local” da página logo abaixo do bloco de abertura
+# 2) Local page title just below the intro block
 st.markdown("## 📑 PDF setup")
 
-# 3) Pílula de contagem da seleção
+# 3) Small pill with current selection size (if available)
 selection_count = load_selection_count()
 if selection_count:
     st.markdown(
@@ -188,11 +186,12 @@ if selection_count:
         f'<strong>{selection_count}</strong> artwork(s)</span>',
         unsafe_allow_html=True,
     )
+
+
 # ============================================================
 # Main configuration panel
 # ============================================================
-
-pdf_meta = load_pdf_meta()  # <-- NEW: read PDF settings saved on PDF Setup
+pdf_meta = load_pdf_meta()
 
 st.markdown('<div class="rijks-panel">', unsafe_allow_html=True)
 st.markdown("### General PDF settings")
@@ -212,8 +211,10 @@ include_opening_text = st.checkbox(
 include_notes_flag = st.checkbox(
     "Include research notes in each artwork page",
     value=bool(pdf_meta.get("include_notes", True)),
-    help="When enabled, each artwork page in the PDF will include your notes "
-         "from the My Selection page (when available).",
+    help=(
+        "When enabled, each artwork page in the PDF will include your notes "
+        "from the My Selection page (when available)."
+    ),
 )
 
 include_summary_flag = st.checkbox(
@@ -248,7 +249,6 @@ st.markdown("</div>", unsafe_allow_html=True)
 # ============================================================
 # Save / reset controls
 # ============================================================
-
 st.markdown('<div class="rijks-panel">', unsafe_allow_html=True)
 st.markdown("### Save or reset PDF configuration")
 
@@ -303,7 +303,6 @@ st.markdown("</div>", unsafe_allow_html=True)
 # ============================================================
 # Raw JSON (debug / advanced)
 # ============================================================
-
 with st.expander("🔍 View raw PDF configuration (advanced)", expanded=False):
     st.json(st.session_state.get("pdf_meta", {}))
 
@@ -311,5 +310,4 @@ with st.expander("🔍 View raw PDF configuration (advanced)", expanded=False):
 # ============================================================
 # Footer
 # ============================================================
-
 show_global_footer()

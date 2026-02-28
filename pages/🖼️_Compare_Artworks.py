@@ -7,12 +7,12 @@ Workflow:
 2) On this page, select exactly 2 items to compare.
 
 Key rules:
-- At most 2 selected in the comparison pair
-- Do not modify widget session_state after widget instantiation (use callbacks)
-- DEV_MODE is hidden by default; if enabled, shows raw Linked Art JSON
+- At most 2 selected in the comparison pair.
+- Do not modify widget session_state after widget instantiation (use callbacks).
+- DEV_MODE is hidden by default; if enabled, shows raw Linked Art JSON.
 """
 
-from __future__ import annotations  # TEM que ser o primeiro import
+from __future__ import annotations  # Must be the first import
 
 import json
 from typing import Any, Dict, List, Tuple
@@ -30,7 +30,6 @@ from rijks_api import (
 
 DEV_MODE = bool(st.secrets.get("DEV_MODE", False))
 
-st.set_page_config(page_title="Compare Artworks", page_icon="🖼️", layout="wide")
 st.set_page_config(
     page_title="Compare Artworks",
     page_icon="🖼️",
@@ -88,6 +87,7 @@ st.markdown(
 # Data helpers
 # ============================================================
 def load_favorites_from_disk() -> Dict[str, Any]:
+    """Load the favorites JSON file from disk, if available."""
     if FAV_FILE.exists():
         try:
             with open(FAV_FILE, "r", encoding="utf-8") as f:
@@ -99,6 +99,7 @@ def load_favorites_from_disk() -> Dict[str, Any]:
 
 
 def get_compare_candidates(favorites: Dict[str, Any]) -> List[str]:
+    """Return objectNumbers marked as comparison candidates inside favorites."""
     return [
         obj_id
         for obj_id, art in favorites.items()
@@ -108,6 +109,7 @@ def get_compare_candidates(favorites: Dict[str, Any]) -> List[str]:
 
 @st.cache_data(show_spinner=False)
 def cached_fetch_metadata(object_number: str) -> dict:
+    """Cached wrapper around fetch_metadata_by_objectnumber."""
     return fetch_metadata_by_objectnumber(object_number)
 
 
@@ -120,13 +122,17 @@ show_page_intro(
         "Uses artworks previously marked as comparison candidates in **My Selection**.",
         "Displays up to 4 artworks at the same time for side-by-side inspection.",
         "Shows high-level metadata (title, artist, date, object number, web link).",
-        "Highlights whether each artwork has research notes in your local files.",
         "Can be used as a compact presentation view during research discussions.",
+        "Optional DEV view shows raw Linked Art JSON when enabled.",
     ],
 )
 
 st.markdown("## 🖼️ Compare Artworks")
-st.caption("1) Mark up to **4 candidates** in **My Selection** · 2) Select **exactly 2** below · 3) Scroll for side-by-side comparison.")
+st.caption(
+    "1) Mark up to **4 candidates** in **My Selection** · "
+    "2) Select **exactly 2** below · "
+    "3) Scroll for side-by-side comparison."
+)
 
 
 # ============================================================
@@ -137,7 +143,9 @@ if "favorites" not in st.session_state:
 
 favorites: Dict[str, Any] = st.session_state.get("favorites", {})
 if not isinstance(favorites, dict) or not favorites:
-    st.warning("No saved selection found. Go to the Explorer page and add artworks first.")
+    st.warning(
+        "No saved selection found. Go to the Explorer page and add artworks first."
+    )
     st.stop()
 
 
@@ -146,55 +154,63 @@ if not isinstance(favorites, dict) or not favorites:
 # ============================================================
 candidate_ids = get_compare_candidates(favorites)
 if not candidate_ids:
-    st.info("No comparison candidates marked. Go to **My Selection** and mark up to 4 items for comparison.")
+    st.info(
+        "No comparison candidates marked. "
+        "Go to **My Selection** and mark up to 4 items for comparison."
+    )
     st.stop()
 
-candidate_arts: List[Tuple[str, Dict[str, Any]]] = [(obj_id, favorites[obj_id]) for obj_id in candidate_ids if obj_id in favorites]
+candidate_arts: List[Tuple[str, Dict[str, Any]]] = [
+    (obj_id, favorites[obj_id]) for obj_id in candidate_ids if obj_id in favorites
+]
 
 
 # ============================================================
 # Pair selection state (max 2) — callback-safe
 # ============================================================
-# Lista global com os IDs que vão realmente para a comparação grande
+# Global list with the IDs that will be used in the main comparison
 if "cmp_pair_ids" not in st.session_state:
-    # ✅ Agora começamos sem nenhuma obra selecionada
+    # Start with no artworks selected
     st.session_state["cmp_pair_ids"] = []
 
-# Flag para mostrar aviso de limite estourado
+# Flag used to show a warning when the limit is exceeded
 if "cmp_pair_warning" not in st.session_state:
     st.session_state["cmp_pair_warning"] = False
 
-# Garante que exista um estado booleano para cada candidato atual
+# Ensure we have a boolean state for each current candidate
 for obj_id in candidate_ids:
     st.session_state.setdefault(f"cmp_pair_{obj_id}", False)
 
 
 def on_pair_toggle(changed_id: str) -> None:
     """
-    Enforce a maximum of 2 selected items (safe inside widget callback).
+    Enforce a maximum of 2 selected items (executed inside the widget callback).
 
-    Sempre que uma checkbox 'Include in comparison pair' mudar,
-    recalculamos a lista de selecionados a partir de st.session_state.
+    Whenever a checkbox 'Include in comparison pair' changes,
+    we recompute the list of selected IDs from st.session_state.
     """
-    # Quais candidatos estão marcados nas checkboxes?
+    # Which candidates are currently checked?
     selected = [
-        x for x in candidate_ids
+        x
+        for x in candidate_ids
         if bool(st.session_state.get(f"cmp_pair_{x}", False))
     ]
 
-    # Se passou de 2, desmarca o que acabou de mudar e liga o warning
+    # If we exceed the limit, uncheck the last changed one and trigger a warning
     if len(selected) > 2:
         st.session_state[f"cmp_pair_{changed_id}"] = False
         st.session_state["cmp_pair_warning"] = True
 
-        # Recalcula depois de desfazer a última marcação
+        # Recompute after reverting the last change
         selected = [
-            x for x in candidate_ids
+            x
+            for x in candidate_ids
             if bool(st.session_state.get(f"cmp_pair_{x}", False))
         ]
 
-    # Guarda a lista final (0, 1 ou 2 itens) para usar na comparação grande
+    # Store the final list (0, 1 or 2 items) to be used in the main comparison
     st.session_state["cmp_pair_ids"] = selected
+
 
 # ============================================================
 # Candidate cards
@@ -208,7 +224,9 @@ for col, (obj_id, art) in zip(cols, candidate_arts):
 
     with col:
         st.markdown(f'<div class="{card_classes}">', unsafe_allow_html=True)
-        st.markdown('<div class="cmp-card-header">CANDIDATE</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="cmp-card-header">CANDIDATE</div>', unsafe_allow_html=True
+        )
 
         img_url = get_best_image_url(art)
         if img_url:
@@ -216,9 +234,18 @@ for col, (obj_id, art) in zip(cols, candidate_arts):
         else:
             st.caption("No public image available in current mapping.")
 
-        st.markdown(f'<div class="rijks-card-title">{art.get("title", "Untitled")}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="rijks-card-caption">{art.get("principalOrFirstMaker", "Unknown artist")}</div>', unsafe_allow_html=True)
-        st.markdown(f'<span class="cmp-card-objectid">{obj_id}</span>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="rijks-card-title">{art.get("title", "Untitled")}</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<div class="rijks-card-caption">{art.get("principalOrFirstMaker", "Unknown artist")}</div>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f'<span class="cmp-card-objectid">{obj_id}</span>',
+            unsafe_allow_html=True,
+        )
 
         st.checkbox(
             "Include in comparison pair",
@@ -230,7 +257,7 @@ for col, (obj_id, art) in zip(cols, candidate_arts):
         st.markdown("</div>", unsafe_allow_html=True)
 
 if st.session_state.pop("cmp_pair_warning", False):
-    st.warning("Please keep exactly 2 artworks selected for comparison.")
+    st.warning("Please keep **at most** 2 artworks selected for comparison.")
 
 
 # ============================================================
@@ -252,7 +279,11 @@ if not art_a or not art_b:
     st.error("Could not retrieve both artworks for comparison.")
     st.stop()
 
-track_event(event="compare_clicked", page="Compare", props={"object_id_a": id_a, "object_id_b": id_b})
+track_event(
+    event="compare_clicked",
+    page="Compare",
+    props={"object_id_a": id_a, "object_id_b": id_b},
+)
 
 if DEV_MODE:
     with st.expander("DEV: Raw Linked Art JSON (A/B)", expanded=False):
@@ -265,7 +296,9 @@ if DEV_MODE:
 
 col_a, col_b = st.columns(2)
 
+
 def render_side(label: str, obj_id: str, art: Dict[str, Any], container) -> None:
+    """Render one side of the A/B comparison."""
     with container:
         st.subheader(label)
 
@@ -278,6 +311,17 @@ def render_side(label: str, obj_id: str, art: Dict[str, Any], container) -> None
         st.write(f"**Title:** {art.get('title', 'Untitled')}")
         st.write(f"**Artist:** {art.get('principalOrFirstMaker', 'Unknown artist')}")
 
+        # Work type (original / reproduction / photograph), if available
+        work_kind = (art.get("_work_kind") or "").lower()
+        if work_kind in ("original", "reproduction", "photograph"):
+            label_map = {
+                "original": "Original work",
+                "reproduction": "Reproduction (print / engraving / etc.)",
+                "photograph": "Photograph",
+            }
+            human_label = label_map.get(work_kind, work_kind.title())
+            st.write(f"**Work type:** {human_label}")
+
         dating = art.get("dating", {}) or {}
         date = dating.get("presentingDate") or dating.get("year")
         if date:
@@ -288,6 +332,7 @@ def render_side(label: str, obj_id: str, art: Dict[str, Any], container) -> None
         link = (art.get("links") or {}).get("web")
         if link:
             st.markdown(f"[View on Rijksmuseum website]({link})")
+
 
 render_side("Artwork A", id_a, art_a, col_a)
 render_side("Artwork B", id_b, art_b, col_b)

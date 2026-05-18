@@ -34,3 +34,4 @@ data/pdf_meta.json
 data/analytics/
 *.log
 *.jason
+pages/*Rijks_JSON_Debug.py

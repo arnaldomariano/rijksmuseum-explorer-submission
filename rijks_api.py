@@ -83,6 +83,8 @@ def _get_session() -> requests.Session:
 
 @st.cache_data(show_spinner=False, ttl=24 * 3600)
 def probe_image_url(url: str) -> Dict[str, Any]:
+
+
     """
     Lightweight validation to distinguish:
       - ok
@@ -137,6 +139,7 @@ def probe_image_url(url: str) -> Dict[str, Any]:
 
     except Exception:
         return {"ok": False, "status": "broken", "http_status": 0, "content_type": "", "reason": "request_failed"}
+
 
 
 # ============================================================
@@ -236,7 +239,14 @@ def _fetch_linked_art_json_cached(pid_url: str) -> Dict[str, Any]:
 # ============================================================
 
 def _extract_access_point_url(raw: Dict[str, Any]) -> Optional[str]:
-    """Find the first access_point.id anywhere in the Linked Art JSON (recursive)."""
+    """
+    Generic recursive fallback that finds the first access_point.id anywhere
+    in the Linked Art JSON.
+
+    This is intentionally broad and should only be used as a fallback when
+    the preferred image flow via `shows -> digitally_shown_by -> access_point`
+    does not return a result.
+    """
 
     def walk(obj: Any) -> Optional[str]:
         if isinstance(obj, dict):
@@ -276,16 +286,36 @@ def _extract_object_number_from_access_point(url: str) -> Optional[str]:
 
 
 def _normalize_iiif_image_url(url: str, width: int = 900) -> str:
-    """Normalize IIIF URLs to /full/<width>,/0/default.jpg."""
+    """
+    Normalize IIIF URLs conservatively.
+
+    Rules:
+      - If the URL already points to a concrete rendered image
+        (for example `/full/max/0/default.jpg`), keep it as-is.
+      - If the URL ends with `/info.json`, convert it to a rendered JPG URL.
+      - If the URL contains `/full/` but already looks like a rendered image,
+        keep it unchanged.
+      - Otherwise, build a standard `/full/<width>,/0/default.jpg` URL.
+    """
     u = url.strip()
+
+    # If this is already a concrete IIIF image URL, keep it unchanged,
+    # except that /full/max/ may later be rewritten by the caller if needed.
+    if u.lower().endswith((".jpg", ".jpeg", ".png", ".webp")) and "/full/" in u:
+        return u
+
+    # If we have an info.json endpoint, derive a rendered image URL from it.
     if u.endswith("/info.json"):
         base = u[:-len("/info.json")]
         return f"{base}/full/{width},/0/default.jpg"
+
+    # If it already contains a IIIF full path but is not clearly an image file,
+    # normalize it to a standard rendered JPG.
     if "/full/" in u:
         base = u.split("/full/")[0]
         return f"{base}/full/{width},/0/default.jpg"
-    return f"{u.rstrip('/')}/full/{width},/0/default.jpg"
 
+    return f"{u.rstrip('/')}/full/{width},/0/default.jpg"
 
 def _extract_iiif_from_html(html: str) -> Optional[str]:
     """Extract an IIIF URL from object HTML (info.json preferred)."""
@@ -461,7 +491,176 @@ def _extract_creator_and_role_from_object_html(html: str) -> Tuple[Optional[str]
 
     return None, None
 
+def _extract_iiif_from_access_point_node(access_point: Any) -> Optional[str]:
+    """
+    Extract a usable IIIF URL from an access_point node.
 
+    Try a few rendered variants and return the first one that responds as an image.
+    """
+    candidates: List[str] = []
+
+    if isinstance(access_point, dict):
+        url = access_point.get("id")
+        if isinstance(url, str) and url.strip():
+            candidates.append(url.strip())
+
+    elif isinstance(access_point, list):
+        for item in access_point:
+            if not isinstance(item, dict):
+                continue
+            url = item.get("id")
+            if isinstance(url, str) and url.strip():
+                candidates.append(url.strip())
+
+    for url in candidates:
+        if "iiif" not in url.lower():
+            continue
+
+        base = url.strip()
+
+        variants = [base]
+
+        if "/full/max/" in base:
+            variants.append(base.replace("/full/max/", "/full/1200,/"))
+            variants.append(base.replace("/full/max/", "/full/900,/"))
+
+        if base.endswith("/info.json"):
+            info_base = base[:-len("/info.json")]
+            variants.append(f"{info_base}/full/1200,/0/default.jpg")
+            variants.append(f"{info_base}/full/900,/0/default.jpg")
+
+        seen = set()
+        for variant in variants:
+            if variant in seen:
+                continue
+            seen.add(variant)
+
+            try:
+                probe = probe_image_url(variant)
+                if probe.get("ok"):
+                    print("[DEBUG IIIF VARIANT OK]:", variant)
+                    return variant
+                else:
+                    print("[DEBUG IIIF VARIANT FAIL]:", variant, probe)
+            except Exception as exc:
+                print("[DEBUG IIIF VARIANT ERROR]:", variant, exc)
+
+    return None
+
+def _resolve_linked_art_reference(ref_url: str) -> Dict[str, Any]:
+    """
+    Resolve a Linked Art reference URL (object, VisualItem, DigitalObject, etc.)
+    into JSON-LD using the same content-negotiation pattern as the main resolver.
+
+    Returns an empty dict if the URL cannot be resolved.
+    """
+    if not isinstance(ref_url, str) or not ref_url.strip():
+        return {}
+
+    try:
+        return _fetch_linked_art_json_cached(ref_url.strip())
+    except Exception:
+        return {}
+
+
+def _extract_image_url_from_shows_flow(raw: Dict[str, Any]) -> Optional[str]:
+    """
+    Preferred image-resolution flow recommended by the Rijksmuseum team:
+
+      object
+        -> shows [VisualItem]
+        -> digitally_shown_by [DigitalObject]
+        -> access_point
+        -> IIIF URL
+
+    Handles both cases:
+      - embedded VisualItem records
+      - VisualItem references that must be resolved via their `id`
+    """
+    shows = raw.get("shows") or []
+    if isinstance(shows, dict):
+        shows = [shows]
+    if not isinstance(shows, list):
+        return None
+
+    for visual_item in shows:
+        if not isinstance(visual_item, dict):
+            continue
+
+        visual_item_data = visual_item
+
+        # If the VisualItem is only a reference, resolve it first
+        visual_item_id = visual_item.get("id")
+        if isinstance(visual_item_id, str) and visual_item_id.strip():
+            # Resolve only when the node does not already include the needed data
+            if "digitally_shown_by" not in visual_item:
+                resolved_visual_item = _resolve_linked_art_reference(visual_item_id)
+
+
+                if visual_item_id in (
+                    "https://id.rijksmuseum.nl/202108883",   # SK-A-1892
+                    "https://id.rijksmuseum.nl/20228474",    # SK-A-2933
+                ):
+                    print(
+                        f"\n[DEBUG VISUALITEM {visual_item_id}] resolved keys:",
+                        list(resolved_visual_item.keys())
+                        if isinstance(resolved_visual_item, dict)
+                        else resolved_visual_item,
+                    )
+                    print(
+                        f"[DEBUG VISUALITEM {visual_item_id}] digitally_shown_by:",
+                        resolved_visual_item.get("digitally_shown_by")
+                        if isinstance(resolved_visual_item, dict)
+                        else None,
+                    )
+
+                if isinstance(resolved_visual_item, dict) and resolved_visual_item:
+                    visual_item_data = resolved_visual_item
+
+        digital_objects = visual_item_data.get("digitally_shown_by") or []
+        if isinstance(digital_objects, dict):
+            digital_objects = [digital_objects]
+        if not isinstance(digital_objects, list):
+            continue
+
+        for digital_object in digital_objects:
+            if not isinstance(digital_object, dict):
+                continue
+
+            digital_object_data = digital_object
+
+            # If the DigitalObject is only a reference, resolve it too
+            digital_object_id = digital_object.get("id")
+            if isinstance(digital_object_id, str) and digital_object_id.strip():
+                if "access_point" not in digital_object:
+                    resolved_digital_object = _resolve_linked_art_reference(digital_object_id)
+
+                    if digital_object_id:
+                        print(
+                            f"[DEBUG DIGITALOBJECT {digital_object_id}] resolved keys:",
+                            list(resolved_digital_object.keys())
+                            if isinstance(resolved_digital_object, dict)
+                            else resolved_digital_object,
+                        )
+                        print(
+                            f"[DEBUG DIGITALOBJECT {digital_object_id}] access_point:",
+                            resolved_digital_object.get("access_point")
+                            if isinstance(resolved_digital_object, dict)
+                            else None,
+                        )
+
+                    if isinstance(resolved_digital_object, dict) and resolved_digital_object:
+                        digital_object_data = resolved_digital_object
+
+            iiif_url = _extract_iiif_from_access_point_node(
+                digital_object_data.get("access_point")
+            )
+
+            if iiif_url:
+                print("[DEBUG IIIF URL FOUND]:", iiif_url)
+                return iiif_url
+
+    return None
 # ============================================================
 # Image URL extraction (Linked Art -> IIIF)
 # ============================================================
@@ -470,17 +669,23 @@ def _extract_image_url_from_linked_art(raw: Dict[str, Any]) -> Optional[str]:
     """
     High-level image URL extractor for Linked Art JSON.
 
-    Strategy:
-      1) Look for an IIIF URL directly inside the Linked Art JSON
-      2) Fallback: follow the access_point URL and try to locate an IIIF URL in the public HTML
-      3) Normalize to a standard IIIF JPG URL
+    Resolution priority:
+      1) Preferred Rijksmuseum flow:
+         shows -> VisualItem -> digitally_shown_by -> access_point
+      2) Deep search for embedded IIIF URLs anywhere in the JSON
+      3) Public object HTML fallback via access_point / web page
     """
-    # 1) Try to find an IIIF endpoint directly in the Linked Art JSON
+    # 1) Preferred, schema-aware flow recommended by the Rijksmuseum team
+    iiif_from_shows = _extract_image_url_from_shows_flow(raw)
+    if iiif_from_shows:
+        return iiif_from_shows
+
+    # 2) Fallback: search for a likely IIIF endpoint anywhere in the JSON
     iiif = _deep_find_iiif_image_url(raw)
     if iiif:
         return _normalize_iiif_image_url(iiif, width=900)
 
-    # 2) Fallback: use the access_point URL and look for IIIF in the public HTML page
+    # 3) Last fallback: use a public access point and inspect the HTML page
     access_url = _extract_access_point_url(raw)
     if not access_url:
         return None
@@ -719,17 +924,37 @@ def _map_linked_art_to_legacy_dict(raw: Dict[str, Any]) -> Dict[str, Any]:
             pid_url = val.strip()
             break
 
-    # 2) Title (from identified_by[*].content)
+    # 2) Title (prefer a human-readable label over inventory numbers)
     title = "Untitled"
     identified_by = raw.get("identified_by") or []
+
+    title_candidates: List[str] = []
+    inventory_candidates: List[str] = []
+
     if isinstance(identified_by, list):
         for ident in identified_by:
             if not isinstance(ident, dict):
                 continue
+
             content = ident.get("content")
-            if isinstance(content, str) and content.strip():
-                title = content.strip()
-                break
+            if not isinstance(content, str):
+                continue
+
+            candidate = content.strip()
+            if not candidate:
+                continue
+
+            # Separate human-readable titles from inventory-like identifiers
+            if candidate.startswith(CANONICAL_PREFIXES):
+                inventory_candidates.append(candidate)
+            else:
+                title_candidates.append(candidate)
+
+    if title_candidates:
+        title = title_candidates[0]
+    elif inventory_candidates:
+        title = inventory_candidates[0]
+
 
     # 3) produced_by (used later for dating and attribution)
     produced_by = raw.get("produced_by")
@@ -849,15 +1074,19 @@ def _map_linked_art_to_legacy_dict(raw: Dict[str, Any]) -> Dict[str, Any]:
 
     # 9) Image URL + lightweight image status (without extra HTTP probe)
     web_image: Dict[str, Any] = {}
+
+    if object_number == "SK-A-1892":
+        print("\n[DEBUG SK-A-1892] Raw keys:", list(raw.keys()))
+        print("[DEBUG SK-A-1892] shows:", raw.get("shows"))
+        print("[DEBUG SK-A-1892] access_point fallback:", _extract_access_point_url(raw))
+        print("[DEBUG SK-A-1892] deep iiif fallback:", _deep_find_iiif_image_url(raw))
+
     img_url = _extract_image_url_from_linked_art(raw)
 
     if img_url:
-        # We have a public IIIF image URL from Linked Art or the HTML fallback
         web_image["url"] = img_url
         image_status = "ok"
     else:
-        # We could not resolve a public image URL from Linked Art + access_point
-        # Try to detect whether this is due to copyright or a missing page
         image_status = "no_public_image"
         if stable_web_url and "rijksmuseum.nl" in stable_web_url:
             html = get_object_html()

@@ -355,13 +355,13 @@ events_csv = _flatten_events_to_csv(filtered_events)
 aggregated_csv: str | None = None
 
 col_dl1, col_dl2 = st.columns(2)
-with col_dl1:
+with col_dl2:
     st.download_button(
-        "📄 Download events (CSV)",
-        data=events_csv,
-        file_name="rijks_explorer_events.csv",
+        "📊 Download aggregated stats (CSV)",
+        data=aggregated_csv,
+        file_name="rijks_explorer_aggregated_stats.csv",
         mime="text/csv",
-        use_container_width=True,
+        width="stretch",
     )
 
 # ============================================================
@@ -493,13 +493,13 @@ aggregated_csv = _aggregated_stats_to_csv(
     top_artists_list,
 )
 
-with col_dl2:
+with col_dl1:
     st.download_button(
-        "📊 Download aggregated stats (CSV)",
-        data=aggregated_csv,
-        file_name="rijks_explorer_aggregated_stats.csv",
+        "📄 Download events (CSV)",
+        data=events_csv,
+        file_name="rijks_explorer_events.csv",
         mime="text/csv",
-        use_container_width=True,
+        width="stretch",
     )
 
 # ============================================================

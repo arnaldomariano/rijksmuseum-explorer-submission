@@ -255,7 +255,7 @@ st.markdown("### Save or reset PDF configuration")
 col_s1, col_s2 = st.columns(2)
 
 with col_s1:
-    if st.button("💾 Save PDF configuration", use_container_width=True):
+    if st.button("💾 Save PDF configuration", width="stretch"):
         updated = dict(pdf_meta)
         updated["include_cover"] = bool(include_cover)
         updated["include_opening_text"] = bool(include_opening_text)
@@ -284,7 +284,7 @@ with col_s1:
         )
 
 with col_s2:
-    if st.button("↩️ Reset to default settings", use_container_width=True):
+    if st.button("↩ Reset to default settings", width="stretch"):
         base = _default_pdf_meta()
         save_pdf_meta(base)
 

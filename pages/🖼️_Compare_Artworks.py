@@ -230,7 +230,7 @@ for col, (obj_id, art) in zip(cols, candidate_arts):
 
         img_url = get_best_image_url(art)
         if img_url:
-            st.image(img_url, use_container_width=True)
+            st.image(img_url, width="stretch")
         else:
             st.caption("No public image available in current mapping.")
 
@@ -304,7 +304,7 @@ def render_side(label: str, obj_id: str, art: Dict[str, Any], container) -> None
 
         img_url = get_best_image_url(art)
         if img_url:
-            st.image(img_url, use_container_width=True)
+            st.image(img_url, width="stretch")
         else:
             st.caption("No public image available in current mapping.")
 

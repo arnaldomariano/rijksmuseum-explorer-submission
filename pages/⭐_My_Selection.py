@@ -1669,7 +1669,7 @@ else:
                         img_url = cached_best_image_url(art)
                         if img_url:
                             try:
-                                st.image(img_url, use_container_width=True)
+                                st.image(img_url, width="stretch")
                             except Exception:
                                 st.write("Error displaying image.")
                         else:

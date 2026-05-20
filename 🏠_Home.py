@@ -591,7 +591,7 @@ st.session_state["page_num"] = int(page_num)
 sidebar.markdown("<div style='height: 0.75rem'></div>", unsafe_allow_html=True)
 run_search = sidebar.button(
     "🔍 Apply filters & search",
-    use_container_width=True,
+    width="stretch",
 )
 
 # Small reminder about global selection behavior
@@ -609,7 +609,7 @@ st.markdown("### 🎨 Rijksmuseum Explorer")
 
 if HERO_IMAGE_PATH.exists():
     st.markdown('<div class="rijks-hero">', unsafe_allow_html=True)
-    st.image(str(HERO_IMAGE_PATH), use_container_width=True)
+    st.image(str(HERO_IMAGE_PATH), width="stretch")
     st.markdown("</div>", unsafe_allow_html=True)
 
 st.write(
@@ -777,13 +777,13 @@ if page_items:
     with col_add:
         add_all_clicked = st.button(
             "⭐ Add ALL on this page",
-            use_container_width=True,
+            width="stretch",
             key="btn_add_all_page",
         )
     with col_remove:
         remove_all_clicked = st.button(
             "🗑️ Remove ALL on this page",
-            use_container_width=True,
+            width="stretch",
             key="btn_remove_all_page",
         )
 
@@ -930,7 +930,7 @@ if page_items:
                     probe = probe_image_url(img_url)
                     if probe.get("ok"):
                         img_status = "ok"
-                        st.image(img_url, use_container_width=True)
+                        st.image(img_url, width="stretch")
                     else:
                         pstatus = (probe.get("status") or "").lower()
                         if pstatus == "copyright":

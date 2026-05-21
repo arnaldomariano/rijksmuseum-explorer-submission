@@ -173,11 +173,11 @@ def inject_custom_css() -> None:
 show_page_intro(
     "Welcome to the Rijksmuseum Explorer research app. This homepage gives you a quick overview of what you can do:",
     [
-        "Search and browse artworks from the Rijksmuseum collection.",
-        "Build a personal research selection and keep it locally on this device.",
+        "Search and browse artworks from the Rijksmuseum collection using Data Services and Linked Art metadata.",
+        "Build a personal research selection and store it in local JSON files within the app environment.",
         "Compare up to 4 artworks side-by-side for visual and contextual analysis.",
         "Export your selection to CSV / JSON / PDF for further study.",
-        "Keep all research activity local: favorites, notes and basic usage counts stay on this device only — nothing is sent to external servers.",
+        "Favorites, notes and basic usage counters are kept in the app environment; search queries and artwork requests are sent to Rijksmuseum services to retrieve collection data.",
     ],
 )
 
@@ -496,7 +496,7 @@ sidebar.markdown(
 **Text filters (helper)**  
 
 Text filters search inside the textual metadata of each artwork (title, long
-title, description and notes returned by the API).
+title, description and notes returned by Data Services / Linked Art records).
 
 Use short keywords, for example:
 
@@ -834,7 +834,7 @@ if page_items:
 def _fetch_better_title(object_number: str) -> str | None:
     """
     When the search result only shows the objectNumber as title (or nothing),
-    try to fetch a better title from the detail API.
+    try to fetch a better title from the Linked Art metadata.
 
     Cached to avoid repeated requests while browsing.
     """
@@ -885,7 +885,7 @@ if page_items:
                 display_title = raw_title or long_title or "Untitled"
 
                 # If the "title" is just the objectNumber or empty,
-                # try to fetch something more descriptive via detail API.
+                # try to fetch something more descriptive via Linked Art metadata.
                 if obj_num_str and (
                     display_title == obj_num_str or display_title == "Untitled"
                 ):

@@ -51,7 +51,6 @@ CANONICAL_PREFIXES = ("SK-", "RP-", "BK-", "NG-", "AK-", "NM-")
 # ============================================================
 RESOLVE_IMAGES_DURING_SEARCH = True
 
-# General debug flags
 DEBUG_RIJKS = False
 DEBUG_PERFORMANCE = False
 DEBUG_IMAGE_RESOLUTION = False
@@ -63,7 +62,6 @@ ENABLE_HTML_FALLBACK = True
 # Role lookup from HTML is useful for research classification,
 # but it is expensive if applied to every artwork.
 ENABLE_HTML_ROLE_LOOKUP = False
-
 
 # ============================================================
 # Errors
@@ -1332,14 +1330,14 @@ def search_artworks(
     t_search_ids = time.perf_counter()
     pids = _search_ids(session, norm.query, limit=fetch_limit)
 
-    if DEBUG_RIJKS:
+    if DEBUG_PERFORMANCE:
         print(
             f"[PERF] search ids: {time.perf_counter() - t_search_ids:.2f}s "
             f"| pids={len(pids)} | query='{norm.query}'"
         )
 
     if not pids:
-        if DEBUG_RIJKS:
+        if DEBUG_PERFORMANCE:
             print(f"[PERF] total search_artworks: {time.perf_counter() - t0:.2f}s")
         return [], 0
 
@@ -1356,7 +1354,7 @@ def search_artworks(
             except RijksAPIError as exc:
                 print(f"[rijks_api] Warning: failed to fetch {pid}: {exc}")
 
-    if DEBUG_RIJKS:
+    if DEBUG_PERFORMANCE:
         print(
             f"[PERF] fetch linked art: {time.perf_counter() - t_fetch:.2f}s "
             f"| objects={len(raw_objects)}"
@@ -1372,7 +1370,7 @@ def search_artworks(
         except Exception as exc:
             print(f"[rijks_api] Warning: failed to map object: {exc}")
 
-    if DEBUG_RIJKS:
+    if DEBUG_PERFORMANCE:
         print(
             f"[PERF] map objects: {time.perf_counter() - t_map:.2f}s "
             f"| mapped={len(mapped)}"
@@ -1399,7 +1397,7 @@ def search_artworks(
     start = (norm.page - 1) * norm.page_size
     end = start + norm.page_size
 
-    if DEBUG_RIJKS:
+    if DEBUG_PERFORMANCE:
         print(f"[PERF] total search_artworks: {time.perf_counter() - t0:.2f}s")
 
     return mapped[start:end], total

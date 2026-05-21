@@ -107,9 +107,9 @@ show_page_intro(
     "This page explains the goals and limitations of the Rijksmuseum Explorer prototype:",
     [
         "It is a personal research tool, not an official Rijksmuseum product.",
-        "All data and images come from the Rijksmuseum Data Services and Linked Art resolver.",
-        "Favorites, notes and analytics counters are stored locally on your device.",
-        "No personal data or research activity is sent to external servers.",
+        "All collection metadata and images are retrieved from Rijksmuseum Data Services, Linked Art records and IIIF image endpoints.",
+        "Favorites, notes and analytics counters are stored in local JSON files within the app environment.",
+        "The app does not intentionally collect personal data or send usage analytics to third-party tracking services.",
         "The interface is designed for iterative research and experimentation.",
     ],
 )
@@ -147,6 +147,7 @@ st.write(
     "- **Search API** (Data Services): to retrieve candidate items for a query.\n"
     "- **Linked Art resolver** (Linked Data / JSON-LD): to dereference each item and obtain structured metadata.\n\n"
     "Public images are displayed using IIIF-style URLs derived from the museum’s linked data. "
+    "This version does not require a classic Rijksmuseum API key. "
     "For full zoom, rights information and authoritative descriptions, always refer to the Rijksmuseum website."
 )
 
@@ -157,10 +158,11 @@ st.info(
 
 st.markdown("### Privacy, storage and statistics")
 st.write(
-    "- Your selection (favorites) and research notes are stored **locally** in small JSON files.\n"
-    "- Usage analytics events are also recorded **locally only** in a JSONL file; "
+    "- Your selection (favorites) and research notes are stored in small JSON files within the app environment.\n"
+    "- Usage analytics events are also recorded in a local JSONL file; "
     "the **Statistics** page reads this file to show simple counters and top lists.\n"
-    "- No personal data is intentionally collected and no tracking data is sent to remote servers.\n"
+    "- The app does not intentionally collect personal data or send usage analytics to third-party tracking services.\n"
+    "- Search queries and artwork requests are sent to Rijksmuseum services in order to retrieve collection data and images.\n"
 )
 
 st.caption(

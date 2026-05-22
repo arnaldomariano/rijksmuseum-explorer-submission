@@ -33,7 +33,7 @@ import time
 # Constants
 # ============================================================
 
-INITIAL_FETCH_LIMIT = 12
+INITIAL_FETCH_LIMIT = 24
 
 SEARCH_URL = "https://data.rijksmuseum.nl/search/collection"
 

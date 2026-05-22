@@ -1197,23 +1197,32 @@ def _map_linked_art_to_legacy_dict(raw: Dict[str, Any]) -> Dict[str, Any]:
     web_image: Dict[str, Any] = {}
     image_status = "not_checked"
 
+    # Some technical IIIF URLs may still respond even when the public
+    # Rijksmuseum page states that the image is unavailable due to copyright.
+    # In that case, respect the public rights signal and do not expose the image.
+    public_page_image_status = "no_public_image"
+
+    if ENABLE_HTML_FALLBACK and stable_web_url and "rijksmuseum.nl" in stable_web_url:
+        html = get_object_html()
+
+        if html:
+            public_page_image_status = _detect_image_status_from_object_html(html)
+
     if RESOLVE_IMAGES_DURING_SEARCH:
-        img_url = _extract_image_url_from_linked_art(raw)
+        if public_page_image_status == "copyright":
+            image_status = "copyright"
 
-        if img_url:
-            web_image["url"] = img_url
-            image_status = "ok"
+        elif public_page_image_status == "page_missing":
+            image_status = "page_missing"
+
         else:
-            image_status = "no_public_image"
+            img_url = _extract_image_url_from_linked_art(raw)
 
-            if ENABLE_HTML_FALLBACK and stable_web_url and "rijksmuseum.nl" in stable_web_url:
-                html = get_object_html()
-
-                if html:
-                    detected = _detect_image_status_from_object_html(html)
-
-                    if detected in ("copyright", "page_missing"):
-                        image_status = detected
+            if img_url:
+                web_image["url"] = img_url
+                image_status = "ok"
+            else:
+                image_status = "no_public_image"
 
     # 10) Attribution tag (direct / attributed / workshop / circle / after / unknown)
     attribution_tag = _classify_attribution(raw, principal_or_first_maker)

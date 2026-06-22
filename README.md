@@ -3,9 +3,7 @@
 A local-first research app built with Streamlit to explore public museum collection data made available through **Rijksmuseum Data Services** (Search API + Linked Art / Linked Data).
 
 > This is an independent prototype for study and research.  
-> > It is **not affiliated with, endorsed by, sponsored by, or an official product of the Rijksmuseum**.
-
----
+> It is **not affiliated with, endorsed by, sponsored by, or an official product of the Rijksmuseum**.---
 
 ## ✨ Main features
 
@@ -68,7 +66,7 @@ The app keeps everything on the local filesystem:
 
 - `favorites.json` — global selection of artworks.
 - `notes.json` — research notes per artwork.
-- `rijks_explorer_events_*.csv` — local usage log for the Statistics page.
+- `collection_explorer_events_*.csv` — local usage log for the Statistics page.
 - `pdf_meta.json` — options saved from the PDF Setup page.
 
 When deployed on **Streamlit Cloud**, the filesystem may be ephemeral.  
@@ -89,6 +87,8 @@ For full rights information, zoom and authoritative descriptions, always refer t
 > All rights to artworks, descriptions and images remain with the Rijksmuseum and respective rights holders.
 
 No classic API key is used; the prototype relies on the public Data Services endpoints.
+
+The homepage illustration is a photo by [Steve A Johnson](https://unsplash.com/pt-br/@steve_j?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/pt-br/fotografias/um-close-up-de-uma-paleta-de-tinta-multicolorida-ZXWOrKZ0h_M?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).
 
 ---
 

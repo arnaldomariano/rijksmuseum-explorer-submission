@@ -489,7 +489,7 @@ with col_dl1:
     st.download_button(
         "📄 Download events (CSV)",
         data=events_csv,
-        file_name="rijks_explorer_events.csv",
+        file_name="collection_explorer_events.csv",
         mime="text/csv",
         width="stretch",
     )

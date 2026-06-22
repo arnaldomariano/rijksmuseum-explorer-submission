@@ -609,8 +609,11 @@ st.markdown("### 🎨 Open Collection Research Explorer")
 if HERO_IMAGE_PATH.exists():
     st.markdown('<div class="rijks-hero">', unsafe_allow_html=True)
     st.image(str(HERO_IMAGE_PATH), width="stretch")
-    st.markdown("</div>", unsafe_allow_html=True)
-
+    st.markdown(
+        'Photo by <a href="https://unsplash.com/pt-br/@steve_j?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Steve A Johnson</a> on '
+        '<a href="https://unsplash.com/pt-br/fotografias/um-close-up-de-uma-paleta-de-tinta-multicolorida-ZXWOrKZ0h_M?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>.',
+        unsafe_allow_html=True,
+    )
 st.write(
     "Explore artworks using public collection data made available through Rijksmuseum Data Services / Linked Data. "
     "Use the sidebar to search and filter, then browse results below."

@@ -1,9 +1,9 @@
-# Rijksmuseum Explorer — Research Prototype
+# Open Collection Research Explorer — Research Prototype
 
-A local-first research app built with Streamlit to explore artworks from the Rijksmuseum collection using **Rijksmuseum Data Services** (Search API + Linked Art / Linked Data).
+A local-first research app built with Streamlit to explore public museum collection data made available through **Rijksmuseum Data Services** (Search API + Linked Art / Linked Data).
 
 > This is an independent prototype for study and research.  
-> It is **not** an official Rijksmuseum product.
+> > It is **not affiliated with, endorsed by, sponsored by, or an official product of the Rijksmuseum**.
 
 ---
 

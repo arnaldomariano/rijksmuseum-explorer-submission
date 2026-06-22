@@ -91,7 +91,7 @@ class SearchParams:
 def _get_session() -> requests.Session:
     """Configured HTTP session."""
     s = requests.Session()
-    s.headers.update({"User-Agent": "RijksmuseumExplorer/1.0"})
+    s.headers.update({"User-Agent": "OpenCollectionResearchExplorer/1.0"})
     return s
 
 

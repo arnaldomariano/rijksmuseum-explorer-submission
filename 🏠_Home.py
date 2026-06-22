@@ -1,6 +1,6 @@
 # 🏠_Home.py
 """
-Rijksmuseum Explorer — Explorer page (online, Data Services)
+Open Collection Research Explorer — Explorer page (online, Data Services)
 
 This page provides:
 - Search against Rijksmuseum Data Services (Search API)
@@ -36,7 +36,7 @@ from ui_theme import inject_global_css, show_global_footer, show_page_intro
 # Page config
 # ============================================================
 st.set_page_config(
-    page_title="Rijksmuseum Explorer",
+    page_title="Open Collection Research Explorer",
     page_icon="🏛️",
     layout="wide",
 )
@@ -170,13 +170,13 @@ def inject_custom_css() -> None:
 
 # Intro block (consistent with other pages)
 show_page_intro(
-    "Welcome to the Rijksmuseum Explorer research app. This homepage gives you a quick overview of what you can do:",
+    "Search and browse public collection data made available through Rijksmuseum Data Services and Linked Art metadata.",
     [
         "Search and browse artworks from the Rijksmuseum collection using Data Services and Linked Art metadata.",
         "Build a personal research selection and store it in local JSON files within the app environment.",
         "Compare up to 4 artworks side-by-side for visual and contextual analysis.",
         "Export your selection to CSV / JSON / PDF for further study.",
-        "Favorites, notes and basic usage counters are kept in the app environment; search queries and artwork requests are sent to Rijksmuseum services to retrieve collection data.",
+        "Favorites, notes and basic usage counters are kept in the app environment; search queries and artwork requests are sent to Rijksmuseum Data Services to retrieve collection data.",
     ],
 )
 
@@ -604,7 +604,7 @@ sidebar.caption(
 # ============================================================
 # Main header
 # ============================================================
-st.markdown("### 🎨 Rijksmuseum Explorer")
+st.markdown("### 🎨 Open Collection Research Explorer")
 
 if HERO_IMAGE_PATH.exists():
     st.markdown('<div class="rijks-hero">', unsafe_allow_html=True)
@@ -612,7 +612,7 @@ if HERO_IMAGE_PATH.exists():
     st.markdown("</div>", unsafe_allow_html=True)
 
 st.write(
-    "Explore artworks from the Rijksmuseum collection using the Data Services (Linked Data). "
+    "Explore artworks using public collection data made available through Rijksmuseum Data Services / Linked Data. "
     "Use the sidebar to search and filter, then browse results below."
 )
 

@@ -1,7 +1,7 @@
 """
 analytics.py — local-only analytics (no external tracking).
 
-This module records lightweight usage events for the Rijksmuseum Explorer
+This module records lightweight usage events for the Open Collection Research Explorer
 prototype, such as:
 
 - page views

@@ -1,7 +1,7 @@
 # local_collection.py
 
 """
-Local collection backend for Rijksmuseum Explorer (versão “regularizada”).
+Local collection backend for Open Collection Research Explorer.
 
 Em vez de consultar a API online (que foi desativada), este módulo
 carrega uma coleção local de obras de arte de um arquivo JSON e

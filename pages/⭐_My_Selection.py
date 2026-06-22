@@ -555,7 +555,7 @@ def build_pdf_buffer(
         nonlocal page_num
         c.setFont("Helvetica", FOOTER_FONT_SIZE)
         c.setFillGray(0.5)
-        footer_text = f"Rijksmuseum Explorer — research selection · page {page_num}"
+        footer_text = f"Open Collection Research Explorer — research selection · page {page_num}"
         c.drawCentredString(width / 2, margin / 2, footer_text)
         c.setFillGray(0.0)
 
@@ -582,7 +582,7 @@ def build_pdf_buffer(
         stats = compute_selection_stats(favorites)
 
         c.setFont("Helvetica-Bold", COVER_TITLE_SIZE)
-        c.drawString(margin, height - margin - 20, "Rijksmuseum Explorer — Selection")
+        c.drawString(margin, height - margin - 20, "Open Collection Research Explorer — Selection")
 
         c.setFont("Helvetica", META_FONT_SIZE)
         y = height - margin - 60
@@ -945,7 +945,7 @@ if "analytics_my_selection_viewed" not in st.session_state:
 if not favorites:
     st.info(
         "You currently have no artworks in your selection. "
-        "Go to the **Rijksmuseum Explorer** page and mark "
+        "Go to the **Open Collection Research Explorer** page and mark "
         "**In my selection** on any artwork you want to keep."
     )
     show_global_footer()

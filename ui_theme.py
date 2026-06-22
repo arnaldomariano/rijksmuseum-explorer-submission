@@ -165,8 +165,9 @@ def show_global_footer() -> None:
     st.markdown(
         """
         <div class="rijks-footer">
-            Rijksmuseum Explorer — prototype created for study & research purposes.<br>
-            Data & images provided by the Rijksmuseum Data Services.
+            Open Collection Research Explorer — independent prototype created for study & research purposes.<br>
+            Collection data and images are sourced from Rijksmuseum Data Services / Rijksmuseum Collection Online.<br>
+            Not affiliated with, endorsed by, or sponsored by the Rijksmuseum.
         </div>
         """,
         unsafe_allow_html=True,

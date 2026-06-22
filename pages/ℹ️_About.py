@@ -1,6 +1,6 @@
 # pages/i_About.py
 """
-About / How to use — Rijksmuseum Explorer (research-oriented)
+About / How to use — Open Collection Research Explorer (research-oriented)
 
 This page explains:
 - What the app does and who it is for
@@ -20,7 +20,7 @@ from ui_theme import inject_global_css, show_global_footer, show_page_intro
 # Page config
 # ============================================================
 st.set_page_config(
-    page_title="About — Rijksmuseum Explorer",
+    page_title="About — Open Collection Research Explorer",
     page_icon="ℹ️",
     layout="wide",
 )
@@ -104,7 +104,7 @@ inject_custom_css()
 
 # Intro block (standard helper used in all pages)
 show_page_intro(
-    "This page explains the goals and limitations of the Rijksmuseum Explorer prototype:",
+    "This page explains the goals and limitations of the Open Collection Research Explorer prototype:",
     [
         "It is a personal research tool, not an official Rijksmuseum product.",
         "All collection metadata and images are retrieved from Rijksmuseum Data Services, Linked Art records and IIIF image endpoints.",
@@ -120,7 +120,7 @@ show_page_intro(
 st.markdown("## ℹ️ About this app")
 
 st.write(
-    "The **Rijksmuseum Explorer** is a research-oriented prototype designed to help users "
+    "The **Open Collection Research Explorer** is an independent research-oriented prototype designed to help users "
     "browse, study, filter and compare artworks from the Rijksmuseum collection. "
     "It focuses on a workflow that is useful for students, teachers and researchers: "
     "**search → filter by authorship scope → save a selection → write notes → compare → export**."

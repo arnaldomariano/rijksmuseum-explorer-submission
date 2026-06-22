@@ -33,7 +33,7 @@ NOTES_FILE = DATA_DIR / "notes.json"
 PDF_META_FILE = DATA_DIR / "pdf_meta.json"
 
 # Assets
-HERO_IMAGE_PATH = ASSETS_DIR / "rijks_header.jpg"
+HERO_IMAGE_PATH = ASSETS_DIR / "paleta_header.jpg"
 
 # Analytics file (JSONL)
 ANALYTICS_LOG_FILE = ANALYTICS_DIR / "events.jsonl"
